@@ -1,0 +1,49 @@
+﻿<Controls:MetroWindow x:Class="FileManager.DialogWindow"
+                      x:Name="Dialog"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:local="clr-namespace:FileManager"
+                      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                      xmlns:custom="clr-namespace:FileManager.ViewModel"
+                      MinHeight="100"
+                      MaxHeight="100"
+                      Height="100"
+                      Width="400"
+                      Title="Подтвердите действие"
+                      ShowTitleBar="True"
+                      ShowIconOnTitleBar="True"
+                      >
+    <Controls:MetroWindow.Resources>
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+    </Controls:MetroWindow.Resources>
+    <StackPanel Orientation="Vertical">
+        <TextBox
+            Focusable="False"
+            Margin="0 5 0 5"
+            IsReadOnly="True"
+            Text="{Binding Action, Mode=OneWay}"
+            BorderThickness="0"
+            Width="350"
+            FontSize="10"/>
+        <DockPanel>
+            <Button x:Name="True"
+                Margin="25 0 0 0"
+                HorizontalAlignment="Left"
+                Width="75"
+                Content="Да"
+                Command="{Binding DeleteCommand, Mode=OneWay}"
+                CommandParameter="{Binding ElementName=Dialog}"/>
+
+            <Button x:Name="False"
+                Margin="0 0 25 0"
+                HorizontalAlignment="Right"
+                Width="75"
+                Content="Нет"
+                Command="{Binding CancelCommand, Mode=OneWay}" 
+                CommandParameter="{Binding ElementName=Dialog}"/>
+        </DockPanel>
+    </StackPanel>
+</Controls:MetroWindow>
