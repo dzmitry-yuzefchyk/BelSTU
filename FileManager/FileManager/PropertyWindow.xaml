@@ -1,0 +1,71 @@
+﻿<Controls:MetroWindow x:Class="FileManager.PropertyWindow"
+                      x:Name="Property"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:local="clr-namespace:FileManager"
+                      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                      xmlns:custom="clr-namespace:FileManager.ViewModel"
+                      xmlns:mi="http://schemas.microsoft.com/expression/2010/interactions"
+                      ResizeMode="NoResize"
+                      Height="250"
+                      Width="450"
+                      Title="Свойства"
+                      ShowTitleBar="True"
+                      ShowIconOnTitleBar="True"
+                      >
+    <Controls:MetroWindow.Resources>
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+    </Controls:MetroWindow.Resources>
+    <StackPanel Orientation="Vertical">
+        <DockPanel Margin="0 10 0 0">
+            <Image Source="{Binding Image}" Margin="5 0 0 0" Height="52" Width="52">
+            </Image>
+            <TextBox IsReadOnly="False" FontSize="10" Height="10" Margin="5 0 5 0" Text="{Binding FileName, Mode=TwoWay}">
+            </TextBox>
+        </DockPanel>
+
+        <DockPanel Margin="0 10 0 0">
+            <TextBox IsReadOnly="True" FontSize="10" Height="10" Margin="5 0 5 0" Text="Путь: " BorderThickness="0">
+            </TextBox>
+            <TextBox IsReadOnly="True" FontSize="10" Height="10" Margin="5 0 5 0" Text="{Binding CurrentFolder, Mode=OneTime}" BorderThickness="0">
+            </TextBox>
+        </DockPanel>
+
+
+        <DockPanel Margin="0 10 0 0">
+            <TextBox IsReadOnly="True" FontSize="10" Height="10" Margin="5 0 5 0" Text="Размер: " BorderThickness="0">
+            </TextBox>
+            <TextBox IsReadOnly="True" FontSize="10" Height="10" Margin="5 0 5 0" Text="{Binding Size, Mode=OneTime}" BorderThickness="0">
+            </TextBox>
+        </DockPanel>
+
+        <DockPanel Margin="0 10 0 0">
+            <TextBox IsReadOnly="True" FontSize="10" Height="10" Margin="5 0 5 0" Text="Атрибуты: " BorderThickness="0">
+            </TextBox>
+            <TextBox IsReadOnly="True" FontSize="10" Height="10" Margin="5 0 5 0" Text="Только для чтения" BorderThickness="0">
+            </TextBox>
+            <CheckBox
+                IsChecked="{Binding IsReadOnly, Mode=TwoWay}"
+                Command="{Binding ReadParam}"
+                CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
+                >
+            </CheckBox>
+            <TextBox IsReadOnly="True" FontSize="10" Height="10" Margin="5 0 5 0" Text="Скрытый" BorderThickness="0">
+            </TextBox>
+            <CheckBox
+                IsChecked="{Binding IsHidden, Mode=TwoWay}"
+                Command="{Binding HiddenParam}"
+                CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
+                >
+            </CheckBox>
+        </DockPanel>
+        
+        <DockPanel Margin="0 10 0 0" FlowDirection="RightToLeft" HorizontalAlignment="Right">
+            <Button Content="Отменить" Width="100" Margin="10 0 0 0" Command="{Binding CancelCommand}" CommandParameter="{Binding ElementName=Property}"/>
+            <Button Content="Применить" Width="100" Margin="10 0 0 0" Command="{Binding AcceptCommand}" CommandParameter="{Binding ElementName=Property}"/>
+        </DockPanel>
+    </StackPanel>
+</Controls:MetroWindow>
