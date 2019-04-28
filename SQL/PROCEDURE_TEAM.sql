@@ -122,3 +122,20 @@ BEGIN
 	RETURN(1);
 	DEALLOCATE teamUserCursor;
 END;
+GO
+CREATE OR ALTER PROCEDURE [Team.GetUserTeams]
+	@userEmail NVARCHAR(256),
+	@skip INT,
+	@amount INT
+AS
+BEGIN
+	DECLARE @userId INT = (SELECT TOP 1 id FROM [USER] WHERE email = @userEmail);
+	SELECT title FROM [TEAM]
+		INNER JOIN [TEAM_USER]
+	ON [TEAM].id = [TEAM_USER].teamId
+		WHERE [TEAM_USER].userId = @userId
+		ORDER BY title
+		OFFSET @skip ROWS
+		FETCH NEXT @amount ROWS ONLY;
+		
+END;

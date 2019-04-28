@@ -52,6 +52,11 @@ BEGIN
 		@teamId = 1,
 		@addUserEmail = 'kate.yuzefchik@gmail.com';
 
+	EXEC [Team.GetUserTeams]
+		@userEmail = 'dmitry.yuzefchik@gmail.com',
+		@skip = 0,
+		@amount = 2;
+
 	EXEC [Team.DeleteTeam]
 		@creatorEmail = 'kate.yuzefchik@gmail.com',
 		@teamId = 1;
