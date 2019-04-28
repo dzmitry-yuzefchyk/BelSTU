@@ -3,19 +3,6 @@ USE Taskboard;
 BEGIN
 	SET NOCOUNT ON;
 
-	--SELECT * FROM [USER];
-	--SELECT * FROM [USER_PROFILE];
-	--SELECT * FROM [USER_SETTINGS];
-	--SELECT * FROM [TEAM];
-	--SELECT * FROM [TEAM_USER];
-
-	--TRUNCATE TABLE [USER_PROFILE];
-	--TRUNCATE TABLE [USER_SETTINGS];
-	--TRUNCATE TABLE [TEAM];
-	--TRUNCATE TABLE [USER];
-	--TRUNCATE TABLE [TEAM_USER];
-
-
 	EXEC [User.Register]
 		@email = 'kate.yuzefchik@gmail.com',
 		@password = '12345',

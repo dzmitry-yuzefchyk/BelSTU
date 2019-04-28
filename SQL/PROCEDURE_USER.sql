@@ -19,8 +19,8 @@ BEGIN
 		INSERT INTO [USER_PROFILE]("name", userId)
 			VALUES(@name, @userId);
 
-		INSERT INTO [USER_SETTINGS](userId)
-			VALUES(@userId);
+		--INSERT INTO [USER_SETTINGS](userId)
+		--	VALUES(@userId);
 
     END TRY
 
@@ -125,7 +125,7 @@ BEGIN
 		BEGIN TRY
 			DELETE [USER_TOKEN] WHERE userId = @userId;
 			DELETE [USER_PROFILE] WHERE userId = @userId;
-			DELETE [USER_SETTINGS] WHERE userId = @userId;
+			--DELETE [USER_SETTINGS] WHERE userId = @userId;
 			DELETE [USER] WHERE id = @userId;
 		END TRY
 
