@@ -66,12 +66,14 @@ BEGIN
 					INSERT INTO [USER_TOKEN](token, created, userId)
 						VALUES(NEWID(), GETDATE(),@userId);
 					PRINT 'User successfully logged in';
+					RETURN(0);
 				END TRY
 
 				BEGIN CATCH
 					SELECT
 						ERROR_LINE() AS ErrorLine,
 						ERROR_MESSAGE() AS ErrorMessage;
+						RETURN(1);
 				END CATCH
 
 			END
@@ -79,6 +81,7 @@ BEGIN
 
 	ELSE
 		PRINT 'Invalid login';
+		RETURN(1);
 END;
 GO
 CREATE OR ALTER PROCEDURE [User.Logout]
@@ -94,7 +97,9 @@ BEGIN
 						SELECT
 							ERROR_LINE() AS ErrorLine,
 							ERROR_MESSAGE() AS ErrorMessage;
+							RETURN(1);
 					END CATCH
+	RETURN(0);
 END
 GO
 CREATE OR ALTER PROCEDURE [User.RenewToken]
@@ -107,14 +112,18 @@ BEGIN
 						SET @lifeTime = (SELECT TOP 1 "lifeTime" FROM [USER_TOKEN] where userId = @userId);
 						SET @lifeTime += 10;
 						UPDATE [USER_TOKEN] SET "lifeTime" = @lifeTime WHERE userId = @userId;
+						RETURN 1;
 					END TRY
 					BEGIN CATCH
 						SELECT
 							ERROR_LINE() AS ErrorLine,
 							ERROR_MESSAGE() AS ErrorMessage;
+							RETURN(1);
 					END CATCH
 	ELSE
 		PRINT 'User token already expired';
+
+	RETURN(1);
 END
 GO
 CREATE OR ALTER PROCEDURE [User.Delete] -- MORE DELETE INCOMING
@@ -127,13 +136,17 @@ BEGIN
 			DELETE [USER_PROFILE] WHERE userId = @userId;
 			--DELETE [USER_SETTINGS] WHERE userId = @userId;
 			DELETE [USER] WHERE id = @userId;
+			RETURN 1;
 		END TRY
 
 		BEGIN CATCH
 			SELECT
 				ERROR_LINE() AS ErrorLine,
 				ERROR_MESSAGE() AS ErrorMessage;
+				RETURN(1);
 		END CATCH
+
+	RETURN(1);
 END
 
 --GO

@@ -17,6 +17,8 @@ BEGIN
 
 			INSERT INTO [TEAM_USER](userId, teamId, "role")
 				VALUES(@userId, @teamId, 'CREATOR');
+
+			RETURN(0);
 		END TRY
 
 		BEGIN CATCH
@@ -26,6 +28,7 @@ BEGIN
 		END CATCH
 	ELSE 
 		PRINT 'TOKEN EXPIRED'
+	RETURN(1);
 END;
 GO
 CREATE OR ALTER PROCEDURE [Team.AddUserToTeam]
@@ -46,12 +49,14 @@ BEGIN
 					BEGIN TRY
 						INSERT INTO [TEAM_USER](userId, teamId, "role")
 							VALUES(@addUserId, @teamId, 'USER');
+						RETURN(0);
 					END TRY
 
 					BEGIN CATCH
 						SELECT
 							ERROR_LINE() AS ErrorLine,
 							ERROR_MESSAGE() AS ErrorMessage;
+							RETURN(1);
 					END CATCH
 				END
 
@@ -63,6 +68,8 @@ BEGIN
 
 	ELSE 
 		PRINT 'TOKEN EXPIRED';
+
+	RETURN(1);
 END;
 
 GO
@@ -93,12 +100,15 @@ BEGIN
 
 				DELETE [TEAM] WHERE id = @teamId;
 				CLOSE teamUserCursor;
+				DEALLOCATE teamUserCursor;
+				RETURN(0);
 			END TRY
 
 			BEGIN CATCH
 				SELECT
 					ERROR_LINE() AS ErrorLine,
 					ERROR_MESSAGE() AS ErrorMessage;
+					RETURN(1);
 			END CATCH
 
 		END;
@@ -109,6 +119,6 @@ BEGIN
 	ELSE 
 		PRINT 'TOKEN EXPIRED';
 
-
+	RETURN(1);
 	DEALLOCATE teamUserCursor;
 END;
