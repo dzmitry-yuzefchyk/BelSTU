@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="TaskboardModelStoreContainer" CdmEntityContainer="TaskboardEntities">
+    <EntitySetMapping Name="ACTIVITY">
+      <EntityTypeMapping TypeName="TaskboardModel.ACTIVITY">
+        <MappingFragment StoreEntitySet="ACTIVITY">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="activity1" ColumnName="activity" />
+          <ScalarProperty Name="date" ColumnName="date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BOARD">
+      <EntityTypeMapping TypeName="TaskboardModel.BOARD">
+        <MappingFragment StoreEntitySet="BOARD">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="projectId" ColumnName="projectId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BOARD_SETTINGS">
+      <EntityTypeMapping TypeName="TaskboardModel.BOARD_SETTINGS">
+        <MappingFragment StoreEntitySet="BOARD_SETTINGS">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="background" ColumnName="background" />
+          <ScalarProperty Name="primaryColor" ColumnName="primaryColor" />
+          <ScalarProperty Name="secondaryColor" ColumnName="secondaryColor" />
+          <ScalarProperty Name="accessToDeleteTask" ColumnName="accessToDeleteTask" />
+          <ScalarProperty Name="accessToChangeTask" ColumnName="accessToChangeTask" />
+          <ScalarProperty Name="accessToCreateTask" ColumnName="accessToCreateTask" />
+          <ScalarProperty Name="boardId" ColumnName="boardId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="COLUMN">
+      <EntityTypeMapping TypeName="TaskboardModel.COLUMN">
+        <MappingFragment StoreEntitySet="COLUMN">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="boardId" ColumnName="boardId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PROJECT">
+      <EntityTypeMapping TypeName="TaskboardModel.PROJECT">
+        <MappingFragment StoreEntitySet="PROJECT">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="about" ColumnName="about" />
+          <ScalarProperty Name="teamId" ColumnName="teamId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PROJECT_SETTINGS">
+      <EntityTypeMapping TypeName="TaskboardModel.PROJECT_SETTINGS">
+        <MappingFragment StoreEntitySet="PROJECT_SETTINGS">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="background" ColumnName="background" />
+          <ScalarProperty Name="accessToDeleteBoard" ColumnName="accessToDeleteBoard" />
+          <ScalarProperty Name="accessToChangeBoard" ColumnName="accessToChangeBoard" />
+          <ScalarProperty Name="accessToCreateBoard" ColumnName="accessToCreateBoard" />
+          <ScalarProperty Name="projectId" ColumnName="projectId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ROLES">
+      <EntityTypeMapping TypeName="TaskboardModel.ROLES">
+        <MappingFragment StoreEntitySet="ROLES">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="roleType" ColumnName="roleType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TASKS">
+      <EntityTypeMapping TypeName="TaskboardModel.TASKS">
+        <MappingFragment StoreEntitySet="TASKS">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="columnId" ColumnName="columnId" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="content" ColumnName="content" />
+          <ScalarProperty Name="attachments" ColumnName="attachments" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="priority" ColumnName="priority" />
+          <ScalarProperty Name="severity" ColumnName="severity" />
+          <ScalarProperty Name="asignee" ColumnName="asignee" />
+          <ScalarProperty Name="timeToComplete" ColumnName="timeToComplete" />
+          <ScalarProperty Name="startTime" ColumnName="startTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TEAM">
+      <EntityTypeMapping TypeName="TaskboardModel.TEAM">
+        <MappingFragment StoreEntitySet="TEAM">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="title" ColumnName="title" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TEAM_USER">
+      <EntityTypeMapping TypeName="TaskboardModel.TEAM_USER">
+        <MappingFragment StoreEntitySet="TEAM_USER">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="userId" ColumnName="userId" />
+          <ScalarProperty Name="teamId" ColumnName="teamId" />
+          <ScalarProperty Name="role" ColumnName="role" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="USER">
+      <EntityTypeMapping TypeName="TaskboardModel.USER">
+        <MappingFragment StoreEntitySet="USER">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="salt" ColumnName="salt" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="USER_PROFILE">
+      <EntityTypeMapping TypeName="TaskboardModel.USER_PROFILE">
+        <MappingFragment StoreEntitySet="USER_PROFILE">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="about" ColumnName="about" />
+          <ScalarProperty Name="icon" ColumnName="icon" />
+          <ScalarProperty Name="userId" ColumnName="userId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="USER_PROJECT">
+      <EntityTypeMapping TypeName="TaskboardModel.USER_PROJECT">
+        <MappingFragment StoreEntitySet="USER_PROJECT">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="userId" ColumnName="userId" />
+          <ScalarProperty Name="projectId" ColumnName="projectId" />
+          <ScalarProperty Name="activityId" ColumnName="activityId" />
+          <ScalarProperty Name="roleId" ColumnName="roleId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="USER_TOKEN">
+      <EntityTypeMapping TypeName="TaskboardModel.USER_TOKEN">
+        <MappingFragment StoreEntitySet="USER_TOKEN">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="token" ColumnName="token" />
+          <ScalarProperty Name="created" ColumnName="created" />
+          <ScalarProperty Name="lifeTime" ColumnName="lifeTime" />
+          <ScalarProperty Name="userId" ColumnName="userId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="TaskboardModel.Store.sp_alterdiagram" />
+    <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="TaskboardModel.Store.sp_creatediagram" />
+    <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="TaskboardModel.Store.sp_dropdiagram" />
+    <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="TaskboardModel.Store.sp_helpdiagramdefinition">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TaskboardModel.sp_helpdiagramdefinition_Result">
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="TaskboardModel.Store.sp_helpdiagrams">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TaskboardModel.sp_helpdiagrams_Result">
+          <ScalarProperty Name="Database" ColumnName="Database" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Owner" ColumnName="Owner" />
+          <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="TaskboardModel.Store.sp_renamediagram" />
+    <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="TaskboardModel.Store.sp_upgraddiagrams" />
+    <FunctionImportMapping FunctionImportName="Team_AddUserToTeam" FunctionName="TaskboardModel.Store.Team_AddUserToTeam">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TaskboardModel.Team_AddUserToTeam_Result">
+          <ScalarProperty Name="ErrorLine" ColumnName="ErrorLine" />
+          <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="Team_CreateTeam" FunctionName="TaskboardModel.Store.Team_CreateTeam">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TaskboardModel.Team_CreateTeam_Result">
+          <ScalarProperty Name="ErrorLine" ColumnName="ErrorLine" />
+          <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="Team_DeleteTeam" FunctionName="TaskboardModel.Store.Team_DeleteTeam">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TaskboardModel.Team_DeleteTeam_Result">
+          <ScalarProperty Name="ErrorLine" ColumnName="ErrorLine" />
+          <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="Team_GetUserTeams" FunctionName="TaskboardModel.Store.Team_GetUserTeams" />
+    <FunctionImportMapping FunctionImportName="User_Delete" FunctionName="TaskboardModel.Store.User_Delete">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TaskboardModel.User_Delete_Result">
+          <ScalarProperty Name="ErrorLine" ColumnName="ErrorLine" />
+          <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="User_Job_DeleteExpiredTokens" FunctionName="TaskboardModel.Store.User_Job_DeleteExpiredTokens" />
+    <FunctionImportMapping FunctionImportName="User_Job_StartCreateDeleteExpiredToken" FunctionName="TaskboardModel.Store.User_Job_StartCreateDeleteExpiredToken" />
+    <FunctionImportMapping FunctionImportName="User_Jobs_StartCreateDeleteExpiredToken" FunctionName="TaskboardModel.Store.User_Jobs_StartCreateDeleteExpiredToken" />
+    <FunctionImportMapping FunctionImportName="User_Login" FunctionName="TaskboardModel.Store.User_Login">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TaskboardModel.User_Login_Result">
+          <ScalarProperty Name="ErrorLine" ColumnName="ErrorLine" />
+          <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="User_Logout" FunctionName="TaskboardModel.Store.User_Logout">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TaskboardModel.User_Logout_Result">
+          <ScalarProperty Name="ErrorLine" ColumnName="ErrorLine" />
+          <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="User_Register" FunctionName="TaskboardModel.Store.User_Register">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TaskboardModel.User_Register_Result">
+          <ScalarProperty Name="ErrorNumber" ColumnName="ErrorNumber" />
+          <ScalarProperty Name="ErrorState" ColumnName="ErrorState" />
+          <ScalarProperty Name="ErrorSeverity" ColumnName="ErrorSeverity" />
+          <ScalarProperty Name="ErrorProcedure" ColumnName="ErrorProcedure" />
+          <ScalarProperty Name="ErrorLine" ColumnName="ErrorLine" />
+          <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="User_RenewToken" FunctionName="TaskboardModel.Store.User_RenewToken">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TaskboardModel.User_RenewToken_Result">
+          <ScalarProperty Name="ErrorLine" ColumnName="ErrorLine" />
+          <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+  </EntityContainerMapping>
+</Mapping>

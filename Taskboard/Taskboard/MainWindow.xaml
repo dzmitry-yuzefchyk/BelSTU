@@ -1,0 +1,126 @@
+﻿<Window x:Class="Taskboard.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Taskboard"
+        mc:Ignorable="d"
+        Title="Taskboard" Height="900" Width="900"
+        ResizeMode="NoResize">
+    <Grid Background="#007bff">
+        <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Height="70" Width="900">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel Grid.Column="0">
+                <Label Foreground="#f8f9fa" Content="Текущий пользователь:"/>
+                <Label Foreground="#f8f9fa" x:Name="CurrentUserEmail" Content="-"/>
+            </StackPanel>
+                
+            <StackPanel Grid.Column="1">
+                <Label Foreground="#f8f9fa" Content="Статус выполнения команды:"/>
+                <Label Foreground="#f8f9fa" x:Name="Status"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Column="2">
+                <Label Foreground="#f8f9fa" x:Name="CurrentUserToken"/>
+                <Label Foreground="#f8f9fa" x:Name="TokenLifeTime"/>
+            </StackPanel>
+            
+        </Grid>
+        <TabControl HorizontalAlignment="Left" Height="800" Margin="0" VerticalAlignment="Bottom" Width="900">
+            <TabItem Header="User">
+                <Grid Background="#f8f9fa">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel HorizontalAlignment="Center" Grid.Column="0" Grid.Row="0">
+                        <Label Content="Регистрация"/>
+
+                        <Label Content="Email"/>
+                        <TextBox x:Name="email"/>
+
+                        <Label Content="Password"/>
+                        <TextBox x:Name="password"/>
+
+                        <Label Content="Name"/>
+                        <TextBox x:Name="name"/>
+
+                        <Button Content="Регистрация" Width="240" Background="#007bff" x:Name="Registration" Click="Registration_Click"/>
+                    </StackPanel>
+
+                    <StackPanel HorizontalAlignment="Center" Grid.Column="1" Grid.Row="0">
+                        <Label Content="Вход"/>
+                        
+                        <Label Content="Email"/>
+                        <TextBox x:Name="LoginEmail"/>
+                        
+                        <Label Content="Пароль"/>
+                        <TextBox x:Name="LoginPassword"/>
+
+                        <Button Content="Вход" Width="240" Background="#007bff" x:Name="Login" Click="Login_Click"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2" Grid.Row="0">
+                        <Button Content="Выйти" Width="240" Background="#007bff" x:Name="Logout" Click="Logout_Click"/>
+                    </StackPanel>
+
+                    <DataGrid AutoGenerateColumns="True" ItemsSource="{DynamicResource ResourceKey=USER}" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" x:Name="UsersGrid" Background="#f8f9fa"/>
+                    <DataGrid AutoGenerateColumns="True" ItemsSource="{DynamicResource ResourceKey=USER_TOKEN}" Grid.Column="2" Grid.Row="1" x:Name="UsersTokenGrid" Background="#f8f9fa"/>
+
+
+                    <StackPanel Grid.Column="2" Grid.Row="2">
+                        <Label Content="Пользователи"/>
+
+                        <Label Content="Skip"/>
+                        <TextBox Text="0" x:Name="SkipUsers"/>
+
+                        <Label Content="Take"/>
+                        <TextBox Text="10" x:Name="TakeUsers"/>
+
+                        <Button Content="Пользователи" Width="240" Background="#007bff" x:Name="GetUsers" Click="GetUsers_Click"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Teams">
+                <Grid Background="#f8f9fa">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel HorizontalAlignment="Center" Grid.Column="0" Grid.Row="0">
+                     
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Projects">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="Boards">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</Window>

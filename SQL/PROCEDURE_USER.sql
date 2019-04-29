@@ -19,6 +19,7 @@ BEGIN
 		INSERT INTO [USER_PROFILE]("name", userId)
 			VALUES(@name, @userId);
 
+		RETURN(0);
 		--INSERT INTO [USER_SETTINGS](userId)
 		--	VALUES(@userId);
 
@@ -32,7 +33,9 @@ BEGIN
 			ERROR_PROCEDURE() AS ErrorProcedure,
 			ERROR_LINE() AS ErrorLine,
 			ERROR_MESSAGE() AS ErrorMessage;
+			RETURN(1);
     END CATCH
+	RETURN(1);
 END;
 
 GO
@@ -85,9 +88,10 @@ BEGIN
 END;
 GO
 CREATE OR ALTER PROCEDURE [User.Logout]
-	@userId INT
+	@email NVARCHAR(256)
 AS
 BEGIN
+	DECLARE @userId INT = (SELECT TOP 1 id FROM [User] WHERE email = @email);
 	IF EXISTS (SELECT TOP 1 id FROM [USER_TOKEN] WHERE userId = @userId)
 					BEGIN TRY
 						DELETE [USER_TOKEN] WHERE userId = @userId;
@@ -149,35 +153,35 @@ BEGIN
 	RETURN(1);
 END
 
---GO
---CREATE OR ALTER PROCEDURE [User.Job.DeleteExpiredTokens]
---AS
---BEGIN
---	DECLARE @id INT,
---		@created DATETIME,
---		@lifeTime INT,
---		@extendedCreateTime DATETIME,
---		@currentTime DATETIME;
---	DECLARE	tokenCursor CURSOR FOR
---			SELECT id, created, "lifeTime"
---			FROM USER_TOKEN;
+GO
+CREATE OR ALTER PROCEDURE [User.Job.DeleteExpiredTokens]
+AS
+BEGIN
+	DECLARE @id INT,
+		@created DATETIME,
+		@lifeTime INT,
+		@extendedCreateTime DATETIME,
+		@currentTime DATETIME;
+	DECLARE	tokenCursor CURSOR FOR
+			SELECT id, created, "lifeTime"
+			FROM USER_TOKEN;
 
---	OPEN tokenCursor;
+	OPEN tokenCursor;
 
---	WHILE @@FETCH_STATUS = 0
---	BEGIN
---		FETCH NEXT FROM tokenCursor
---			INTO @id, @created, @lifeTime;
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+		FETCH NEXT FROM tokenCursor
+			INTO @id, @created, @lifeTime;
 
---		SET @extendedCreateTime = DATEADD(MINUTE, @lifeTime, @created);
---		SET @currentTime = GETDATE();
+		SET @extendedCreateTime = DATEADD(MINUTE, @lifeTime, @created);
+		SET @currentTime = GETDATE();
 
---		IF @extendedCreateTime < @currentTime
---		BEGIN
---			DELETE USER_TOKEN WHERE id = @id;
---		END;
---	END;
+		IF @extendedCreateTime < @currentTime
+		BEGIN
+			DELETE USER_TOKEN WHERE id = @id;
+		END;
+	END;
 
---	CLOSE tokenCursor;
---	DEALLOCATE tokenCursor;
---END;
+	CLOSE tokenCursor;
+	DEALLOCATE tokenCursor;
+END;
