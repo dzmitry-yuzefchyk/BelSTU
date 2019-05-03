@@ -1,108 +1,136 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Windows;
+﻿using System.Windows;
+using Taskboard.Model;
+using Taskboard.View;
 
 namespace Taskboard
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
+        public static CurrentUser User { get; set; } = new CurrentUser();
+
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = User;
         }
 
-        private void Registration_Click(object sender, RoutedEventArgs e)
+        private void AccountButton_Click(object sender, RoutedEventArgs e)
         {
-            using (TaskboardEntities db = new TaskboardEntities())
-            {
-                SqlParameter emailP = new SqlParameter("@email", email.Text);
-                SqlParameter passwordP = new SqlParameter("@password", password.Text);
-                SqlParameter nameP = new SqlParameter("@name", name.Text);
-                var result = db.Database.ExecuteSqlCommand("[User.Register] @email, @password, @name", new[] { emailP, passwordP, nameP });
-
-                if (result >= 0)
-                {
-                    Status.Content = "Успешная регистрация";
-                }
-
-                else
-                {
-                    Status.Content = "Ошибка регистрации";
-                }
-            }
+            this.mainContentControl.Content = new AccountView();
         }
 
-        private void Login_Click(object sender, RoutedEventArgs e)
+        private void TeamButton_Click(object sender, RoutedEventArgs e)
         {
-            using (TaskboardEntities db = new TaskboardEntities())
-            {
-                SqlParameter emailP = new SqlParameter("@email", LoginEmail.Text);
-                SqlParameter passwordP = new SqlParameter("@password", LoginPassword.Text);
-                var result = db.Database.ExecuteSqlCommand("[User.Login] @email, @password", new[] { emailP, passwordP });
-
-                USER user = db.USER.SingleOrDefault(x => x.email == LoginEmail.Text);
-                USER_TOKEN token = null;
-
-                if (user != null)
-                {
-                    token = db.USER_TOKEN.SingleOrDefault(x => x.userId == user.id);
-                }
-
-                if (result >= 0)
-                {
-                    Status.Content = "Успешный вход";
-                    CurrentUserEmail.Content = user.email;
-                    CurrentUserToken.Content = token.token;
-                    TokenLifeTime.Content = $"{token.created}: {token.lifeTime} минут";
-                }
-
-                else
-                {
-                    Status.Content = "Ошибка входа";
-                    CurrentUserEmail.Content = "";
-                    CurrentUserToken.Content = "";
-                    TokenLifeTime.Content = "";
-                }
-            }
+            this.mainContentControl.Content = new TeamsView();
         }
 
-        private void GetUsers_Click(object sender, RoutedEventArgs e)
+        private void ProjectButton_Click(object sender, RoutedEventArgs e)
         {
-            using (TaskboardEntities db = new TaskboardEntities())
-            {
-                List<USER> users = db.USER.OrderBy(x => x.id).Skip(int.Parse(SkipUsers.Text)).Take(int.Parse(TakeUsers.Text)).ToList();
-                UsersGrid.ItemsSource = users;
-
-                List<USER_TOKEN> tokens = db.USER_TOKEN.OrderBy(x => x.id).Skip(int.Parse(SkipUsers.Text)).Take(int.Parse(TakeUsers.Text)).ToList();
-                UsersTokenGrid.ItemsSource = tokens;
-            }
+            //this.mainContentControl.Content = new ProjectView();
         }
 
-        private void Logout_Click(object sender, RoutedEventArgs e)
-        {
-            using (TaskboardEntities db = new TaskboardEntities())
-            {
-                SqlParameter emailP = new SqlParameter("@email", CurrentUserEmail.Content);
-                var result = db.Database.ExecuteSqlCommand("[User.Logout] @email", emailP);
+        //#region Team
+        //private void TeamCreate_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (CurrentUserEmail.Content.ToString() != "")
+        //    {
+        //        SqlParameter emailP = new SqlParameter("@userEmail", CurrentUserEmail.Content);
+        //        SqlParameter title = new SqlParameter("@teamName", TeamCreateTitle.Text);
 
-                if (result >= 0)
-                {
-                    Status.Content = "Успешный выход";
-                    CurrentUserEmail.Content = "";
-                    CurrentUserToken.Content = "";
-                    TokenLifeTime.Content = "";
-                }
+        //        using (TaskboardEntities db = new TaskboardEntities())
+        //        {
+        //            var result = db.Database.ExecuteSqlCommand("[Team.CreateTeam] @userEmail, @teamName", emailP, title);
+        //            if (result >= 0)
 
-                else
-                {
-                    Status.Content = "Ошибка выхода";
-                }
-            }
-        }
+        //            {
+        //                Status.Content = "Команда создана";
+        //            }
+
+        //            else
+        //            {
+        //                Status.Content = "Ошибка создания команды";
+        //            }
+        //        }
+        //    }
+
+        //    else
+        //    {
+        //        Status.Content = "Ошибка создания команды, пользователь не вошел";
+        //    }
+        //}
+
+        //private void TeamDelete_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (CurrentUserEmail.Content.ToString() != "")
+        //    {
+        //        SqlParameter emailP = new SqlParameter("@creatorEmail", CurrentUserEmail.Content);
+        //        SqlParameter id = new SqlParameter("@teamId", int.Parse(TeamDeleteId.Text));
+
+        //        using (TaskboardEntities db = new TaskboardEntities())
+        //        {
+        //            var result = db.Database.ExecuteSqlCommand("[Team.DeleteTeam] @creatorEmail, @teamid", emailP, id);
+        //            if (result >= 0)
+
+        //            {
+        //                Status.Content = "Команда удалена создана";
+        //            }
+
+        //            else
+        //            {
+        //                Status.Content = "Ошибка удаления команды";
+        //            }
+        //        }
+        //    }
+
+        //    else
+        //    {
+        //        Status.Content = "Ошибка удаления команды, пользователь не вошел";
+        //    }
+        //}
+
+        //private void TeamAddUser_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (CurrentUserEmail.Content.ToString() != "")
+        //    {
+        //        SqlParameter creatorEmail = new SqlParameter("@creatorEmail", CurrentUserEmail.Content);
+        //        SqlParameter teamId = new SqlParameter("@teamId", int.Parse(TeamAddTeamId.Text));
+        //        SqlParameter userEmail = new SqlParameter("@addUserEmail", TeamAddUserEmail.Text);
+
+        //        using (TaskboardEntities db = new TaskboardEntities())
+        //        {
+        //            var result = db.Database.ExecuteSqlCommand("[Team.AddUserToTeam] @creatorEmail, @teamId, @addUserEmail", creatorEmail, teamId, userEmail);
+        //            if (result >= 0)
+
+        //            {
+        //                Status.Content = "Пользователь добавлен";
+        //            }
+
+        //            else
+        //            {
+        //                Status.Content = "Ошибка";
+        //            }
+        //        }
+        //    }
+
+        //    else
+        //    {
+        //        Status.Content = "Ошибка добавления в команду, пользователь не вошел";
+        //    }
+        //}
+
+        //private void GetTeam_Click(object sender, RoutedEventArgs e)
+        //{
+        //    using (TaskboardEntities db = new TaskboardEntities())
+        //    {
+        //        List<TEAM> teams = db.TEAM_USER.Where(x => x.userId)
+        //        TeamGrid.ItemsSource = teams;
+
+        //        List<USER_TOKEN> tokens = db.USER_TOKEN.OrderBy(x => x.id).Skip(int.Parse(SkipUsers.Text)).Take(int.Parse(TakeUsers.Text)).ToList();
+        //        TeamUserGrid.ItemsSource = tokens;
+        //    }
+        //}
+        //#endregion
+
+
     }
 }

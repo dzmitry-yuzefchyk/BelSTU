@@ -1,4 +1,4 @@
-USE Taskboard;
+--USE Taskboard;
 
 DECLARE
 	@userId INT,
@@ -6,6 +6,7 @@ DECLARE
 	@pwd NVARCHAR(256) = '12345'
 
 BEGIN
+SET NOCOUNT ON;
 	EXEC [User.Register]
 		@email = @mail,
 		@password = @pwd,

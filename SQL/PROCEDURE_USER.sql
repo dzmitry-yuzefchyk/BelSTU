@@ -10,6 +10,13 @@ AS
 BEGIN
     DECLARE @salt UNIQUEIDENTIFIER = NEWID(),
 			@userId INT
+
+	IF EXISTS (SELECT TOP 1 id FROM [USER] WHERE email = @email)
+	BEGIN
+		PRINT 'USER ALREADY EXISTS';
+		RETURN;
+	END;
+
     BEGIN TRY
 
         INSERT INTO [USER](email, "password", salt)
@@ -19,7 +26,6 @@ BEGIN
 		INSERT INTO [USER_PROFILE]("name", userId)
 			VALUES(@name, @userId);
 
-		RETURN(0);
 		--INSERT INTO [USER_SETTINGS](userId)
 		--	VALUES(@userId);
 
@@ -33,9 +39,7 @@ BEGIN
 			ERROR_PROCEDURE() AS ErrorProcedure,
 			ERROR_LINE() AS ErrorLine,
 			ERROR_MESSAGE() AS ErrorMessage;
-			RETURN(1);
     END CATCH
-	RETURN(1);
 END;
 
 GO
@@ -46,13 +50,18 @@ AS
 BEGIN
 	DECLARE @userId INT
 
-	IF EXISTS (SELECT TOP 1 id FROM [USER] WHERE email = @email)
+	IF NOT EXISTS (SELECT TOP 1 id FROM [USER] WHERE email = @email)
 	BEGIN
-		
+		PRINT 'Invalid login';
+		RETURN;
+	END;
+
+	BEGIN
 		SET @userId = (SELECT id FROM [USER] WHERE email = @email AND "password" = HASHBYTES('SHA2_512', @password + CAST(salt AS NVARCHAR(36))));
 
 		IF(@userId IS NULL)
 			PRINT 'Incorrect password';
+
 		ELSE 
 			BEGIN
 				IF EXISTS (SELECT TOP 1 id FROM [USER_TOKEN] WHERE userId = @userId)
@@ -69,29 +78,22 @@ BEGIN
 					INSERT INTO [USER_TOKEN](token, created, userId)
 						VALUES(NEWID(), GETDATE(),@userId);
 					PRINT 'User successfully logged in';
-					RETURN(0);
 				END TRY
 
 				BEGIN CATCH
 					SELECT
 						ERROR_LINE() AS ErrorLine,
 						ERROR_MESSAGE() AS ErrorMessage;
-						RETURN(1);
 				END CATCH
 
 			END
 	END
-
-	ELSE
-		PRINT 'Invalid login';
-		RETURN(1);
 END;
 GO
 CREATE OR ALTER PROCEDURE [User.Logout]
-	@email NVARCHAR(256)
+	@userId INT
 AS
 BEGIN
-	DECLARE @userId INT = (SELECT TOP 1 id FROM [User] WHERE email = @email);
 	IF EXISTS (SELECT TOP 1 id FROM [USER_TOKEN] WHERE userId = @userId)
 					BEGIN TRY
 						DELETE [USER_TOKEN] WHERE userId = @userId;
@@ -101,9 +103,7 @@ BEGIN
 						SELECT
 							ERROR_LINE() AS ErrorLine,
 							ERROR_MESSAGE() AS ErrorMessage;
-							RETURN(1);
 					END CATCH
-	RETURN(0);
 END
 GO
 CREATE OR ALTER PROCEDURE [User.RenewToken]
@@ -116,41 +116,54 @@ BEGIN
 						SET @lifeTime = (SELECT TOP 1 "lifeTime" FROM [USER_TOKEN] where userId = @userId);
 						SET @lifeTime += 10;
 						UPDATE [USER_TOKEN] SET "lifeTime" = @lifeTime WHERE userId = @userId;
-						RETURN 1;
 					END TRY
 					BEGIN CATCH
 						SELECT
 							ERROR_LINE() AS ErrorLine,
 							ERROR_MESSAGE() AS ErrorMessage;
-							RETURN(1);
 					END CATCH
 	ELSE
 		PRINT 'User token already expired';
-
-	RETURN(1);
 END
 GO
-CREATE OR ALTER PROCEDURE [User.Delete] -- MORE DELETE INCOMING
+CREATE OR ALTER PROCEDURE [User.Delete]
 	@userId INT
 AS
 BEGIN	
+	DECLARE @teamIdToDelete INT;
+	DECLARE userTeamCursor CURSOR FOR
+		SELECT teamId FROM TEAM_USER
+			WHERE userId = @userId AND [role] = 'CREATOR';
+
 	IF EXISTS (SELECT TOP 1 id FROM [USER_TOKEN] WHERE userId = @userId)
 		BEGIN TRY
-			DELETE [USER_TOKEN] WHERE userId = @userId;
+			OPEN userTeamCursor;
 			DELETE [USER_PROFILE] WHERE userId = @userId;
 			--DELETE [USER_SETTINGS] WHERE userId = @userId;
+
+
+			WHILE @@FETCH_STATUS = 0
+			BEGIN
+				FETCH NEXT FROM userTeamCursor INTO @teamIdToDelete;
+				EXEC [Team.Delete]
+					@creatorId = @userId,
+					@teamId = @teamIdToDelete;
+			END;
+
+			DELETE [USER_TOKEN] WHERE userId = @userId;
 			DELETE [USER] WHERE id = @userId;
-			RETURN 1;
+			DELETE TEAM_USER WHERE userId = @userId;
+
+			CLOSE userTeamCursor;
 		END TRY
 
 		BEGIN CATCH
 			SELECT
 				ERROR_LINE() AS ErrorLine,
 				ERROR_MESSAGE() AS ErrorMessage;
-				RETURN(1);
 		END CATCH
 
-	RETURN(1);
+	DEALLOCATE userTeamCursor;
 END
 
 GO
