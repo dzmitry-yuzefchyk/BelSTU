@@ -1,0 +1,50 @@
+﻿<Window x:Class="Taskboard.View.BoardView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Taskboard.View"
+        mc:Ignorable="d"
+        Title="{Binding Path=BoardId, StringFormat='Board: {0}'}" Height="900" Width="1280">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+
+        <DataGrid
+            Grid.Column="0"
+            Grid.Row="0"
+            ItemsSource="{Binding Path=Tasks}"
+            SelectedItem="{Binding SelectedTask, UpdateSourceTrigger=PropertyChanged}"
+            IsReadOnly="True"
+            CanUserAddRows="False"
+            CanUserDeleteRows="False"
+            ColumnWidth="*"
+            AutoGenerateColumns="True"
+        >
+            <DataGrid.InputBindings>
+                <MouseBinding
+                    MouseAction="LeftDoubleClick"
+                    Command="{Binding GetTaskWindowCommand}"
+                    >
+                </MouseBinding>
+            </DataGrid.InputBindings>
+        </DataGrid>
+
+
+        <StackPanel Grid.Column="0" Grid.Row="1" Width="300">
+            <Button Content="Создать задачу" Command="{Binding CreateTaskCommand}"/>
+
+            <Label Content="Полнотекстовый поиск по вложенным документам"/>
+            <TextBox Text="{Binding Path=SearchQuery}"/>
+
+            <Label Content="Текущая страница"/>
+            <Label Content="{Binding Path=CurrentPage}"/>
+            <Button Content="Следующая" Command="{Binding NextPageCommand}"/>
+            <Button Content="Предыдущая" Command="{Binding PreviousPageCommand}"/>
+            <Button Content="Обновить" Command="{Binding ReloadPageCommand}"/>
+        </StackPanel>
+    </Grid>
+</Window>

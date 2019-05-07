@@ -20,9 +20,7 @@ D:\Документы\bstu\DB\Taskboard\DB-CourseWork\Taskboard\Taskboard\bin\De
 D:\Документы\bstu\DB\Taskboard\DB-CourseWork\Taskboard\Taskboard\obj\Debug\Taskboard_Content.g.cs
 D:\Документы\bstu\DB\Taskboard\DB-CourseWork\Taskboard\Taskboard\obj\Debug\Taskboard.csproj.CopyComplete
 D:\Документы\bstu\DB\Taskboard\DB-CourseWork\Taskboard\Taskboard\obj\Debug\View\AccountView.g.cs
-D:\Документы\bstu\DB\Taskboard\DB-CourseWork\Taskboard\Taskboard\obj\Debug\View\TaskView.g.cs
 D:\Документы\bstu\DB\Taskboard\DB-CourseWork\Taskboard\Taskboard\obj\Debug\View\AccountView.baml
-D:\Документы\bstu\DB\Taskboard\DB-CourseWork\Taskboard\Taskboard\obj\Debug\View\TaskView.baml
 D:\Документы\bstu\DB\Taskboard\DB-CourseWork\Taskboard\Taskboard\bin\Debug\CommonServiceLocator.dll
 D:\Документы\bstu\DB\Taskboard\DB-CourseWork\Taskboard\Taskboard\bin\Debug\GalaSoft.MvvmLight.dll
 D:\Документы\bstu\DB\Taskboard\DB-CourseWork\Taskboard\Taskboard\bin\Debug\GalaSoft.MvvmLight.Extras.dll
@@ -36,3 +34,13 @@ D:\Документы\bstu\DB\Taskboard\DB-CourseWork\Taskboard\Taskboard\bin\De
 D:\Документы\bstu\DB\Taskboard\DB-CourseWork\Taskboard\Taskboard\bin\Debug\GalaSoft.MvvmLight.Platform.xml
 D:\Документы\bstu\DB\Taskboard\DB-CourseWork\Taskboard\Taskboard\obj\Debug\View\TeamsView.g.cs
 D:\Документы\bstu\DB\Taskboard\DB-CourseWork\Taskboard\Taskboard\obj\Debug\View\TeamsView.baml
+D:\Документы\bstu\DB\Taskboard\DB-CourseWork\Taskboard\Taskboard\obj\Debug\View\TeamView.g.cs
+D:\Документы\bstu\DB\Taskboard\DB-CourseWork\Taskboard\Taskboard\obj\Debug\View\TeamView.baml
+D:\Документы\bstu\DB\Taskboard\DB-CourseWork\Taskboard\Taskboard\obj\Debug\View\ProjectView.g.cs
+D:\Документы\bstu\DB\Taskboard\DB-CourseWork\Taskboard\Taskboard\obj\Debug\View\ProjectView.baml
+D:\Документы\bstu\DB\Taskboard\DB-CourseWork\Taskboard\Taskboard\obj\Debug\View\BoardView.g.cs
+D:\Документы\bstu\DB\Taskboard\DB-CourseWork\Taskboard\Taskboard\obj\Debug\View\TaskView.g.cs
+D:\Документы\bstu\DB\Taskboard\DB-CourseWork\Taskboard\Taskboard\obj\Debug\View\BoardView.baml
+D:\Документы\bstu\DB\Taskboard\DB-CourseWork\Taskboard\Taskboard\obj\Debug\View\TaskView.baml
+D:\Документы\bstu\DB\Taskboard\DB-CourseWork\Taskboard\Taskboard\obj\Debug\View\TaskEditWindow.g.cs
+D:\Документы\bstu\DB\Taskboard\DB-CourseWork\Taskboard\Taskboard\obj\Debug\View\TaskEditWindow.baml

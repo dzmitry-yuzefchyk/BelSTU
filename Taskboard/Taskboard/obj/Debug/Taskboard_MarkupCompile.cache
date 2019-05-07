@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 D:\Документы\bstu\DB\Taskboard\DB-CourseWork\Taskboard\Taskboard\App.xaml
-4215356578
+8-602316671
 21034206093
-38-1073202412
+47254611518
 129938201301
-MainWindow.xaml;View\AccountView.xaml;View\TaskView.xaml;View\TeamsView.xaml;
+MainWindow.xaml;View\AccountView.xaml;View\BoardView.xaml;View\ProjectView.xaml;View\TaskEditWindow.xaml;View\TaskView.xaml;View\TeamsView.xaml;View\TeamView.xaml;
 
 False
 

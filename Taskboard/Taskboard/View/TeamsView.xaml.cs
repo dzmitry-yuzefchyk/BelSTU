@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Taskboard.ViewModel;
 
 namespace Taskboard.View
 {
@@ -23,6 +24,7 @@ namespace Taskboard.View
         public TeamsView()
         {
             InitializeComponent();
+            DataContext = new TeamsViewModel();
         }
     }
 }

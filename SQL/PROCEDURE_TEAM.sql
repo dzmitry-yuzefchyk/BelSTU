@@ -46,7 +46,13 @@ BEGIN
 		RETURN;
 	END;
 
-	IF (SELECT TOP 1 "role" FROM [TEAM_USER] WHERE userId = @creatorId AND id = @teamId) != 'CREATOR'
+	IF NOT EXISTS (SELECT TOP 1 id FROM TEAM WHERE id = @teamId)
+	BEGIN
+		PRINT 'TEAM NOT EXISTS';
+		RETURN;
+	END;
+
+	IF (SELECT TOP 1 "role" FROM [TEAM_USER] WHERE userId = @creatorId AND teamId = @teamId) != 'CREATOR'
 		AND @addUserId IS NULL
 	BEGIN
 		PRINT 'ACCESS DENIED OR SUCH USER NOT EXISTS';
@@ -87,13 +93,25 @@ BEGIN
 		RETURN;
 	END;
 
-	IF (SELECT TOP 1 "role" FROM [TEAM_USER] WHERE userId = @creatorId AND id = @teamId) != 'CREATOR'
+	IF NOT EXISTS (SELECT TOP 1 id FROM TEAM WHERE id = @teamId)
+	BEGIN
+		PRINT 'TEAM NOT EXISTS';
+		RETURN;
+	END;
+
+
+	IF (SELECT TOP 1 "role" FROM [TEAM_USER] WHERE userId = @creatorId AND teamId = @teamId) != 'CREATOR'
 		AND @userId IS NULL
 	BEGIN
 		PRINT 'ACCESS DENIED OR SUCH USER NOT EXISTS';
 		RETURN;
 	END;
 
+	IF (SELECT TOP 1 "role" FROM [TEAM_USER] WHERE userId = @userId AND id = @teamId) = 'CREATOR'
+	BEGIN
+		PRINT 'YOU CANT REMOVE CREATOR FROM TEAM';
+		RETURN;
+	END;
 
 	IF NOT EXISTS (SELECT TOP 1 userId FROM [TEAM_USER] WHERE userId = @userId AND teamId = @teamId)
 	BEGIN
@@ -114,7 +132,7 @@ END;
 
 GO
 CREATE OR ALTER PROCEDURE [Team.Delete]
-	@creatorId NVARCHAR(256),
+	@creatorId INT,
 	@teamId INT
 AS
 BEGIN
@@ -130,7 +148,7 @@ BEGIN
 		RETURN;
 	END;
 
-	IF (SELECT TOP 1 "role" FROM [TEAM_USER] WHERE userId = @creatorId AND id = @teamId) != 'CREATOR'
+	IF (SELECT TOP 1 "role" FROM [TEAM_USER] WHERE userId = @creatorId AND teamId = @teamId) != 'CREATOR'
 	BEGIN
 		PRINT 'ACCESS DENIED OR SUCH USER NOT EXISTS';
 		RETURN;
@@ -147,12 +165,13 @@ BEGIN
 					
 			EXEC [Project.Delete]
 				@userId = @creatorId,
+				@teamId = @teamId,
 				@projectId = @projectIdToDelete;
 		END;
 
 		DELETE [TEAM] WHERE id = @teamId;
 
-		PRINT 'TEAM: ' + @teamId + ' DELETED';
+		PRINT 'TEAM: ' + CAST(@teamId AS NVARCHAR(256)) + ' DELETED';
 		CLOSE projectCursor;
 	END TRY
 
@@ -166,33 +185,32 @@ BEGIN
 END;
 GO
 CREATE OR ALTER PROCEDURE [Team.GetUserTeams]
-	@userEmail NVARCHAR(256),
+	@userId INT,
 	@skip INT,
-	@amount INT
+	@take INT
 AS
 BEGIN
-	DECLARE @userId INT = (SELECT TOP 1 id FROM [USER] WHERE email = @userEmail);
-	SELECT title FROM [TEAM]
+	SELECT teamId, title, "role" FROM [TEAM]
 		INNER JOIN [TEAM_USER]
 	ON [TEAM].id = [TEAM_USER].teamId
 		WHERE [TEAM_USER].userId = @userId
 		ORDER BY title
 		OFFSET @skip ROWS
-		FETCH NEXT @amount ROWS ONLY;
+		FETCH NEXT @take ROWS ONLY;
 END;
 
 GO
 CREATE OR ALTER PROCEDURE [Team.GetTeamUsers]
 	@teamId INT,
 	@skip INT,
-	@amount INT
+	@take INT
 AS
 BEGIN
-	SELECT email FROM [USER]
+	SELECT email, "role" FROM [USER]
 		INNER JOIN [TEAM_USER]
 	ON [USER].id = [TEAM_USER].userId
 		WHERE [TEAM_USER].teamId = @teamId
 		ORDER BY email
 		OFFSET @skip ROWS
-		FETCH NEXT @amount ROWS ONLY;
+		FETCH NEXT @take ROWS ONLY;
 END;

@@ -13,15 +13,15 @@ BEGIN
 		@password = '12345',
 		@name = 'dmitry';
 
-	SELECT email FROM [USER];
+	SELECT * FROM [USER];
 
 	EXEC [User.Login]
 		@email = 'dmitry.yuzefchik@gmail.com',
 		@password = '12345';
 
-	EXEC [Team.CreateTeam]
-		@userEmail = 'dmitry.yuzefchik@gmail.com',
-		@teamName = 'SuperTeam'
+	EXEC [Team.Create]
+		@userId = 1,
+		@teamName = 'SuperTeam';
 
 	SELECT * FROM [USER];
 	SELECT * FROM [TEAM];
@@ -29,40 +29,26 @@ BEGIN
 	SELECT * FROM [USER_TOKEN];
 
 	EXEC [Team.AddUserToTeam]
-		@creatorEmail = 'dmitry.yuzefchik@gmail.com',
+		@creatorId = 3,
 		@teamId = 1,
-		@addUserEmail = 'kate.yuzefchik@gmail.com';
+		@userEmail = 'kate.yuzefchik@gmail.com';
 	
 	EXEC [Team.AddUserToTeam]
-		@creatorEmail = 'dmitry.yuzefchik@gmail.com',
+		@creatorId = 2,
 		@teamId = 1,
-		@addUserEmail = 'kate.yuzefchik@gmail.com';
-
-	EXEC [Team.AddUserToTeam]
-		@creatorEmail = 'kate.yuzefchik@gmail.com',
-		@teamId = 1,
-		@addUserEmail = 'kate.yuzefchik@gmail.com';
-
-	EXEC [User.Login]
-		@email = 'kate.yuzefchik@gmail.com',
-		@password = '12345';
-
-	EXEC [Team.AddUserToTeam]
-		@creatorEmail = 'kate.yuzefchik@gmail.com',
-		@teamId = 1,
-		@addUserEmail = 'kate.yuzefchik@gmail.com';
+		@userEmail = 'kate.yuzefchik@gmail.com';
 
 	EXEC [Team.GetUserTeams]
-		@userEmail = 'dmitry.yuzefchik@gmail.com',
+		@userId = 1,
 		@skip = 0,
-		@amount = 2;
+		@take = 2; 
 
-	EXEC [Team.DeleteTeam]
-		@creatorEmail = 'kate.yuzefchik@gmail.com',
-		@teamId = 1;
+	EXEC [Team.Delete]
+		@creatorId = 3,
+		@teamId = 3;
 
-	EXEC [Team.DeleteTeam]
-		@creatorEmail = 'dmitry.yuzefchik@gmail.com',
-		@teamId = 1;
+	EXEC [Team.Delete]
+		@creatorId = 1,
+		@teamId = 2;
 
 END;

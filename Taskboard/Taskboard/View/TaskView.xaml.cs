@@ -10,19 +10,20 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Taskboard.ViewModel;
 
 namespace Taskboard.View
 {
     /// <summary>
     /// Interaction logic for TaskView.xaml
     /// </summary>
-    public partial class TaskView : UserControl
+    public partial class TaskView : Window
     {
-        public TaskView()
+        public TaskView(int teamId, int boardId)
         {
             InitializeComponent();
+            DataContext = new TaskViewModel(teamId, boardId);
         }
     }
 }

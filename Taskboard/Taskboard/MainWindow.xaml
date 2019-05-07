@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Taskboard"
         xmlns:vw="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         mc:Ignorable="d"
-        Title="Taskboard" Height="900" Width="1100"
+        Title="Taskboard" Height="900" Width="1280"
         ResizeMode="NoResize">
     <Grid Background="#f8f9fa">
         <Grid.ColumnDefinitions>
@@ -15,7 +15,7 @@
         </Grid.ColumnDefinitions>
         <StackPanel Background="#007bff">
             <Button Content="Account" x:Name="AccountButton" Height="100" Click="AccountButton_Click"/>
-            <Button Content="Taskboard" x:Name="TaskboardButton" Height="100"/>
+            <Button Content="Taskboard" x:Name="TaskboardButton" Height="100" Click="TaskboardButton_Click"/>
             
             <Label Foreground="#f8f9fa" x:Name="Id" Content="{Binding Path=Id}" />
             <Label Foreground="#f8f9fa" x:Name="Email" Content="{Binding Path=Email}" />

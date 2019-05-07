@@ -6,7 +6,49 @@
              xmlns:local="clr-namespace:Taskboard.View"
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="900">
-    <Grid>
+    <Grid ShowGridLines="True">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
         
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <DataGrid
+            Grid.Column="0"
+            Grid.Row="0"
+            ItemsSource="{Binding Path=Teams}"
+            SelectedItem="{Binding SelectedTeam, UpdateSourceTrigger=PropertyChanged}"
+            IsReadOnly="True"
+            CanUserAddRows="False"
+            CanUserDeleteRows="False"
+            ColumnWidth="*"
+        >
+            <DataGrid.InputBindings>
+                <MouseBinding
+                    MouseAction="LeftDoubleClick"
+                    Command="{Binding GetTeamWindowCommand}"
+                    >
+                </MouseBinding>
+            </DataGrid.InputBindings>
+        </DataGrid>
+
+        <StackPanel Grid.Column="1" Grid.Row="0">
+            <Label Content="Текущая страница"/>
+            <Label Content="{Binding Path=CurrentPage}"/>
+
+            <Button Content="Следующая" Command="{Binding NextPageCommand}"/>
+            <Button Content="Предыдущая" Command="{Binding PreviousPageCommand}"/>
+
+            <Label Content="Название команды"/>
+            <TextBox Text="{Binding Path=TeamTitle}"/>
+            <Button Content="Создать команду" Command="{Binding CreateTeamCommand}"/>
+
+            <Label Content="Id команды"/>
+            <TextBox Text="{Binding Path=TeamId}"/>
+            <Button Content="Удалить команду" Command="{Binding DeleteTeamCommand}"/>
+        </StackPanel>
     </Grid>
 </UserControl>
