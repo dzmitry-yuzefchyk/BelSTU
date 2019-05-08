@@ -10,18 +10,21 @@ CREATE OR ALTER PROCEDURE [Task.Create]
 	@type NVARCHAR(11),
 	@priority NVARCHAR(6),
 	@severity NVARCHAR(8),
-	@asigneeId INT,
+	@status NVARCHAR(128),
+	@asigneeEmail NVARCHAR(256),
 	@finishTime DATETIME,
 	@filePath VARCHAR(256)
 AS
 BEGIN
+	DECLARE @asigneeId INT = (SELECT TOP 1 id FROM [USER] WHERE email = @asigneeEmail);
+
 	IF NOT EXISTS (SELECT TOP 1 id FROM [USER_TOKEN] WHERE userId = @userId)
 	BEGIN
 		PRINT 'TOKEN EXPIRED';
 		RETURN;
 	END;
 
-	IF NOT EXISTS (SELECT TOP 1 id FROM PROJECT WHERE id = @boardId)
+	IF NOT EXISTS (SELECT TOP 1 id FROM BOARD WHERE id = @boardId)
 	BEGIN
 		PRINT 'BOARD NOT EXISTS';
 		RETURN;
@@ -33,28 +36,45 @@ BEGIN
 		RETURN;
 	END;
 
+	IF NOT EXISTS (SELECT TOP 1 id FROM [TEAM_USER] WHERE userId = @asigneeId AND teamId = @teamId)
+	BEGIN
+		PRINT 'USER NOT IN TEAM';
+		RETURN;
+	END;
+
 	BEGIN TRY
-	DECLARE @file_stream VARBINARY(MAX);
-	DECLARE @command NVARCHAR(1000);
-	DECLARE @documentId INT;
-	DECLARE @documentExtenstion NVARCHAR(16) = (select reverse(left(reverse(@filePath),CHARINDEX('.',reverse(@filePath))-1)));
-	DECLARE @documentName NVARCHAR(128) = REVERSE(LEFT(REVERSE(@filePath),CHARINDEX( '\',REVERSE(@filePath))-1));
-
-	SET @command = N'SELECT @file_stream1 = CAST(bulkcolumn AS varbinary(MAX))
-                from OPENROWSET(BULK ''' + @filePath + ''',
-                SINGLE_BLOB) ROW_SET'
-
-	EXEC sp_executesql @command, N'@file_stream1 VARBINARY(MAX) OUTPUT', @file_stream1 = @file_stream OUTPUT;
-	select @file_stream;
 
 
-	INSERT INTO DOCUMENT("name", extension, document)
-		VALUES(@documentName, @documentExtenstion, @file_stream);
+		IF (@filePath = '')
+		BEGIN
+		INSERT INTO TASKS(boardId, title, content, [type], [priority], severity, asigneeId, finishTime, startTime, "status")
+				VALUES(@boardId, @title, @content, @type, @priority, @severity, @asigneeId, @finishTime, CURRENT_TIMESTAMP, @status);
+		END;
 
-	SET @documentId = SCOPE_IDENTITY();
+		ELSE 
+		BEGIN
+			DECLARE @file_stream VARBINARY(MAX);
+			DECLARE @command NVARCHAR(1000);
+			DECLARE @documentId INT;
+			DECLARE @documentExtenstion NVARCHAR(16) = (select reverse(left(reverse(@filePath),CHARINDEX('.',reverse(@filePath))-1)));
+			DECLARE @documentName NVARCHAR(128) = REVERSE(LEFT(REVERSE(@filePath),CHARINDEX( '\',REVERSE(@filePath))-1));
 
-	INSERT INTO TASKS(boardId, title, content, attachments, [type], [priority], severity, asigneeId, finishTime, startTime, "status")
-		VALUES(@boardId, @title, @content, @documentId, @type, @priority, @severity, @asigneeId, @finishTime, CURRENT_TIMESTAMP, 'CREATED');
+			SET @command = N'SELECT @file_stream1 = CAST(bulkcolumn AS varbinary(MAX))
+						from OPENROWSET(BULK ''' + @filePath + ''',
+						SINGLE_BLOB) ROW_SET'
+
+			EXEC sp_executesql @command, N'@file_stream1 VARBINARY(MAX) OUTPUT', @file_stream1 = @file_stream OUTPUT;
+			select @file_stream;
+
+
+			INSERT INTO DOCUMENT("name", extension, document)
+				VALUES(@documentName, @documentExtenstion, @file_stream);
+
+			SET @documentId = SCOPE_IDENTITY();
+
+			INSERT INTO TASKS(boardId, title, content, attachments, [type], [priority], severity, asigneeId, finishTime, startTime, "status")
+				VALUES(@boardId, @title, @content, @documentId, @type, @priority, @severity, @asigneeId, @finishTime, CURRENT_TIMESTAMP, @status);
+		END;
 	END TRY
 
 	BEGIN CATCH

@@ -21,7 +21,7 @@ namespace Taskboard.ViewModel
 
     public class BoardViewModel : INotifyPropertyChanged
     {
-        private int pageSize = 20;
+        private readonly int pageSize = 20;
         private int boardId;
         private readonly int teamId;
 
@@ -43,6 +43,11 @@ namespace Taskboard.ViewModel
                 if (searchQuery != "")
                 {
                     SearchForTasks();
+                }
+
+                else
+                {
+                    GetTasks();
                 }
             }
         }

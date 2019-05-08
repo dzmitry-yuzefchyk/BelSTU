@@ -6,11 +6,11 @@
         xmlns:local="clr-namespace:Taskboard"
         xmlns:vw="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         mc:Ignorable="d"
-        Title="Taskboard" Height="900" Width="1280"
+        Title="{Binding Path=Email, StringFormat='Taskboard: {0}'}" Height="900" Width="1280"
         ResizeMode="NoResize">
     <Grid Background="#f8f9fa">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200px"/>
+            <ColumnDefinition Width="250px"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <StackPanel Background="#007bff">

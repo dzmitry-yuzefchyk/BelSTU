@@ -38,7 +38,7 @@
             <Button Content="Создать задачу" Command="{Binding CreateTaskCommand}"/>
 
             <Label Content="Полнотекстовый поиск по вложенным документам"/>
-            <TextBox Text="{Binding Path=SearchQuery}"/>
+            <TextBox Text="{Binding Path=SearchQuery, UpdateSourceTrigger=PropertyChanged}"/>
 
             <Label Content="Текущая страница"/>
             <Label Content="{Binding Path=CurrentPage}"/>
