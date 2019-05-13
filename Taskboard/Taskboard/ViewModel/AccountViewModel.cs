@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
+using System.Windows;
 
 namespace Taskboard.ViewModel
 {
@@ -113,7 +115,16 @@ namespace Taskboard.ViewModel
                 SqlParameter email = new SqlParameter("@email", Email);
                 SqlParameter password = new SqlParameter("@password", Password);
                 SqlParameter name = new SqlParameter("@name", Name);
+
+                Stopwatch stopwatch = Stopwatch.StartNew();
+
                 var result = db.Database.ExecuteSqlCommand("[User.Register] @email, @password, @name", new[] { email, password, name });
+
+                stopwatch.Stop();
+                MessageBoxResult re = MessageBox.Show(stopwatch.Elapsed.ToString(),
+                                          "Confirmation",
+                                          MessageBoxButton.YesNo,
+                                          MessageBoxImage.Question);
 
                 if (result > 0)
                 {
@@ -133,7 +144,16 @@ namespace Taskboard.ViewModel
             {
                 SqlParameter email = new SqlParameter("@email", Email);
                 SqlParameter password = new SqlParameter("@password", Password);
+
+                Stopwatch stopwatch = Stopwatch.StartNew();
+
                 var result = db.Database.ExecuteSqlCommand("[User.Login] @email, @password", new[] { email, password });
+
+                stopwatch.Stop();
+                MessageBoxResult re = MessageBox.Show(stopwatch.Elapsed.ToString(),
+                                          "Confirmation",
+                                          MessageBoxButton.YesNo,
+                                          MessageBoxImage.Question);
 
                 USER user = db.USER.SingleOrDefault(x => x.email == Email);
                 USER_TOKEN token = null;
@@ -194,8 +214,16 @@ namespace Taskboard.ViewModel
                 Users.Clear();
                 Tokens.Clear();
 
+                Stopwatch stopwatch = Stopwatch.StartNew();
+
                 Users = db.USER.OrderBy(x => x.id).Skip(int.Parse(Skip)).Take(int.Parse(Take)).ToList();
                 Tokens = db.USER_TOKEN.OrderBy(x => x.id).Skip(int.Parse(Skip)).Take(int.Parse(Take)).ToList();
+
+                stopwatch.Stop();
+                MessageBoxResult re = MessageBox.Show(stopwatch.Elapsed.ToString(),
+                                          "Confirmation",
+                                          MessageBoxButton.YesNo,
+                                          MessageBoxImage.Question);
             }
         }
 

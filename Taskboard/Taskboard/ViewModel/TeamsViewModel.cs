@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
+using System.Windows;
 using Taskboard.View;
 
 namespace Taskboard.ViewModel
@@ -103,6 +105,7 @@ namespace Taskboard.ViewModel
                 SqlParameter teamId = new SqlParameter("@teamId", TeamId);
 
                 var result = db.Database.ExecuteSqlCommand("[Team.Delete] @creatorId, @teamid", userId, teamId);
+
                 if (result >= 0)
                 {
                     MainWindow.User.Status = "Успех";
@@ -130,6 +133,7 @@ namespace Taskboard.ViewModel
                 SqlParameter title = new SqlParameter("@teamName", TeamTitle);
 
                 var result = db.Database.ExecuteSqlCommand("[Team.Create] @userId, @teamName", userId, title);
+
                 if (result >= 0)
                 {
                     MainWindow.User.Status = "Успех";

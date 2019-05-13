@@ -3,9 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Taskboard.View;
 
 namespace Taskboard.ViewModel
@@ -173,8 +175,15 @@ namespace Taskboard.ViewModel
                 SqlParameter skip = new SqlParameter("@skip", currentPage * pageSize);
                 SqlParameter take = new SqlParameter("@take", pageSize);
 
+
                 Projects.Clear();
+                Stopwatch stopwatch = Stopwatch.StartNew();
                 Projects = db.Database.SqlQuery<TeamProject>("[Project.Get] @userId, @teamId, @skip, @take", new[] { userId, teamId, skip, take }).ToList();
+                stopwatch.Stop();
+                MessageBoxResult re = MessageBox.Show(stopwatch.Elapsed.ToString(),
+                                          "Confirmation",
+                                          MessageBoxButton.YesNo,
+                                          MessageBoxImage.Question);
             }
         }
         public void GetTeamUsers()
@@ -270,7 +279,13 @@ namespace Taskboard.ViewModel
                 SqlParameter teamId = new SqlParameter("@teamId", TeamId);
                 SqlParameter projectId = new SqlParameter("@projectId", ProjectId);
 
+                Stopwatch stopwatch = Stopwatch.StartNew();
                 var result = db.Database.ExecuteSqlCommand("[Project.Delete] @userId, @projectId, @teamId", new[] { userId, projectId, teamId });
+                stopwatch.Stop();
+                MessageBoxResult re = MessageBox.Show(stopwatch.Elapsed.ToString(),
+                                          "Confirmation",
+                                          MessageBoxButton.YesNo,
+                                          MessageBoxImage.Question);
                 if (result >= 0)
                 {
                     MainWindow.User.Status = "Успех";
@@ -299,7 +314,15 @@ namespace Taskboard.ViewModel
                 SqlParameter title = new SqlParameter("@title", ProjectTitle);
                 SqlParameter about = new SqlParameter("@about", ProjectAbout);
 
+
+                Stopwatch stopwatch = Stopwatch.StartNew();
                 var result = db.Database.ExecuteSqlCommand("[Project.Create] @userId, @teamId, @title, @about", new[] { userId, teamId, title, about });
+                stopwatch.Stop();
+                MessageBoxResult re = MessageBox.Show(stopwatch.Elapsed.ToString(),
+                                          "Confirmation",
+                                          MessageBoxButton.YesNo,
+                                          MessageBoxImage.Question);
+
                 if (result >= 0)
                 {
                     MainWindow.User.Status = "Успех";

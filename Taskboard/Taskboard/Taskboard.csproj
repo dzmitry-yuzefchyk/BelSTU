@@ -93,6 +93,7 @@
     <Compile Include="COLUMN.cs">
       <DependentUpon>TaskboardModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataGenerator.cs" />
     <Compile Include="Model\CurrentUser.cs" />
     <Compile Include="PROJECT.cs">
       <DependentUpon>TaskboardModel.tt</DependentUpon>
@@ -268,6 +269,7 @@
     <None Include="TaskboardModel.edmx.diagram">
       <DependentUpon>TaskboardModel.edmx</DependentUpon>
     </None>
+    <None Include="JSON\User.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

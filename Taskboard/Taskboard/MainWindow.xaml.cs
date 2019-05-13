@@ -10,6 +10,8 @@ namespace Taskboard
 
         public MainWindow()
         {
+            //DataGenerator dataGenerator = new DataGenerator(100000);
+            //dataGenerator.Generate();
             InitializeComponent();
             DataContext = User;
         }

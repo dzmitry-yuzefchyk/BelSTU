@@ -43,8 +43,6 @@ BEGIN
 	END;
 
 	BEGIN TRY
-
-
 		IF (@filePath = '')
 		BEGIN
 		INSERT INTO TASKS(boardId, title, content, [type], [priority], severity, asigneeId, finishTime, startTime, "status")
@@ -65,7 +63,6 @@ BEGIN
 
 			EXEC sp_executesql @command, N'@file_stream1 VARBINARY(MAX) OUTPUT', @file_stream1 = @file_stream OUTPUT;
 			select @file_stream;
-
 
 			INSERT INTO DOCUMENT("name", extension, document)
 				VALUES(@documentName, @documentExtenstion, @file_stream);
@@ -201,6 +198,8 @@ BEGIN
 	INNER JOIN DOCUMENT ON TASKS.attachments = DOCUMENT.id
 	INNER JOIN [USER] ON TASKS.asigneeId = [USER].id
 		WHERE TASKS.boardId = @boardId AND FREETEXT(DOCUMENT.document, @searchQuery)
+		 OR FREETEXT(TASKS.content, @searchQuery)
+		 OR FREETEXT(TASKS.title, @searchQuery)
 		ORDER BY TASKS.id
 		OFFSET @skip ROWS
 		FETCH NEXT @take ROWS ONLY;;
