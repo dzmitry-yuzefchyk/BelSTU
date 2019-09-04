@@ -1,2 +1,5 @@
 feature 1
 feature 2
+
+The ship glides gently on the waves
+As day turns into night
