@@ -3,3 +3,17 @@
 
 [Tt]arget/
 [Bb]in/
+.vs/
+
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+bld/S
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+
+packages
