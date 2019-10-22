@@ -1,0 +1,6 @@
+﻿{
+  "Message": "An error has occurred.",
+  "ExceptionMessage": "Multiple actions were found that match the request: \r\nGet on type MVC.Controllers.StudentController\r\nGet on type MVC.Controllers.StudentController",
+  "ExceptionType": "System.InvalidOperationException",
+  "StackTrace": "   at System.Web.Http.Controllers.ApiControllerActionSelector.ActionSelectorCacheItem.SelectAction(HttpControllerContext controllerContext)\r\n   at System.Web.Http.Controllers.ApiControllerActionSelector.SelectAction(HttpControllerContext controllerContext)\r\n   at System.Web.Http.ApiController.ExecuteAsync(HttpControllerContext controllerContext, CancellationToken cancellationToken)\r\n   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__15.MoveNext()"
+}
