@@ -1,4 +1,0 @@
-﻿{
-  "Message": "No HTTP resource was found that matches the request URI 'https://localhost:44331/api/studentcontroller?='.",
-  "MessageDetail": "No type was found that matches the controller named 'studentcontroller'."
-}

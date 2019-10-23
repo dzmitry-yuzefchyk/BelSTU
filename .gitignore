@@ -16,4 +16,6 @@ bld/S
 [Oo]bj/
 [Ll]og/
 
+.idea/
+
 packages
