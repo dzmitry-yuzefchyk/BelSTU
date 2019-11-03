@@ -1,10 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using DataProvider.Entities;
 using System.Reflection;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System;
+using Microsoft.AspNetCore.Identity;
 
 namespace DataProvider
 {
-    class TaskboardContext : DbContext
+    public class TaskboardContext : IdentityDbContext<User, Role, Guid>
     {
         public TaskboardContext(DbContextOptions<TaskboardContext> options)
             : base(options)
@@ -21,12 +24,15 @@ namespace DataProvider
         public DbSet<Activity> Activities { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Project> Projects { get; set; }
+        public DbSet<ProjectSecurityPolicy> ProjectSecurityPolicies { get; set; }
+        public DbSet<ProjectSecuritySettings> ProjectSecuritySettings { get; set; }
         public DbSet<ProjectSettings> ProjectSettings { get; set; }
         public DbSet<Board> Boards { get; set; }
         public DbSet<BoardSettings> BoardSettings { get; set; }
         public DbSet<Column> Columns { get; set; }
         public DbSet<Task> Tasks { get; set; }
+        public DbSet<TaskAttachment> TaskAttachments { get; set; }
         public DbSet<Comment> Comments { get; set; }
-        public DbSet<Attachment> Attachments { get; set; }
+        public DbSet<CommentAttachment> CommentAttachments { get; set; }
     }
 }

@@ -1,3 +1,4 @@
+using CommonLogic.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -18,7 +19,12 @@ namespace Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<>;
+            services.AddJWT();
+            services.AddDbContext(Configuration, "Default");
+            services.AddIdentity();
+            services.AddServices();
+            services.AddCors();
+
             services.AddControllersWithViews();
 
             services.AddSpaStaticFiles(configuration =>
@@ -29,10 +35,13 @@ namespace Web
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseJWTAuth();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
             else
             {
                 app.UseExceptionHandler("/Error");
