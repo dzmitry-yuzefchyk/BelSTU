@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Model.Entities
+﻿namespace Model.Entities
 {
-    class Task
+    public class Task
     {
     }
 }

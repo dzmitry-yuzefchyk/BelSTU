@@ -4,4 +4,10 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Configuration\Authorization\" />
+    <Folder Include="Configuration\DI\" />
+    <Folder Include="Logger\" />
+  </ItemGroup>
+
 </Project>

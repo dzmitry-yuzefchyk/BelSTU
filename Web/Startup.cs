@@ -18,7 +18,7 @@ namespace Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddDbContext<>;
             services.AddControllersWithViews();
 
             services.AddSpaStaticFiles(configuration =>
