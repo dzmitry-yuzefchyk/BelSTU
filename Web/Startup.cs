@@ -15,12 +15,14 @@ namespace Web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            Env = env;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Env { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -31,11 +33,11 @@ namespace Web
 
             services.AddTransient<IEmailSender, EmailSender>(x =>
                 new EmailSender(
-                    Configuration["EmailSender:HostName"],
-                    Configuration["EmailSender:UserName"],
-                    Configuration["EmailSender:Password"],
-                    Configuration.GetValue<int>("EmailSender:Port"),
-                    Configuration.GetValue<bool>("EmailSender:IsSSLEnabled")
+                    Configuration.GetValue<string>(Env, "EmailHostName", "EmailSender:HostName"),
+                    Configuration.GetValue<string>(Env, "EmailUserName", "EmailSender:UserName"),
+                    Configuration.GetValue<string>(Env, "EmailPassword", "EmailSender:Password"),
+                    Configuration.GetValue<int>(Env, "EmailPort", "EmailSender:Port"),
+                    Configuration.GetValue<bool>(Env, "EmailSslEnabled", "EmailSender:IsSSLEnabled")
                 )
             );
 
