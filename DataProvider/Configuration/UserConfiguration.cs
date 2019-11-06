@@ -1,7 +1,6 @@
 ﻿using DataProvider.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
 
 namespace DataProvider.Configuration
 {
@@ -13,6 +12,11 @@ namespace DataProvider.Configuration
                 .HasOne(x => x.Settings)
                 .WithOne(x => x.User)
                 .HasForeignKey<UserSettings>(x => x.Id);
+
+            builder
+                .HasOne(x => x.Profile)
+                .WithOne(x => x.User)
+                .HasForeignKey<UserProfile>(x => x.Id);
         }
     }
 }

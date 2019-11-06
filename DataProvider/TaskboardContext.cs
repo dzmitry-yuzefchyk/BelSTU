@@ -1,9 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using DataProvider.Entities;
-using System.Reflection;
+﻿using DataProvider.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
-using Microsoft.AspNetCore.Identity;
+using System.Reflection;
 
 namespace DataProvider
 {
@@ -21,6 +20,8 @@ namespace DataProvider
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
 
+        public DbSet<UserSettings> UserSettings { get; set; }
+        public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<Activity> Activities { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Project> Projects { get; set; }

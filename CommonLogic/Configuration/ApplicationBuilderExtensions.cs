@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using CommonLogic.Logger;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using System.IO;
 
 namespace CommonLogic.Configuration
 {
@@ -34,6 +37,13 @@ namespace CommonLogic.Configuration
                 HttpOnly = HttpOnlyPolicy.Always,
                 Secure = CookieSecurePolicy.Always
             });
+        }
+
+        public static void UseFileLogger(this IApplicationBuilder app, ILoggerFactory loggerFactory)
+        {
+            string applicationDirectory = Directory.GetCurrentDirectory();
+            string logsDirectory = "logs";
+            loggerFactory.AddFile(Path.Combine(applicationDirectory, logsDirectory));
         }
     }
 }

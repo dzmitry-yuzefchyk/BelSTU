@@ -7,6 +7,7 @@ namespace DataProvider.Entities
     public class User : IdentityUser<Guid>
     {
         public UserSettings Settings { get; set; }
+        public UserProfile Profile { get; set; }
         public ICollection<Board> Boards { get; set; }
         public ICollection<Comment> Comments { get; set; }
         public ICollection<Notification> Notifications { get; set; }

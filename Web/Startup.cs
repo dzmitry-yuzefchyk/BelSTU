@@ -1,10 +1,15 @@
+using BusinessLogic.Services.Implementation;
+using BusinessLogic.Services.Interfaces;
 using CommonLogic.Configuration;
+using CommonLogic.EmailSender;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Web
 {
@@ -22,8 +27,17 @@ namespace Web
             services.AddJWT();
             services.AddDbContext(Configuration, "Default");
             services.AddIdentity();
-            services.AddServices();
             services.AddCors();
+
+            services.AddTransient<IEmailSender, EmailSender>(x =>
+                new EmailSender(
+                    Configuration["EmailSender:HostName"],
+                    Configuration["EmailSender:UserName"],
+                    Configuration["EmailSender:Password"],
+                    Configuration.GetValue<int>("EmailSender:Port"),
+                    Configuration.GetValue<bool>("EmailSender:IsSSLEnabled")
+                )
+            );
 
             services.AddControllersWithViews();
 
@@ -31,9 +45,11 @@ namespace Web
              {
                  configuration.RootPath = "ClientApp/build";
              });
+
+            services.AddTransient<IAccountService, AccountService>();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             app.UseJWTAuth();
 
@@ -47,6 +63,7 @@ namespace Web
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
+            app.UseFileLogger(loggerFactory);
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
