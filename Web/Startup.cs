@@ -3,7 +3,9 @@ using BusinessLogic.Services.Interfaces;
 using CommonLogic.Configuration;
 using CommonLogic.EmailSender;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
@@ -26,11 +28,8 @@ namespace Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddJWT();
             services.AddDbContext(Configuration, "Default");
-            services.AddIdentity();
-            services.AddCors();
-
+            services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IEmailSender, EmailSender>(x =>
                 new EmailSender(
                     Configuration.GetValue<string>(Env, "EmailHostName", "EmailSender:HostName"),
@@ -41,20 +40,31 @@ namespace Web
                 )
             );
 
+            services.AddIdentity();
+            services.AddAuthorization();
+            services.AddCors();
             services.AddControllersWithViews();
-
             services.AddSpaStaticFiles(configuration =>
              {
                  configuration.RootPath = "ClientApp/build";
              });
-
-            services.AddTransient<IAccountService, AccountService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
-            app.UseJWTAuth();
-
+            app.UseAuthentication();
+            app.Use(async (context, next) =>
+            {
+                var token = context.Request.Cookies[".AspNetCore.Application.Id"];
+                if (!string.IsNullOrEmpty(token))
+                {
+                    context.Request.Headers.Add("Authorization", "Bearer " + token);
+                    context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+                    context.Response.Headers.Add("X-Xss-Protection", "1");
+                    context.Response.Headers.Add("X-Frame-Options", "DENY");
+                }
+                await next();
+            });
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -72,7 +82,7 @@ namespace Web
             app.UseSpaStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -88,6 +98,19 @@ namespace Web
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
+            });
+
+            app.UseCors(x => x
+                .WithOrigins("https://localhost:44378/")
+                .AllowCredentials()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+
+            app.UseCookiePolicy(new CookiePolicyOptions
+            {
+                MinimumSameSitePolicy = SameSiteMode.Strict,
+                HttpOnly = HttpOnlyPolicy.Always,
+                Secure = CookieSecurePolicy.Always
             });
         }
     }
