@@ -312,7 +312,7 @@ namespace BusinessLogic.Services.Implementation
             try
             {
                 var link = $"<a href=\"https://{clientAppHost}/confirmEmail?token={token}&email={email}\">Click Me!</a>";
-                var htmlMessage = $"Dear, {tag}, {link}";
+                var htmlMessage = $"Dear, @{tag}, {link}";
                 await _emailSender.SendEmailAsync(email, "Confirmation", htmlMessage);
             }
             catch (Exception e)
