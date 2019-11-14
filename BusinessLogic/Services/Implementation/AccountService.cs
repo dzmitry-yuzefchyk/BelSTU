@@ -325,12 +325,12 @@ namespace BusinessLogic.Services.Implementation
 
         private string GenerateJSONWebToken(User user)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetValue<string>(_env, "", "Jwt:Key")));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetValue<string>(_env, "JwtKey", "Jwt:Key")));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var claims = SetupUserClaims(user);
 
-            var token = new JwtSecurityToken(_config.GetValue<string>(_env, "", "Jwt:Issuer"),
-              _config.GetValue<string>(_env, "", "Jwt:Issuer"),
+            var token = new JwtSecurityToken(_config.GetValue<string>(_env, "JwtIssuer", "Jwt:Issuer"),
+              _config.GetValue<string>(_env, "JwtIssuer", "Jwt:Issuer"),
               claims,
               expires: DateTime.Now.AddMinutes(120),
               signingCredentials: credentials);
@@ -342,7 +342,7 @@ namespace BusinessLogic.Services.Implementation
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim("Email",user.Email)
+            new Claim("Email", user.Email)
         };
     }
 }

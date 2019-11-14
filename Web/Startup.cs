@@ -1,3 +1,4 @@
+using BusinessLogic.Hubs;
 using BusinessLogic.Services.Implementation;
 using BusinessLogic.Services.Interfaces;
 using CommonLogic.Configuration;
@@ -43,6 +44,7 @@ namespace Web
             services.AddIdentity();
             services.AddAuthorization();
             services.AddCors();
+            services.AddSignalR();
             services.AddControllersWithViews();
             services.AddSpaStaticFiles(configuration =>
              {
@@ -85,6 +87,7 @@ namespace Web
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<BoardHub>("/board");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
@@ -101,7 +104,7 @@ namespace Web
             });
 
             app.UseCors(x => x
-                .WithOrigins("https://localhost:44378/")
+                .WithOrigins(Configuration.GetValue<string>(env, "CurrentHost", "Host:Url"))
                 .AllowCredentials()
                 .AllowAnyMethod()
                 .AllowAnyHeader());

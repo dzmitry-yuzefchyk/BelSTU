@@ -104,7 +104,7 @@ namespace Web.Controllers
         }
 
         [HttpGet("IsAuthenticated")]
-        public async Task<IActionResult> IsAuthorized()
+        public IActionResult IsAuthorized()
         {
             return Ok(User.Identity.IsAuthenticated);
         }
