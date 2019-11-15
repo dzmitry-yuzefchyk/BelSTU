@@ -3,18 +3,30 @@
     "appName": "TaskBoard"
   },
   "sections": {
-    "profile": "Profiles",
-    "settings": "Settings",
-    "board": "Board"
+    "profile": "Профиль",
+    "settings": "Настройки",
+    "board": "Доска"
   },
   "forms": {
     "email": "Email",
-    "password": "Password",
-    "signUp": "Sign-Up",
-    "signIn": "Sign-In",
-    "rememberMe": "Remember me",
+    "password": "Пароль",
+    "passwordConfirmation": "Подтверждение пароля",
+    "signUp": "Регистрация",
+    "signIn": "Вход",
+    "rememberMe": "Запомнить меня",
     "validation": {
-      "valid": ""
+      "valid": "",
+      "Email address is required": "Введите email",
+      "Password is required": "Введите пароль",
+      "Email address is invalid": "Такого email не существует",
+      "Password must be at least 6 symbols long": "Пароль должен быть длиннее 5 символов",
+      "Password confirmation is not the same": "Пароль и подтверждение не совпадают", 
+      "": ""
     }
+  },
+  "snackbar": {
+    "Email or password is wrong": "Email или пароль неверны",
+    "Can't create such user, please try again later": "Произошла ошибка, повторите позже",
+    "Confirmation was sent to your email": "Подтверждение было выслано на почту"
   }
 }

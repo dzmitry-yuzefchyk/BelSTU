@@ -7,6 +7,7 @@ import { withRouter } from 'react-router-dom';
 import { HOME, SIGN_UP } from './../../../utils/routes';
 import { withTranslation } from 'react-i18next';
 import { loginFormValidator as validator } from './../../../utils/validators';
+import ResendEmailModal from './resend.email.modal';
 
 const styles = theme => ({
     form: {
@@ -30,7 +31,7 @@ const styles = theme => ({
 
 const SignInForm = (props) => {
     const { history, t, classes } = props;
-    const { userStore } = props.rootStore;
+    const { userStore, modalStore } = props.rootStore;
     const signIn = async () => {
         const user = {
             email: values.email,
@@ -47,6 +48,10 @@ const SignInForm = (props) => {
         values,
         validationResult
     } = useForm(signIn, validator);
+
+    const showResendModal = () => {
+        modalStore.show(<ResendEmailModal/>);
+    }
 
     const redirectToHome = () => {
         history.push(HOME);
@@ -104,6 +109,12 @@ const SignInForm = (props) => {
 
                         <Button className={classes.button} variant='contained' color='secondary' onClick={redirectToSignUp}>
                             {t('forms.signUp')}
+                        </Button>
+                    </Box>
+
+                    <Box className={classes.formInputBox} display='flex' justifyContent='center'>
+                        <Button className={classes.button} variant='contained' color='secondary' onClick={showResendModal}>
+                            {t('forms.Resend email')}
                         </Button>
                     </Box>
                 </Paper>

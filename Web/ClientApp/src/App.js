@@ -4,9 +4,11 @@ import { observer, inject } from 'mobx-react'
 import Snackbar from './components/modal/snackbar';
 import { withTranslation } from 'react-i18next';
 
-import { SIGN_IN } from './utils/routes';
+import { SIGN_IN, SIGN_UP } from './utils/routes';
 
 import SignInPage from './pages/signin/page';
+import SignUpPage from './pages/signup/page';
+import { Dialog } from '@material-ui/core';
 
 @inject('rootStore')
 @withTranslation()
@@ -25,6 +27,11 @@ class App extends React.Component {
         snackbarStore.close();
     }
 
+    closeModal() {
+        const { modalStore } = this.props.rootStore;
+        modalStore.close();
+    }
+
     renderSnackbar() {
         const { snackbarStore } = this.props.rootStore;
 
@@ -38,6 +45,20 @@ class App extends React.Component {
         );
     }
 
+    renderModal() {
+        const { modalStore } = this.props.rootStore;
+
+        return (
+            <Dialog
+                keepMounted
+                onClose={this.closeModal}
+                open={modalStore.isOpen}
+            >
+                {modalStore.content}
+            </Dialog>
+        )
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -45,9 +66,13 @@ class App extends React.Component {
                     <Route path={SIGN_IN}>
                         <SignInPage />
                     </Route>
+                    <Route path={SIGN_UP}>
+                        <SignUpPage />
+                    </Route>
                     <Route exact path='/' />
                 </Switch>
                 {this.renderSnackbar()}
+                {this.renderModal()}
             </React.Fragment>
         );
     }

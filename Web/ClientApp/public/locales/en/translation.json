@@ -10,11 +10,30 @@
   "forms": {
     "email": "Email",
     "password": "Password",
+    "passwordConfirmation": "Password confirmation",
     "signUp": "Sign-Up",
     "signIn": "Sign-In",
     "rememberMe": "Remember me",
+    "Resend email": "Resend email",
     "validation": {
-      "valid": ""
+      "valid": "",
+      "Email address is required": "Email address is required",
+      "Password is required": "Password is required",
+      "Email address is invalid": "Email address is invalid",
+      "Password must be at least 6 symbols long": "Password must be at least 6 symbols long",
+      "Password confirmation is not the same": "Password confirmation is not the same", 
+      "": ""
     }
+  },
+  "snackbar": {
+    "Email or password is wrong": "Email or password is wrong",
+    "Can't create such user, please try again later": "Can't create such user, please try again later",
+    "Confirmation was sent to your email": "Confirmation was sent to your email",
+    "Email is not confirmed": "Email is not confirmed"
+  },
+  "modal": {
+    "resend email": "Resend email",
+    "confirm": "Confirm",
+    "close": "Close"
   }
 }

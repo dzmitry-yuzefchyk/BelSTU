@@ -53,6 +53,13 @@ namespace BusinessLogic.Services.Implementation
         {
             try
             {
+                var identityUser = _userManager.FindByEmailAsync(model.Email);
+                if (identityUser != null)
+                {
+                    _logger.LogError($"Account service, SignUpAsync()", model.Email);
+                    return (IsDone: false, Message: "Such user already exist");
+                };
+
                 var user = new User
                 {
                     UserName = model.Email,
