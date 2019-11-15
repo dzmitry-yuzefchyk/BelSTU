@@ -1,8 +1,10 @@
-import ModalStore from './modalStore';
+import UserStore from './userStore';
+import SnackbarStore from './snackbarStore';
 
 class RootStore {
     constructor() {
-        this.modalStore = new ModalStore(this);
+        this.snackbarStore = new SnackbarStore(this);
+        this.userStore = new UserStore(this);
     }
 }
 

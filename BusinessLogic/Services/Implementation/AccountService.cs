@@ -15,7 +15,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -66,6 +68,7 @@ namespace BusinessLogic.Services.Implementation
                 };
                 var userProfile = new UserProfile
                 {
+                    Icon = model.Icon,
                     Id = user.Id,
                     Tag = $"{model.Email.Split('@').First()}#{model.Email.GetHashCode()}"
                 };

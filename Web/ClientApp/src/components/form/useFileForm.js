@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import useForm from './useForm';
 
-const useFile = (callback, validation) => {
+const useFileForm = (callback, validation) => {
     const [ files, setFiles ] = useState({});
     const {
         values,
@@ -24,4 +24,4 @@ const useFile = (callback, validation) => {
     };
 };
 
-export default useFile;
+export default useFileForm;

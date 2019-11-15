@@ -1,6 +1,6 @@
 import { action, observable, computed } from 'mobx';
 
-export default class ModalStore {
+export default class SnackbarStore {
     constructor(rootStore) {
         this.rootStore = rootStore;
     }
@@ -8,19 +8,19 @@ export default class ModalStore {
     @observable content = '';
     @observable variant = 'info';
 
-    @computed get isModalOpen() {
+    @computed get isOpen() {
         return !!this.content;
     }
 
     @action
-    showModal(content, variant) {
-        if (this.isModalOpen) return;
+    show(content, variant) {
+        if (this.isSnackbarOpen) return;
         this.content = content;
         this.variant = variant;
     }
 
     @action
-    closeModal() {
+    close() {
         this.content = '';
         this.variant = 'info';
     }

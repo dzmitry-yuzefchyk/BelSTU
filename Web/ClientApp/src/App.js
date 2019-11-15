@@ -2,32 +2,38 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { observer, inject } from 'mobx-react'
 import Snackbar from './components/modal/snackbar';
+import { withTranslation } from 'react-i18next';
+
+import { SIGN_IN } from './utils/routes';
+
+import SignInPage from './pages/signin/page';
 
 @inject('rootStore')
+@withTranslation()
 @observer
 class App extends React.Component {
 
     constructor() {
         super();
 
-        this.closeModal = this.closeModal.bind(this);
-        this.renderModal = this.renderModal.bind(this);
+        this.closeSnackbar = this.closeSnackbar.bind(this);
+        this.renderSnackbar = this.renderSnackbar.bind(this);
     }
 
-    closeModal() {
-        const { modalStore } = this.props.rootStore;
-        modalStore.closeModal();
+    closeSnackbar() {
+        const { snackbarStore } = this.props.rootStore;
+        snackbarStore.close();
     }
 
-    renderModal() {
-        const { modalStore } = this.props.rootStore;
+    renderSnackbar() {
+        const { snackbarStore } = this.props.rootStore;
 
         return (
             <Snackbar
-                isOpen={modalStore.isModalOpen}
-                onClose={this.closeModal}
-                variant={modalStore.variant}
-                message={modalStore.content}
+                isOpen={snackbarStore.isOpen}
+                onClose={this.closeSnackbar}
+                variant={snackbarStore.variant}
+                message={snackbarStore.content}
             />
         );
     }
@@ -36,9 +42,12 @@ class App extends React.Component {
         return (
             <React.Fragment>
                 <Switch>
-                    <Route exact path='/'/>
+                    <Route path={SIGN_IN}>
+                        <SignInPage />
+                    </Route>
+                    <Route exact path='/' />
                 </Switch>
-                {this.renderModal()}
+                {this.renderSnackbar()}
             </React.Fragment>
         );
     }

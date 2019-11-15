@@ -12,6 +12,7 @@ const useForm = (callback, validation) => {
             }
         };
         submitForm();
+        setIsSubmitting(false);
     }, [ validationResult, isSubmitting, callback ]);
 
     const handleSubmit = (event) => {

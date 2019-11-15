@@ -53,14 +53,14 @@ namespace Web.Controllers
         }
 
         [HttpPost("ConfirmEmail")]
-        public async Task<IActionResult> ConfirmEmail(string email, string token)
+        public async Task<IActionResult> ConfirmEmail([FromBody]ConfirmEmailModel model)
         {
-            var (IsDone, Message) = await _accountService.ConfirmEmailAsync(email, token);
+            var (IsDone, Message) = await _accountService.ConfirmEmailAsync(model.Email, model.Token);
             return IsDone ? (IActionResult)Ok(Message) : BadRequest(Message);
         }
 
         [HttpPost("ResendEmail")]
-        public async Task<IActionResult> ResendEmail(string email)
+        public async Task<IActionResult> ResendEmail([FromBody]string email)
         {
             var clientAppHost = HttpContext.Request.Host.ToString();
             var (IsDone, Message) = await _accountService.SendConfirmEmailAsync(email, clientAppHost);
@@ -104,7 +104,7 @@ namespace Web.Controllers
         }
 
         [HttpGet("IsAuthenticated")]
-        public IActionResult IsAuthorized()
+        public IActionResult IsAuthenticated()
         {
             return Ok(User.Identity.IsAuthenticated);
         }

@@ -1,0 +1,20 @@
+{
+  "common": {
+    "appName": "TaskBoard"
+  },
+  "sections": {
+    "profile": "Profiles",
+    "settings": "Settings",
+    "board": "Board"
+  },
+  "forms": {
+    "email": "Email",
+    "password": "Password",
+    "signUp": "Sign-Up",
+    "signIn": "Sign-In",
+    "rememberMe": "Remember me",
+    "validation": {
+      "valid": ""
+    }
+  }
+}
