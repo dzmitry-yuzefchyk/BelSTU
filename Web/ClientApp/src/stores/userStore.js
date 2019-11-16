@@ -18,7 +18,11 @@ class UserStore {
             const response = await POST(POST_SIGN_UP, user);
             this.rootStore.snackbarStore.show(response.data, 'success');
         } catch(e) {
-            this.rootStore.snackbarStore.show(e.response.data || e.toString(), 'error');
+            if (e.response) {
+                this.rootStore.snackbarStore.show(e.response.data, 'error');
+            } else {
+                this.rootStore.snackbarStore.show(e.toString(), 'error');
+            }
             return false;
         }
         return true;
@@ -28,12 +32,13 @@ class UserStore {
         try {
             const response = await POST(POST_SIGN_IN, user);
             this.user.isLoggedIn = { isLoggedIn: true };
-            reaction(() => {
-                i18n.changeLanguage(this.user.lang || 'en');
-            });
             this.rootStore.snackbarStore.show(response.data, 'success');
         } catch(e) {
-            this.rootStore.snackbarStore.show(e.response.data || e.toString(), 'error');
+            if (e.response) {
+                this.rootStore.snackbarStore.show(e.response.data, 'error');
+            } else {
+                this.rootStore.snackbarStore.show(e.toString(), 'error');
+            }
         }
     }
 
@@ -43,7 +48,11 @@ class UserStore {
             this.user = { isLoggedIn: false };
             this.rootStore.snackbarStore.show(response.data, 'success');
         } catch(e) {
-            this.rootStore.snackbarStore.show(e.response.data || e.toString(), 'error');
+            if (e.response) {
+                this.rootStore.snackbarStore.show(e.response.data, 'error');
+            } else {
+                this.rootStore.snackbarStore.show(e.toString(), 'error');
+            }
         }
     }
 
@@ -52,7 +61,24 @@ class UserStore {
             const response = await POST(POST_RESEND_EMAIL, `"${email}"`);
             this.rootStore.snackbarStore.show(response.data, 'success');
         } catch(e) {
-            this.rootStore.snackbarStore.show(e.response.data || e.toString(), 'error');
+            if (e.response) {
+                this.rootStore.snackbarStore.show(e.response.data, 'error');
+            } else {
+                this.rootStore.snackbarStore.show(e.toString(), 'error');
+            }
+        }
+    }
+
+    @action async confirmEmail(email, token) {
+        try {
+            const response = await POST(POST_CONFIRM_EMAIL, { email, token });
+            this.rootStore.snackbarStore.show(response.data, 'success');
+        } catch(e) {
+            if (e.response) {
+                this.rootStore.snackbarStore.show(e.response.data, 'error');
+            } else {
+                this.rootStore.snackbarStore.show(e.toString(), 'error');
+            }
         }
     }
 
@@ -65,7 +91,7 @@ class UserStore {
     }
 
     @action async getProfile() {
-
+        i18n.changeLanguage(this.user.lang);
     }
 
     @action async getSettings() {

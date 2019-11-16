@@ -4,14 +4,16 @@ using DataProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataProvider.Migrations
 {
     [DbContext(typeof(TaskboardContext))]
-    partial class TaskboardContextModelSnapshot : ModelSnapshot
+    [Migration("20191116045558_added_task_index_and_prefix")]
+    partial class added_task_index_and_prefix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

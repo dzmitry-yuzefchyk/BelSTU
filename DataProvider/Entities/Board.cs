@@ -13,6 +13,8 @@ namespace DataProvider.Entities
         public BoardSettings Settings { get; set; }
         public Guid CreatorId { get; set; }
         public User Creator { get; set; }
+        public string TaskPrefix { get; set; }
+        public int TaskIndex { get; set; }
 
         public Board()
         {

@@ -53,7 +53,7 @@ namespace BusinessLogic.Services.Implementation
         {
             try
             {
-                var identityUser = _userManager.FindByEmailAsync(model.Email);
+                var identityUser = await _userManager.FindByEmailAsync(model.Email);
                 if (identityUser != null)
                 {
                     _logger.LogError($"Account service, SignUpAsync()", model.Email);
@@ -176,6 +176,12 @@ namespace BusinessLogic.Services.Implementation
                 {
                     _logger.LogWarning("AccountService: ResendConfirmEmailAsync", "Can't find such user", email);
                     return (IsDone: false, Message: "There is no user with such email");
+                }
+
+                if (user.EmailConfirmed)
+                {
+                    _logger.LogWarning("AccountService: ResendConfirmEmailAsync", "Email already confirmed", email);
+                    return (IsDone: false, Message: "Email already confirmed");
                 }
 
                 var profile = _context.UserProfiles.Find(user.Id);
@@ -321,7 +327,12 @@ namespace BusinessLogic.Services.Implementation
         {
             try
             {
-                var link = $"<a href=\"https://{clientAppHost}/confirmEmail?token={token}&email={email}\">Click Me!</a>";
+                var href = $"https://{clientAppHost}/confirm_email/{email}?token={token}";
+                var link = $"<a " +
+                    $"href=\"{href}\"" +
+                    $" target=\"_blank\"" +
+                    $" shape=\"rect\">" +
+                    $"Click Me!</a> ";
                 var htmlMessage = $"Dear, @{tag}, {link}";
                 await _emailSender.SendEmailAsync(email, "Confirmation", htmlMessage);
             }

@@ -30,7 +30,7 @@ namespace CommonLogic.EmailSender
                 Credentials = new NetworkCredential(_userName, _password),
                 EnableSsl = _isSSLEnabled
             };
-            var message = new MailMessage(_userName, email, subject, htmlMessage);
+            var message = new MailMessage(_userName, email, subject, htmlMessage) { IsBodyHtml = true };
             return client.SendMailAsync(message);
         }
     }

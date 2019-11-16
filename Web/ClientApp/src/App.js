@@ -3,12 +3,13 @@ import { Route, Switch } from 'react-router-dom';
 import { observer, inject } from 'mobx-react'
 import Snackbar from './components/modal/snackbar';
 import { withTranslation } from 'react-i18next';
+import { Dialog } from '@material-ui/core';
 
-import { SIGN_IN, SIGN_UP } from './utils/routes';
+import { SIGN_IN, SIGN_UP, CONFIRM_EMAIL } from './utils/routes';
 
 import SignInPage from './pages/signin/page';
 import SignUpPage from './pages/signup/page';
-import { Dialog } from '@material-ui/core';
+import ConfirmEmailPage from './pages/confirmEmail/page';
 
 @inject('rootStore')
 @withTranslation()
@@ -63,6 +64,9 @@ class App extends React.Component {
         return (
             <React.Fragment>
                 <Switch>
+                    <Route path={CONFIRM_EMAIL}>
+                        <ConfirmEmailPage />
+                    </Route>
                     <Route path={SIGN_IN}>
                         <SignInPage />
                     </Route>
