@@ -6,7 +6,7 @@ i18n.use(XHR)
     .use(LanguageDetector)
     .init({
         lng: 'en',
-        fallbackLng: 'en',
+        fallbackLng: 'dev',
         debug: process.env.DEBUG_I18N
     });
 

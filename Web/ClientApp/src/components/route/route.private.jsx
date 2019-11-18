@@ -1,24 +1,21 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { Route, Redirect } from 'react-router-dom';
-import { SIGN_IN } from './../../utils/routes';
+import { Route } from 'react-router-dom';
+import Preview from '../../pages/home/components/preview';
 
 @inject('rootStore')
 @observer
 class PrivateRoute extends React.Component {
-    componentDidMount() {
-        const { userStore, modalStore } = props.rootStore;
-        if (!userStore.isUserLoggedIn) modalStore.showModal('Sign-in to view this page', 'warning');
-    }
-
     render() {
-        const { rootStore: { userStore }, path } = props;
+        const { rootStore, path, children } = this.props;
+        const { userStore } = rootStore;
 
         return (
             <Route path={path}>
-                {userStore.isUserLoggedIn
-                    ? props.children
-                    : <Redirect to={SIGN_IN}/>}
+                {userStore.user.isLoggedIn
+                    ? children
+                    : <Preview />
+                }
             </Route>
         );
     }

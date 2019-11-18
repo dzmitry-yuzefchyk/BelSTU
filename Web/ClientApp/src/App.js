@@ -1,15 +1,17 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import { observer, inject } from 'mobx-react'
 import Snackbar from './components/modal/snackbar';
 import { withTranslation } from 'react-i18next';
 import { Dialog } from '@material-ui/core';
+import AnonymousRoute from './components/route/route.anonymous';
 
-import { SIGN_IN, SIGN_UP, CONFIRM_EMAIL } from './utils/routes';
+import { SIGN_IN, SIGN_UP, CONFIRM_EMAIL, HOME } from './utils/routes';
 
 import SignInPage from './pages/signin/page';
 import SignUpPage from './pages/signup/page';
 import ConfirmEmailPage from './pages/confirmEmail/page';
+import HomePage from './pages/home/page';
 
 @inject('rootStore')
 @withTranslation()
@@ -21,6 +23,10 @@ class App extends React.Component {
 
         this.closeSnackbar = this.closeSnackbar.bind(this);
         this.renderSnackbar = this.renderSnackbar.bind(this);
+    }
+
+    async componentDidMount() {
+        await this.props.rootStore.fetchUserData();
     }
 
     closeSnackbar() {
@@ -64,16 +70,21 @@ class App extends React.Component {
         return (
             <React.Fragment>
                 <Switch>
-                    <Route path={CONFIRM_EMAIL}>
+                    <AnonymousRoute path={CONFIRM_EMAIL}>
                         <ConfirmEmailPage />
-                    </Route>
-                    <Route path={SIGN_IN}>
+                    </AnonymousRoute>
+                    
+                    <AnonymousRoute path={SIGN_IN}>
                         <SignInPage />
-                    </Route>
-                    <Route path={SIGN_UP}>
+                    </AnonymousRoute>
+                    
+                    <AnonymousRoute path={SIGN_UP}>
                         <SignUpPage />
+                    </AnonymousRoute>
+
+                    <Route path={HOME}>
+                        <HomePage />
                     </Route>
-                    <Route exact path='/' />
                 </Switch>
                 {this.renderSnackbar()}
                 {this.renderModal()}

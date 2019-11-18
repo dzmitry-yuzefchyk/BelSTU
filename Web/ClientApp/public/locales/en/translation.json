@@ -35,5 +35,11 @@
     "resend email": "Resend email",
     "confirm": "Confirm",
     "close": "Close"
+  },
+  "sidebar": {
+    "Projects": "Projects",
+    "Account": "Account",
+    "Notifications": "Notifications",
+    "Sign-Out": "Sign-Out"
   }
 }

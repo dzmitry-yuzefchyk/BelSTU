@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace DataProvider.Entities
+﻿namespace DataProvider.Entities
 {
     public class BoardSettings
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public Board Board { get; set; }
         public int AccessToDeleteTask { get; set; }
         public int AccessToChangeTask { get; set; }

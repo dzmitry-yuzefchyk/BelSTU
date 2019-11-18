@@ -14,5 +14,9 @@ export const GET_PROFILE = `${accountController}/Profile`;
 export const GET_SETTINGS = `${accountController}/Settings`;
 export const GET_IS_AUTHORIZED = `${accountController}/IsAuthenticated`;
 
+const notificationController = `${api}/Notification`;
+export const GET_NOTIFICATIONS = `${notificationController}`;
+
 //Hubs
 export const BOARD_HUB = '/board';
+export const NOTIFICATION_HUB = '/notification';

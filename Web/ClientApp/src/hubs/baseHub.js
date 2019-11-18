@@ -23,4 +23,12 @@ export default class BaseHub {
             }
         }
     }
+
+    addToGroup(groupName) {
+        this.connection.invoke('RemoveFromGroupAsync', groupName);
+    }
+
+    removeFromGroup(groupName) {
+        this.connection.invoke('AddToGroupAsync', groupName);
+    }
 }

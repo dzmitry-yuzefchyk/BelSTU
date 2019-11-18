@@ -1,6 +1,6 @@
 import React from 'react';
 import * as R from 'ramda';
-import { inject } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import useForm from './../../../components/form/useForm';
 import { withStyles, Box, Paper, Button, TextField, Checkbox } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
@@ -126,6 +126,7 @@ const SignInForm = (props) => {
 export default R.compose(
     inject('rootStore'),
     withRouter,
+    observer,
     withTranslation(),
     withStyles(styles)
 )(SignInForm);

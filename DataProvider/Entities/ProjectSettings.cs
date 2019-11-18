@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace DataProvider.Entities
+﻿namespace DataProvider.Entities
 {
     public class ProjectSettings
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public Project Project { get; set; }
         public string PathToBackground { get; set; }
         public bool UseAdvancedSecuritySettings { get; set; }

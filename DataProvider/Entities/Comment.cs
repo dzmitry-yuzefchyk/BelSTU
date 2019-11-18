@@ -5,9 +5,9 @@ namespace DataProvider.Entities
 {
     public class Comment
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string Content { get; set; }
-        public Guid TaskId { get; set; }
+        public int TaskId { get; set; }
         public Task Task { get; set; }
         public Guid CreatorId { get; set; }
         public User Creator { get; set; }

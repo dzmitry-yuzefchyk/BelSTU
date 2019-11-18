@@ -24,8 +24,8 @@ namespace DataProvider.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -42,15 +42,16 @@ namespace DataProvider.Migrations
 
             modelBuilder.Entity("DataProvider.Entities.Board", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<Guid>("CreatorId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
 
                     b.Property<int>("TaskIndex")
                         .HasColumnType("int");
@@ -72,8 +73,8 @@ namespace DataProvider.Migrations
 
             modelBuilder.Entity("DataProvider.Entities.BoardSettings", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
                     b.Property<int>("AccessToChangeBoard")
                         .HasColumnType("int");
@@ -94,12 +95,13 @@ namespace DataProvider.Migrations
 
             modelBuilder.Entity("DataProvider.Entities.Column", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<Guid>("BoardId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("BoardId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Position")
                         .HasColumnType("int");
@@ -116,9 +118,10 @@ namespace DataProvider.Migrations
 
             modelBuilder.Entity("DataProvider.Entities.Comment", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
@@ -129,8 +132,8 @@ namespace DataProvider.Migrations
                     b.Property<Guid>("CreatorId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("TaskId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("TaskId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -143,15 +146,16 @@ namespace DataProvider.Migrations
 
             modelBuilder.Entity("DataProvider.Entities.CommentAttachment", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AttachedFilePath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("CommentId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int?>("CommentId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Extension")
                         .HasColumnType("nvarchar(max)");
@@ -171,9 +175,10 @@ namespace DataProvider.Migrations
 
             modelBuilder.Entity("DataProvider.Entities.Notification", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -181,10 +186,7 @@ namespace DataProvider.Migrations
                     b.Property<string>("DirectLink")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeliveredOverEmail")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeliveredOverWeb")
+                    b.Property<bool>("IsDelivered")
                         .HasColumnType("bit");
 
                     b.Property<Guid>("RecipientId")
@@ -202,9 +204,10 @@ namespace DataProvider.Migrations
 
             modelBuilder.Entity("DataProvider.Entities.Project", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -219,8 +222,8 @@ namespace DataProvider.Migrations
 
             modelBuilder.Entity("DataProvider.Entities.ProjectSecurityPolicy", b =>
                 {
-                    b.Property<Guid>("ProjectSecuritySettingsId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("ProjectSecuritySettingsId")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -243,8 +246,8 @@ namespace DataProvider.Migrations
 
             modelBuilder.Entity("DataProvider.Entities.ProjectSecuritySettings", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
                     b.Property<string>("SecretKey")
                         .HasColumnType("nvarchar(max)");
@@ -256,8 +259,8 @@ namespace DataProvider.Migrations
 
             modelBuilder.Entity("DataProvider.Entities.ProjectSettings", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
                     b.Property<int>("AccessToChangeProject")
                         .HasColumnType("int");
@@ -281,8 +284,8 @@ namespace DataProvider.Migrations
 
             modelBuilder.Entity("DataProvider.Entities.ProjectUser", b =>
                 {
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -294,7 +297,7 @@ namespace DataProvider.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ProjectUser");
+                    b.ToTable("ProjectUsers");
                 });
 
             modelBuilder.Entity("DataProvider.Entities.Role", b =>
@@ -327,15 +330,16 @@ namespace DataProvider.Migrations
 
             modelBuilder.Entity("DataProvider.Entities.Task", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<Guid>("AssigneeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ColumnId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("ColumnId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
@@ -368,9 +372,10 @@ namespace DataProvider.Migrations
 
             modelBuilder.Entity("DataProvider.Entities.TaskAttachment", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AttachedFilePath")
                         .HasColumnType("nvarchar(max)");
@@ -384,8 +389,8 @@ namespace DataProvider.Migrations
                     b.Property<string>("MimeType")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("TaskId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int?>("TaskId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

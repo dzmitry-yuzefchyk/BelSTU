@@ -1,4 +1,4 @@
-using BusinessLogic.Hubs;
+using BusinessLogic.Services.HostedServices;
 using BusinessLogic.Services.Implementation;
 using BusinessLogic.Services.Interfaces;
 using CommonLogic.Configuration;
@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Web.Hubs;
 
 namespace Web
 {
@@ -31,6 +32,8 @@ namespace Web
         {
             services.AddDbContext(Configuration, "Default");
             services.AddTransient<IAccountService, AccountService>();
+            services.AddTransient<INotificationService, NotificationService>();
+            services.AddTransient<IProjectService, ProjectService>();
             services.AddTransient<IEmailSender, EmailSender>(x =>
                 new EmailSender(
                     Configuration.GetValue<string>(Env, "EmailHostName", "EmailSender:HostName"),
@@ -40,6 +43,8 @@ namespace Web
                     Configuration.GetValue<bool>(Env, "EmailSslEnabled", "EmailSender:IsSSLEnabled")
                 )
             );
+
+            services.AddHostedService<NotificationCleaner>();
 
             services.AddIdentity();
             services.AddAuthorization();
@@ -87,7 +92,7 @@ namespace Web
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHub<BoardHub>("/board");
+                endpoints.MapHub<NotificationHub>("/notification");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");

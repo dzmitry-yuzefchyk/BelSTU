@@ -3,23 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataProvider.Migrations
 {
-    public partial class inital : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Activities",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Description = table.Column<string>(nullable: true),
-                    Date = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Activities", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -63,7 +50,8 @@ namespace DataProvider.Migrations
                 name: "Projects",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true)
                 },
@@ -182,10 +170,10 @@ namespace DataProvider.Migrations
                 name: "Notifications",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     RecipientId = table.Column<Guid>(nullable: false),
-                    IsDeliveredOverEmail = table.Column<bool>(nullable: false),
-                    IsDeliveredOverWeb = table.Column<bool>(nullable: false),
+                    IsDelivered = table.Column<bool>(nullable: false),
                     Subject = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     DirectLink = table.Column<string>(nullable: true)
@@ -202,13 +190,32 @@ namespace DataProvider.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserProfiles",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Tag = table.Column<string>(nullable: true),
+                    Icon = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserProfiles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserProfiles_AspNetUsers_Id",
+                        column: x => x.Id,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserSettings",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     EmailNotifications = table.Column<bool>(nullable: false),
-                    Theme = table.Column<string>(nullable: true),
-                    Icon = table.Column<string>(nullable: true)
+                    Theme = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -222,13 +229,42 @@ namespace DataProvider.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Activities",
+                columns: table => new
+                {
+                    ProjectId = table.Column<int>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    Date = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Activities", x => new { x.UserId, x.ProjectId });
+                    table.ForeignKey(
+                        name: "FK_Activities_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Projects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Activities_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Boards",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(nullable: true),
-                    ProjectId = table.Column<Guid>(nullable: false),
-                    CreatorId = table.Column<Guid>(nullable: false)
+                    ProjectId = table.Column<int>(nullable: false),
+                    CreatorId = table.Column<Guid>(nullable: false),
+                    TaskPrefix = table.Column<string>(nullable: true),
+                    TaskIndex = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -251,7 +287,8 @@ namespace DataProvider.Migrations
                 name: "ProjectSecuritySettings",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false)
+                    Id = table.Column<int>(nullable: false),
+                    SecretKey = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -268,7 +305,7 @@ namespace DataProvider.Migrations
                 name: "ProjectSettings",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<int>(nullable: false),
                     PathToBackground = table.Column<string>(nullable: true),
                     UseAdvancedSecuritySettings = table.Column<bool>(nullable: false),
                     AccessToDeleteBoard = table.Column<int>(nullable: false),
@@ -287,24 +324,24 @@ namespace DataProvider.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProjectUser",
+                name: "ProjectUsers",
                 columns: table => new
                 {
-                    ProjectId = table.Column<Guid>(nullable: false),
+                    ProjectId = table.Column<int>(nullable: false),
                     UserId = table.Column<Guid>(nullable: false),
                     Role = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProjectUser", x => new { x.ProjectId, x.UserId });
+                    table.PrimaryKey("PK_ProjectUsers", x => new { x.ProjectId, x.UserId });
                     table.ForeignKey(
-                        name: "FK_ProjectUser_Projects_ProjectId",
+                        name: "FK_ProjectUsers_Projects_ProjectId",
                         column: x => x.ProjectId,
                         principalTable: "Projects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProjectUser_AspNetUsers_UserId",
+                        name: "FK_ProjectUsers_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -315,7 +352,7 @@ namespace DataProvider.Migrations
                 name: "BoardSettings",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<int>(nullable: false),
                     AccessToDeleteTask = table.Column<int>(nullable: false),
                     AccessToChangeTask = table.Column<int>(nullable: false),
                     AccessToCreateTask = table.Column<int>(nullable: false),
@@ -336,10 +373,11 @@ namespace DataProvider.Migrations
                 name: "Columns",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(nullable: true),
                     Position = table.Column<int>(nullable: false),
-                    BoardId = table.Column<Guid>(nullable: false)
+                    BoardId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -356,13 +394,15 @@ namespace DataProvider.Migrations
                 name: "ProjectSecurityPolicies",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    ProjectSecuritySettingsId = table.Column<Guid>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: false)
+                    ProjectSecuritySettingsId = table.Column<int>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
+                    UseSecretKey = table.Column<bool>(nullable: false),
+                    Action = table.Column<string>(nullable: true),
+                    IsAllowed = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProjectSecurityPolicies", x => x.Id);
+                    table.PrimaryKey("PK_ProjectSecurityPolicies", x => new { x.ProjectSecuritySettingsId, x.UserId });
                     table.ForeignKey(
                         name: "FK_ProjectSecurityPolicies_ProjectSecuritySettings_ProjectSecuritySettingsId",
                         column: x => x.ProjectSecuritySettingsId,
@@ -381,7 +421,8 @@ namespace DataProvider.Migrations
                 name: "Tasks",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(nullable: true),
                     Content = table.Column<string>(nullable: true),
                     Type = table.Column<int>(nullable: false),
@@ -389,7 +430,7 @@ namespace DataProvider.Migrations
                     Severity = table.Column<int>(nullable: false),
                     AssigneeId = table.Column<Guid>(nullable: false),
                     CreatorId = table.Column<Guid>(nullable: false),
-                    ColumnId = table.Column<Guid>(nullable: false)
+                    ColumnId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -416,9 +457,10 @@ namespace DataProvider.Migrations
                 name: "Comments",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Content = table.Column<string>(nullable: true),
-                    TaskId = table.Column<Guid>(nullable: false),
+                    TaskId = table.Column<int>(nullable: false),
                     CreatorId = table.Column<Guid>(nullable: false),
                     CreationDate = table.Column<DateTime>(nullable: false)
                 },
@@ -442,8 +484,9 @@ namespace DataProvider.Migrations
                 name: "TaskAttachments",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    TaskId = table.Column<Guid>(nullable: true),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TaskId = table.Column<int>(nullable: true),
                     FileName = table.Column<string>(nullable: true),
                     MimeType = table.Column<string>(nullable: true),
                     Extension = table.Column<string>(nullable: true),
@@ -464,8 +507,9 @@ namespace DataProvider.Migrations
                 name: "CommentAttachments",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    CommentId = table.Column<Guid>(nullable: true),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CommentId = table.Column<int>(nullable: true),
                     FileName = table.Column<string>(nullable: true),
                     MimeType = table.Column<string>(nullable: true),
                     Extension = table.Column<string>(nullable: true),
@@ -481,6 +525,11 @@ namespace DataProvider.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Activities_ProjectId",
+                table: "Activities",
+                column: "ProjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -557,18 +606,13 @@ namespace DataProvider.Migrations
                 column: "RecipientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProjectSecurityPolicies_ProjectSecuritySettingsId",
-                table: "ProjectSecurityPolicies",
-                column: "ProjectSecuritySettingsId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ProjectSecurityPolicies_UserId",
                 table: "ProjectSecurityPolicies",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProjectUser_UserId",
-                table: "ProjectUser",
+                name: "IX_ProjectUsers_UserId",
+                table: "ProjectUsers",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -628,10 +672,13 @@ namespace DataProvider.Migrations
                 name: "ProjectSettings");
 
             migrationBuilder.DropTable(
-                name: "ProjectUser");
+                name: "ProjectUsers");
 
             migrationBuilder.DropTable(
                 name: "TaskAttachments");
+
+            migrationBuilder.DropTable(
+                name: "UserProfiles");
 
             migrationBuilder.DropTable(
                 name: "UserSettings");

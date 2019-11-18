@@ -49,7 +49,7 @@ namespace Web.Controllers
             }
 
             this.ResetCookieSecurityToken();
-            return Ok();
+            return Ok(result);
         }
 
         [HttpPost("ConfirmEmail")]

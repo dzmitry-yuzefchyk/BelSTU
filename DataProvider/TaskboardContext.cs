@@ -28,6 +28,7 @@ namespace DataProvider
         public DbSet<ProjectSecurityPolicy> ProjectSecurityPolicies { get; set; }
         public DbSet<ProjectSecuritySettings> ProjectSecuritySettings { get; set; }
         public DbSet<ProjectSettings> ProjectSettings { get; set; }
+        public DbSet<ProjectUser> ProjectUsers { get; set; }
         public DbSet<Board> Boards { get; set; }
         public DbSet<BoardSettings> BoardSettings { get; set; }
         public DbSet<Column> Columns { get; set; }

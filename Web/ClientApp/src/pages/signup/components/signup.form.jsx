@@ -1,6 +1,6 @@
 import React from 'react';
 import * as R from 'ramda';
-import { inject } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import { registrationFormValidator as validator } from '../../../utils/validators';
 import { withStyles, Box, Paper, Button, TextField } from '@material-ui/core';
 import jdenticon from 'jdenticon';
@@ -126,6 +126,7 @@ const SignUpForm = (props) => {
 export default R.compose(
     inject('rootStore'),
     withRouter,
+    observer,
     withTranslation(),
     withStyles(styles)
 )(SignUpForm);
