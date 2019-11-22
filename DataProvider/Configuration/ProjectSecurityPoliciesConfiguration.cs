@@ -8,12 +8,12 @@ namespace DataProvider.Configuration
     {
         public void Configure(EntityTypeBuilder<ProjectSecurityPolicy> builder)
         {
-            builder.HasKey(x => new { x.ProjectSecuritySettingsId, x.UserId });
+            builder.HasKey(x => new { x.ProjectSettingsId, x.UserId });
 
             builder
-                .HasOne(x => x.ProjectSecuritySettings)
+                .HasOne(x => x.ProjectSettings)
                 .WithMany(x => x.Policies)
-                .HasForeignKey(x => x.ProjectSecuritySettingsId);
+                .HasForeignKey(x => x.ProjectSettingsId);
 
             builder
                 .HasOne(x => x.User)

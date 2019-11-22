@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 
-namespace Web.Hubs
+namespace BusinessLogic.Hubs
 {
-    public class ProjectHub : Hub
+    public class BoardHub : Hub
     {
         public async void AddToGroupAsync(string groupName)
         {

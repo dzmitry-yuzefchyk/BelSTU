@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -31,23 +32,21 @@ namespace BusinessLogic.Services.Implementation
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger _logger;
         private readonly IEmailSender _emailSender;
-        private readonly IConfiguration _config;
-        private readonly IWebHostEnvironment _env;
+        private readonly IOptions<AppSettings> _settings;
 
         //TODO: fix params in here
-        public AccountService(TaskboardContext context, UserManager<User> userManager, IConfiguration configuration, IWebHostEnvironment env,
-            SignInManager<User> signInManager, ILoggerFactory loggerFactory, IEmailSender emailSender)
+        public AccountService(TaskboardContext context, UserManager<User> userManager, SignInManager<User> signInManager,
+            ILoggerFactory loggerFactory, IEmailSender emailSender, IOptions<AppSettings> settings)
         {
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = loggerFactory.CreateLogger<FileLogger>();
             _emailSender = emailSender;
-            _config = configuration;
-            _env = env;
+            _settings = settings;
         }
 
-        public async Task<(bool IsDone, string Message)> SignUpAsync(RegistrationModel model, string clientAppHost)
+        public async Task<(bool IsDone, string Message)> SignUpAsync(RegistrationModel model)
         {
             try
             {
@@ -86,7 +85,7 @@ namespace BusinessLogic.Services.Implementation
                     return (IsDone: false, Message: "Can't create such user");
                 }
 
-                return await SendConfirmEmailAsync(model.Email, clientAppHost);
+                return await SendConfirmEmailAsync(model.Email);
             }
             catch (Exception e)
             {
@@ -165,7 +164,7 @@ namespace BusinessLogic.Services.Implementation
             return (IsDone: true, Message: "You may now sign-in");
         }
 
-        public async Task<(bool IsDone, string Message)> SendConfirmEmailAsync(string email, string clientAppHost)
+        public async Task<(bool IsDone, string Message)> SendConfirmEmailAsync(string email)
         {
             try
             {
@@ -187,7 +186,7 @@ namespace BusinessLogic.Services.Implementation
                 var emailConfirmationToken = HttpUtility.HtmlEncode(code);
                 byte[] tokenGeneratedBytes = Encoding.UTF8.GetBytes(emailConfirmationToken);
                 var codeEncoded = WebEncoders.Base64UrlEncode(tokenGeneratedBytes);
-                var emailResult = await SendEmailConfirmationAsync(email, profile.Tag.Split('#').First(), codeEncoded, clientAppHost);
+                var emailResult = await SendEmailConfirmationAsync(email, profile.Tag.Split('#').First(), codeEncoded);
                 if (!emailResult)
                 {
                     _logger.LogWarning($"Account service, ResendConfirmEmailAsync", email);
@@ -321,15 +320,15 @@ namespace BusinessLogic.Services.Implementation
             }
         }
 
-        private async Task<bool> SendEmailConfirmationAsync(string email, string tag, string token, string clientAppHost)
+        private async Task<bool> SendEmailConfirmationAsync(string email, string tag, string token)
         {
             try
             {
-                var href = $"https://{clientAppHost}/confirm_email/{email}?token={token}";
+                var href = $"{_settings.Value.Host.Url}/confirm_email/{email}?token={token}";
                 var link = $"<a " +
                     $"href=\"{href}\"" +
-                    $" target=\"_blank\"" +
-                    $" shape=\"rect\">" +
+                    $"target=\"_blank\"" +
+                    $"shape=\"rect\">" +
                     $"Click Me!</a> ";
                 var htmlMessage = $"Dear, @{tag}, {link}";
                 await _emailSender.SendEmailAsync(email, "Confirmation", htmlMessage);
@@ -344,12 +343,12 @@ namespace BusinessLogic.Services.Implementation
 
         private string GenerateJSONWebToken(User user)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetValue<string>(_env, "JwtKey", "Jwt:Key")));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.Value.Jwt.Key));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var claims = SetupUserClaims(user);
 
-            var token = new JwtSecurityToken(_config.GetValue<string>(_env, "JwtIssuer", "Jwt:Issuer"),
-              _config.GetValue<string>(_env, "JwtIssuer", "Jwt:Issuer"),
+            var token = new JwtSecurityToken(_settings.Value.Jwt.Issuer,
+              _settings.Value.Jwt.Issuer,
               claims,
               expires: DateTime.Now.AddMinutes(120),
               signingCredentials: credentials);

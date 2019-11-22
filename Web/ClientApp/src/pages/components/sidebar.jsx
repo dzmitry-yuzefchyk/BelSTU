@@ -76,8 +76,8 @@ class Sidebar extends React.Component {
 
     render() {
         const { classes, rootStore } = this.props;
-        const { isOpen } = this.state;        
-        const { userStore } = rootStore;
+        const { isOpen } = this.state;
+        const { userStore, notificationStore } = rootStore;
 
         return (
             <Drawer
@@ -122,7 +122,7 @@ class Sidebar extends React.Component {
                         text={'Notifications'}
                         icon={<NotificationsIcon />}
                         badge
-                        badgeValue={3}
+                        badgeValue={notificationStore.amount}
                     />
                 </List>
                 <Divider />

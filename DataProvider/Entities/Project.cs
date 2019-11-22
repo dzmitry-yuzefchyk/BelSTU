@@ -11,7 +11,6 @@ namespace DataProvider.Entities
         public ICollection<ProjectUser> Users { get; set; }
         public ICollection<Activity> Activities { get; set; }
         public ProjectSettings Settings { get; set; }
-        public ProjectSecuritySettings ProjectSecuritySettings { get; set; }
 
         public Project()
         {

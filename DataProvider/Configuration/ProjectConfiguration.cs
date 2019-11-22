@@ -12,11 +12,6 @@ namespace DataProvider.Configuration
                 .HasOne(x => x.Settings)
                 .WithOne(x => x.Project)
                 .HasForeignKey<ProjectSettings>(x => x.Id);
-
-            builder
-                .HasOne(x => x.ProjectSecuritySettings)
-                .WithOne(x => x.Project)
-                .HasForeignKey<ProjectSecuritySettings>(x => x.Id);
         }
     }
 }

@@ -26,11 +26,9 @@ namespace DataProvider
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<ProjectSecurityPolicy> ProjectSecurityPolicies { get; set; }
-        public DbSet<ProjectSecuritySettings> ProjectSecuritySettings { get; set; }
         public DbSet<ProjectSettings> ProjectSettings { get; set; }
         public DbSet<ProjectUser> ProjectUsers { get; set; }
         public DbSet<Board> Boards { get; set; }
-        public DbSet<BoardSettings> BoardSettings { get; set; }
         public DbSet<Column> Columns { get; set; }
         public DbSet<Task> Tasks { get; set; }
         public DbSet<TaskAttachment> TaskAttachments { get; set; }

@@ -117,10 +117,6 @@ class UserStore {
 
     }
 
-    @action.bound
-    async getNotifications() {
-
-    }
 }
 
 export default UserStore;

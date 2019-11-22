@@ -21,8 +21,7 @@ namespace Web.Controllers
         [HttpPost("SignUp")]
         public async Task<IActionResult> SignUp([FromBody]RegistrationModel model)
         {
-            var clientAppHost = HttpContext.Request.Host.ToString();
-            var (IsDone, Message) = await _accountService.SignUpAsync(model, clientAppHost);
+            var (IsDone, Message) = await _accountService.SignUpAsync(model);
             return IsDone ? (IActionResult)Ok(Message) : BadRequest(Message);
         }
 
@@ -62,8 +61,7 @@ namespace Web.Controllers
         [HttpPost("ResendEmail")]
         public async Task<IActionResult> ResendEmail([FromBody]string email)
         {
-            var clientAppHost = HttpContext.Request.Host.ToString();
-            var (IsDone, Message) = await _accountService.SendConfirmEmailAsync(email, clientAppHost);
+            var (IsDone, Message) = await _accountService.SendConfirmEmailAsync(email);
             return IsDone ? (IActionResult)Ok(Message) : BadRequest(Message);
         }
 

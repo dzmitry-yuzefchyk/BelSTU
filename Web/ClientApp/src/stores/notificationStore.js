@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { observable, action, computed } from 'mobx';
 import NotificationHub from './../hubs/notificationHub';
 import { GET } from './../utils/axios';
 import { GET_NOTIFICATIONS } from './../utils/api.routes';
@@ -10,6 +10,10 @@ export default class NotificationStore {
     }
 
     @observable notifications = [];
+
+    @computed get amount() {
+        return this.notifications.length;
+    }
 
     @action.bound
     async getNotifcations() {

@@ -18,7 +18,6 @@ class RootStore {
         if (!this.userStore.user.isLoggedIn) return;
 
         await Promise.all([
-            this.userStore.getNotifications(),
             this.userStore.getProfile(),
             this.userStore.getSettings(),
             this.notificationStore.getNotifcations()

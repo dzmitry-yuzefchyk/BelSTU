@@ -1,4 +1,6 @@
-﻿namespace DataProvider.Entities
+﻿using System.Collections.Generic;
+
+namespace DataProvider.Entities
 {
     public class ProjectSettings
     {
@@ -6,8 +8,14 @@
         public Project Project { get; set; }
         public string PathToBackground { get; set; }
         public bool UseAdvancedSecuritySettings { get; set; }
-        public int AccessToDeleteBoard { get; set; }
         public int AccessToChangeProject { get; set; }
-        public int AccessToCreateBoard { get; set; }
+        public int AccessToChangeBoard { get; set; }
+        public int AccessToChangeTask { get; set; }
+        public ICollection<ProjectSecurityPolicy> Policies { get; set; }
+
+        public ProjectSettings()
+        {
+            Policies = new List<ProjectSecurityPolicy>();
+        }
     }
 }

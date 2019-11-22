@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace BusinessLogic.Models.Notification
+﻿namespace BusinessLogic.Models.Notification
 {
     public class CreateNotificationModel
     {

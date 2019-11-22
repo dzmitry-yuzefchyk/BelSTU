@@ -10,7 +10,6 @@ namespace DataProvider.Entities
         public ICollection<Column> Columns { get; set; }
         public int ProjectId { get; set; }
         public Project Project { get; set; }
-        public BoardSettings Settings { get; set; }
         public Guid CreatorId { get; set; }
         public User Creator { get; set; }
         public string TaskPrefix { get; set; }

@@ -1,3 +1,4 @@
+using BusinessLogic.Hubs;
 using BusinessLogic.Services.HostedServices;
 using BusinessLogic.Services.Implementation;
 using BusinessLogic.Services.Interfaces;
@@ -13,7 +14,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Web.Hubs;
 
 namespace Web
 {
@@ -30,21 +30,24 @@ namespace Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.AddDbContext(Configuration, "Default");
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<INotificationService, NotificationService>();
+            services.AddTransient<ISecurityService, SecurityService>();
             services.AddTransient<IProjectService, ProjectService>();
             services.AddTransient<IEmailSender, EmailSender>(x =>
                 new EmailSender(
-                    Configuration.GetValue<string>(Env, "EmailHostName", "EmailSender:HostName"),
-                    Configuration.GetValue<string>(Env, "EmailUserName", "EmailSender:UserName"),
-                    Configuration.GetValue<string>(Env, "EmailPassword", "EmailSender:Password"),
-                    Configuration.GetValue<int>(Env, "EmailPort", "EmailSender:Port"),
-                    Configuration.GetValue<bool>(Env, "EmailSslEnabled", "EmailSender:IsSSLEnabled")
+                    Configuration.GetValue<string>("EmailSender:HostName"),
+                    Configuration.GetValue<string>("EmailSender:UserName"),
+                    Configuration.GetValue<string>("EmailSender:Password"),
+                    Configuration.GetValue<int>("EmailSender:Port"),
+                    Configuration.GetValue<bool>("EmailSender:IsSSLEnabled")
                 )
             );
 
-            services.AddHostedService<NotificationCleaner>();
+            //TODO: fix scoped DI
+            //services.AddHostedService<NotificationCleaner>();
 
             services.AddIdentity();
             services.AddAuthorization();
@@ -92,7 +95,7 @@ namespace Web
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHub<NotificationHub>("/notification");
+                endpoints.MapHub<NotificationHub>("/hub/notification");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
@@ -109,7 +112,7 @@ namespace Web
             });
 
             app.UseCors(x => x
-                .WithOrigins(Configuration.GetValue<string>(env, "CurrentHost", "Host:Url"))
+                .WithOrigins(Configuration.GetValue<string>("AppSettings:Host:Url"))
                 .AllowCredentials()
                 .AllowAnyMethod()
                 .AllowAnyHeader());

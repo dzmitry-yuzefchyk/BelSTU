@@ -4,14 +4,16 @@ using DataProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataProvider.Migrations
 {
     [DbContext(typeof(TaskboardContext))]
-    partial class TaskboardContextModelSnapshot : ModelSnapshot
+    [Migration("20191118061609_changed_simple_security")]
+    partial class changed_simple_security
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -200,23 +202,39 @@ namespace DataProvider.Migrations
 
             modelBuilder.Entity("DataProvider.Entities.ProjectSecurityPolicy", b =>
                 {
-                    b.Property<int>("ProjectSettingsId")
+                    b.Property<int>("ProjectSecuritySettingsId")
                         .HasColumnType("int");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Action")
-                        .HasColumnType("int");
+                    b.Property<string>("Action")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsAllowed")
                         .HasColumnType("bit");
 
-                    b.HasKey("ProjectSettingsId", "UserId");
+                    b.Property<bool>("UseSecretKey")
+                        .HasColumnType("bit");
+
+                    b.HasKey("ProjectSecuritySettingsId", "UserId");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("ProjectSecurityPolicies");
+                });
+
+            modelBuilder.Entity("DataProvider.Entities.ProjectSecuritySettings", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SecretKey")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProjectSecuritySettings");
                 });
 
             modelBuilder.Entity("DataProvider.Entities.ProjectSettings", b =>
@@ -252,8 +270,8 @@ namespace DataProvider.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Role")
-                        .HasColumnType("int");
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ProjectId", "UserId");
 
@@ -635,15 +653,24 @@ namespace DataProvider.Migrations
 
             modelBuilder.Entity("DataProvider.Entities.ProjectSecurityPolicy", b =>
                 {
-                    b.HasOne("DataProvider.Entities.ProjectSettings", "ProjectSettings")
+                    b.HasOne("DataProvider.Entities.ProjectSecuritySettings", "ProjectSecuritySettings")
                         .WithMany("Policies")
-                        .HasForeignKey("ProjectSettingsId")
+                        .HasForeignKey("ProjectSecuritySettingsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("DataProvider.Entities.User", "User")
                         .WithMany("Policies")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DataProvider.Entities.ProjectSecuritySettings", b =>
+                {
+                    b.HasOne("DataProvider.Entities.Project", "Project")
+                        .WithOne("ProjectSecuritySettings")
+                        .HasForeignKey("DataProvider.Entities.ProjectSecuritySettings", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
