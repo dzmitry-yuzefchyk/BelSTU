@@ -6,9 +6,12 @@ import * as R from 'ramda';
 const styles = theme => ({
     card: {
         marginLeft: 10,
-        marginRigh: 10,
+        marginRight: 10,
         marginTop: 2,
-        marginBottom: 2
+        marginBottom: 2,
+        height: 150,
+        maxHeight: 150,
+        maxWidth: 300
     }
 });
 

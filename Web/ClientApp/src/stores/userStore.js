@@ -1,17 +1,52 @@
-import { observable, action } from 'mobx';
+import { observable, action, computed } from 'mobx';
 import { POST, GET } from './../utils/axios';
-import { POST_SIGN_UP, POST_SIGN_IN, POST_SIGN_OUT, POST_CONFIRM_EMAIL, POST_RESEND_EMAIL, GET_IS_AUTHORIZED, GET_PROFILE, GET_SETTINGS } from './../utils/api.routes';
-import i18n from './../i18n';
+import {
+    POST_SIGN_UP,
+    POST_SIGN_IN,
+    POST_SIGN_OUT,
+    POST_CONFIRM_EMAIL,
+    POST_RESEND_EMAIL, GET_IS_AUTHORIZED,
+    GET_PROFILE,
+    GET_SETTINGS
+} from './../utils/api.routes';
+
+const navbarPath = 'navbar';
+
+const themes = {
+    dark: 0,
+    light: 1
+};
+
+const anonymousUser = {
+    isLoggedIn: false,
+    lang: 'en',
+    settings: {
+        theme: themes.light,
+        navbar: Boolean(window.localStorage.getItem(navbarPath))
+    }
+};
 
 class UserStore {
     constructor(rootStore) {
         this.rootStore = rootStore;
     }
 
-    @observable user = {
-        isLoggedIn: false,
-        lang: 'en'
-    };
+    @observable user = anonymousUser;
+
+    @computed
+    get darkTheme() {
+        return this.user.settings.theme === themes.dark;
+    }
+
+    @computed
+    get isNavOpen() {
+        return this.user.settings.navbar;
+    }
+
+    set isNavOpen(boolean) {
+        this.user.settings.navbar = boolean;
+        window.localStorage.setItem(navbarPath, boolean);
+    }
 
     @action.bound
     async checkAuth() {
@@ -59,7 +94,7 @@ class UserStore {
     async signOut() {
         try {
             await POST(POST_SIGN_OUT);
-            this.user = { isLoggedIn: false };
+            this.user = anonymousUser;
         } catch (e) {
             if (e.response) {
                 this.rootStore.snackbarStore.show(e.response.data, 'error');
@@ -101,6 +136,7 @@ class UserStore {
     async updateProfile(profile) {
         try {
             const response = await POST(POST_CONFIRM_EMAIL, profile);
+            this.user.profile = profile;
             this.rootStore.snackbarStore.show(response.data, 'success');
         } catch (e) {
             if (e.response) {
@@ -115,6 +151,7 @@ class UserStore {
     async updateSettings(settings) {
         try {
             const response = await POST(POST_CONFIRM_EMAIL, settings);
+            this.user.settings = settings;
             this.rootStore.snackbarStore.show(response.data, 'success');
         } catch (e) {
             if (e.response) {
@@ -127,10 +164,10 @@ class UserStore {
 
     @action.bound
     async getProfile() {
-        //i18n.changeLanguage(this.user.lang);
         try {
             const response = await GET(GET_PROFILE);
             this.user.profile = response.data;
+            //i18n.changeLanguage(this.user.lang);
         } catch (e) {
             if (e.response) {
                 this.rootStore.snackbarStore.show(e.response.data, 'error');

@@ -48,3 +48,13 @@ export function resendEmailFormValidator(values) {
 
     return result;
 }
+
+export function createProjectFormValidator(values) {
+    let result = {};
+
+    if (!values.title) {
+        result.title = 'Title is required';
+    }
+
+    return result;
+}

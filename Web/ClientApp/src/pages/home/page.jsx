@@ -6,6 +6,8 @@ import { withStyles } from '@material-ui/styles';
 import PrivateRoute from '../../components/route/route.private';
 import { PROJECTS } from '../../utils/routes';
 import ProjectsBoard from './components/projects.board';
+import { useLocation } from 'react-router-dom';
+import * as R from 'ramda';
 
 const styles = theme => ({
     root: {
@@ -19,31 +21,32 @@ const styles = theme => ({
     }
 });
 
-@inject('rootStore')
-@withStyles(styles)
-@observer
-class HomePage extends React.Component {
-    render() {
-        const { rootStore, classes } = this.props;
-        const { userStore } = rootStore;
+const HomePage = (props) => {
+    const { rootStore, classes } = props;
+    const { userStore } = rootStore;
+    const query = new URLSearchParams(useLocation().search);
+    const page = query.get('page') || 0;
 
-        if (!userStore.user.isLoggedIn)
-            return <Preview />;
+    if (!userStore.user.isLoggedIn)
+        return <Preview />;
 
-        return (
-            <div className={classes.root}>
-                <Sidebar />
-                <div className={classes.content}>
-                    <PrivateRoute path={PROJECTS}>
-                        <ProjectsBoard />
-                    </PrivateRoute>
-                    <PrivateRoute path='/fff'>
-                        <div> 2</div>
-                    </PrivateRoute>
-                </div>
+    return (
+        <div className={classes.root}>
+            <Sidebar />
+            <div className={classes.content}>
+                <PrivateRoute path={PROJECTS}>
+                    <ProjectsBoard page={page} />
+                </PrivateRoute>
+                <PrivateRoute path='/fff'>
+                    <div> 2</div>
+                </PrivateRoute>
             </div>
-        );
-    }
+        </div>
+    );
 }
 
-export default HomePage;
+export default R.compose(
+    inject('rootStore'),
+    withStyles(styles),
+    observer
+)(HomePage);

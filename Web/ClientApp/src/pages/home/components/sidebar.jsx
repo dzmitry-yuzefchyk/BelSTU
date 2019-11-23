@@ -68,18 +68,14 @@ class Sidebar extends React.Component {
     constructor() {
         super();
 
-        this.state = {
-            isOpen: true
-        };
-
         this.toggleSidebar = this.toggleSidebar.bind(this);
         this.handleGoto = this.handleGoto.bind(this);
     }
 
     toggleSidebar() {
-        this.setState(prevState => ({
-            isOpen: !prevState.isOpen
-        }));
+        const { userStore } = this.props.rootStore;
+        const isNavOpen = userStore.isNavOpen;
+        userStore.isNavOpen = !isNavOpen;
     }
 
     handleGoto(destination) {
@@ -89,8 +85,8 @@ class Sidebar extends React.Component {
 
     render() {
         const { classes, rootStore, t } = this.props;
-        const { isOpen } = this.state;
         const { userStore, notificationStore } = rootStore;
+        const isOpen = userStore.isNavOpen;
 
         return (
             <Drawer
