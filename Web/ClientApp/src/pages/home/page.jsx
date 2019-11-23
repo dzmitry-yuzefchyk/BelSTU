@@ -3,7 +3,7 @@ import { inject, observer } from 'mobx-react';
 import Preview from './components/preview';
 import Sidebar from './components/sidebar';
 import { withStyles } from '@material-ui/styles';
-import PrivateRoute from '../../components/route/route.private';
+import PrivateRoute from '../../components/route/route.private.strict';
 import { PROJECTS } from '../../utils/routes';
 import ProjectsBoard from './components/projects.board';
 import { useLocation } from 'react-router-dom';

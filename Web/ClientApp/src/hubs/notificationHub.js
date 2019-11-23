@@ -10,7 +10,7 @@ class NotificationHub extends BaseHub {
     }
 
     notify(message) {
-        console.log(message);
+        alert(message);
         this.notificationStore.notifications.push(message);
     }
 

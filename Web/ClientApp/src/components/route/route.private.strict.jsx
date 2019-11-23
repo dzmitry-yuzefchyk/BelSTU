@@ -10,7 +10,8 @@ class PrivateRouteStrict extends React.Component {
     componentDidUpdate() {
         const { userStore, snackbarStore } = this.props.rootStore;
         const { history } = this.props;
-        if (!userStore.isLoggedIn) {
+        
+        if (!userStore.user.isLoggedIn) {
             snackbarStore.show('Sign-in to view this page', 'warning');
             history.push(SIGN_IN);
         }

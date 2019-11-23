@@ -9,7 +9,7 @@ const styles = () => ({
         width: '100%'
     },
     withBackground: {
-        background: 'url("https://source.unsplash.com/1920x1080/?nature")'
+        background: 'url("/img/formBg.jpg")'
     }
 });
 

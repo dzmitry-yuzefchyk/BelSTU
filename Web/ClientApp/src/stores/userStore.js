@@ -78,7 +78,7 @@ class UserStore {
     async signIn(user) {
         try {
             const response = await POST(POST_SIGN_IN, user);
-            this.user.isLoggedIn = { isLoggedIn: true };
+            this.user.isLoggedIn = true;
             await this.rootStore.fetchUserData();
             this.rootStore.snackbarStore.show(response.data, 'success');
         } catch (e) {
