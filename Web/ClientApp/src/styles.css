@@ -8,4 +8,6 @@
 * {
     padding: 0;
     margin: 0;
+    scrollbar-width: thin;
+    scrollbar-color: dimgray transparent;
 }

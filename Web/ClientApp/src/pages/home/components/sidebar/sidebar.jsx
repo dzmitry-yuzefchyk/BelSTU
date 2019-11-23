@@ -12,7 +12,7 @@ import clsx from 'clsx';
 import { withRouter } from 'react-router-dom';
 import SidebarItem from './sidebar.item';
 import { withTranslation } from 'react-i18next';
-import { PROJECTS, ACCOUNT, NOTIFICATIONS } from './../../../utils/routes';
+import { PROJECTS, ACCOUNT, NOTIFICATIONS } from '../../../../utils/routes';
 
 const drawerWidth = 200;
 
@@ -125,6 +125,7 @@ class Sidebar extends React.Component {
                         text={userStore.user.profile ? `@${userStore.user.profile.tag}` : ''}
                         icon={
                             <img
+                                alt={userStore.user.profile ? `@${userStore.user.profile.tag}` : ''}
                                 className={classes.img}
                                 src={userStore.user.profile ? userStore.user.profile.icon : ''}
                             />}

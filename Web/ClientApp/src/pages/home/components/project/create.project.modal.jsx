@@ -1,7 +1,7 @@
 import React from 'react';
 import * as R from 'ramda';
-import useForm from './../../../components/form/useForm';
-import { createProjectFormValidator as validator } from './../../../utils/validators';
+import useForm from '../../../../components/form/useForm';
+import { createProjectFormValidator as validator } from '../../../../utils/validators';
 import { inject } from 'mobx-react';
 import { Button, DialogActions, DialogContent, DialogTitle, TextField, Box } from '@material-ui/core';
 import { withTranslation } from 'react-i18next';
@@ -9,7 +9,7 @@ import { withStyles } from '@material-ui/styles';
 
 const styles = () => ({
     formInput: {
-        width: '20rem'
+        width: 275
     },
     button: {
         height: '2.125rem',

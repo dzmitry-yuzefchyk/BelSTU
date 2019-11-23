@@ -10,6 +10,7 @@ export default class ProjectStore {
     @observable projects = [];
     @observable project = {};
     @observable fetching = true;
+    @observable total = 0;
 
     @computed
     get isEmpty() {
@@ -39,7 +40,8 @@ export default class ProjectStore {
         try {
             const url = `${GET_PROJECTS}?page=${page}&size=${size}`;
             const response = await GET(url);
-            this.projects = response.data;
+            this.projects = response.data.projects;
+            this.total = response.data.totla;
         } catch(e) {
             if (e.response) {
                 this.rootStore.snackbarStore.show(e.response.data, 'error');

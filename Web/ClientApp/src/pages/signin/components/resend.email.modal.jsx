@@ -9,7 +9,7 @@ import { withStyles } from '@material-ui/styles';
 
 const styles = () => ({
     formInput: {
-        width: '20rem'
+        width: 275
     },
     button: {
         height: '2.125rem',

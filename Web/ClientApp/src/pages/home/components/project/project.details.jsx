@@ -1,17 +1,25 @@
 import React from 'react';
-import { withStyles, Card, CardContent, CardActions, Typography, Button, boxShadow } from '@material-ui/core';
+import { withStyles, Card, CardContent, CardActions, Typography, Button } from '@material-ui/core';
 import { withTranslation } from 'react-i18next';
 import * as R from 'ramda';
 
 const styles = theme => ({
     card: {
+        position: 'relative', 
         marginLeft: 10,
         marginRight: 10,
-        marginTop: 2,
-        marginBottom: 2,
+        marginTop: 10,
+        marginBottom: 10,
         height: 150,
-        maxHeight: 150,
-        maxWidth: 300
+        minWidth: 175,
+        maxHeight: 200,
+        overflowY: 'auto',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between'
+    },
+    actions: {
+        bottom: 0 
     }
 });
 
@@ -32,7 +40,7 @@ const ProjectDetails = (props) => {
                     {description}
                 </Typography>
             </CardContent>
-            <CardActions>
+            <CardActions className={classes.actions}>
                 <Button color='primary' onClick={openProject}>
                     {t('project.open')}
                 </Button>

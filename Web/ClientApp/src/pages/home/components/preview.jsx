@@ -1,6 +1,6 @@
 import React from 'react';
 import CenteredLayout from '../../../components/layout/centered.layout';
-import { Card, CardActions, CardMedia, CardHeader, Button, CardContent, withStyles, Typography } from '@material-ui/core';
+import { Card, CardActions, CardMedia,  Button, CardContent, withStyles, Typography } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
 import { SIGN_IN } from '../../../utils/routes';

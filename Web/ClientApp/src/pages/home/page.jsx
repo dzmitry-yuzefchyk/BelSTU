@@ -1,17 +1,18 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import Preview from './components/preview';
-import Sidebar from './components/sidebar';
+import Sidebar from './components/sidebar/sidebar';
 import { withStyles } from '@material-ui/styles';
 import PrivateRoute from '../../components/route/route.private.strict';
-import { PROJECTS } from '../../utils/routes';
-import ProjectsBoard from './components/projects.board';
+import { PROJECTS, PROJECT } from '../../utils/routes';
+import ProjectsBoard from './components/project/projects.board';
 import { useLocation } from 'react-router-dom';
 import * as R from 'ramda';
 
 const styles = theme => ({
     root: {
         display: 'flex',
+        overflowY: 'auto',
         height: '100%',
         background: theme.palette.background.default
     },
@@ -37,8 +38,8 @@ const HomePage = (props) => {
                 <PrivateRoute path={PROJECTS}>
                     <ProjectsBoard page={page} />
                 </PrivateRoute>
-                <PrivateRoute path='/fff'>
-                    <div> 2</div>
+                <PrivateRoute path={PROJECT}>
+                    {/*<ProjectView />*/}
                 </PrivateRoute>
             </div>
         </div>

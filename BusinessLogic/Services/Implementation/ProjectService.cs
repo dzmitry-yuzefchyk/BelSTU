@@ -65,7 +65,7 @@ namespace BusinessLogic.Services.Implementation
             return (IsDone: false, Message: "Something went wrong, please try again later");
         }
 
-        public IEnumerable<ProjectViewModel> GetProjects(Guid userId, int page, int size)
+        public ProjectsViewModel GetProjects(Guid userId, int page, int size)
         {
             try
             {
@@ -83,7 +83,11 @@ namespace BusinessLogic.Services.Implementation
                     })
                     .ToList();
 
-                return projects;
+                var total = _context.ProjectUsers
+                    .Where(x => x.UserId == userId)
+                    .Count();
+
+                return new ProjectsViewModel { Projects = projects, Total = total };
             }
             catch (Exception e)
             {
