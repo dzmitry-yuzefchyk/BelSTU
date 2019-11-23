@@ -2,7 +2,6 @@ import React from 'react';
 import { Drawer, withStyles, Divider, List, IconButton } from '@material-ui/core';
 import {
     DeveloperBoard as DeveloperBoardIcon,
-    AccountBox as AccountIcon,
     Notifications as NotificationsIcon,
     ChevronRight as ChevronRightIcon,
     ChevronLeft as ChevronLeftIcon,
@@ -12,15 +11,28 @@ import { inject, observer } from 'mobx-react';
 import clsx from 'clsx';
 import { withRouter } from 'react-router-dom';
 import SidebarItem from './sidebar.item';
-import { PROJECTS, ACCOUNT, NOTIFICATIONS } from './../../utils/routes';
+import { withTranslation } from 'react-i18next';
+import { PROJECTS, ACCOUNT, NOTIFICATIONS } from './../../../utils/routes';
 
 const drawerWidth = 200;
 
 const styles = theme => ({
+    icon: {
+        color: theme.palette.primary.contrastText
+    },
+    img: {
+        maxWidth: 24,
+        maxHeight: 24,
+        borderRadius: '100px'
+    },
     drawer: {
         width: drawerWidth,
         flexShrink: 0,
-        whiteSpace: 'nowrap',
+        whiteSpace: 'nowrap'
+    },
+    paper: {
+        background: theme.palette.primary.main,
+        color: theme.palette.primary.contrastText
     },
     drawerOpen: {
         width: drawerWidth,
@@ -47,9 +59,10 @@ const styles = theme => ({
 });
 
 @inject('rootStore')
-@observer
 @withStyles(styles)
+@withTranslation()
 @withRouter
+@observer
 class Sidebar extends React.Component {
 
     constructor() {
@@ -75,7 +88,7 @@ class Sidebar extends React.Component {
     }
 
     render() {
-        const { classes, rootStore } = this.props;
+        const { classes, rootStore, t } = this.props;
         const { isOpen } = this.state;
         const { userStore, notificationStore } = rootStore;
 
@@ -87,7 +100,7 @@ class Sidebar extends React.Component {
                     [classes.drawerClose]: !isOpen,
                 })}
                 classes={{
-                    paper: clsx({
+                    paper: clsx(classes.paper, {
                         [classes.drawerOpen]: isOpen,
                         [classes.drawerClose]: !isOpen,
                     }),
@@ -96,7 +109,7 @@ class Sidebar extends React.Component {
             >
                 <div className={classes.toolbar}>
                     <IconButton onClick={this.toggleSidebar}>
-                        {isOpen ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+                        {isOpen ? <ChevronLeftIcon className={classes.icon} /> : <ChevronRightIcon className={classes.icon} />}
                     </IconButton>
                 </div>
                 <Divider />
@@ -104,8 +117,8 @@ class Sidebar extends React.Component {
                     <SidebarItem
                         onClick={this.handleGoto}
                         destination={PROJECTS}
-                        text={'Projects'}
-                        icon={<DeveloperBoardIcon />}
+                        text={t('sidebar.Projects')}
+                        icon={<DeveloperBoardIcon className={classes.icon} />}
                     />
                 </List>
                 <Divider />
@@ -113,14 +126,18 @@ class Sidebar extends React.Component {
                     <SidebarItem
                         onClick={this.handleGoto}
                         destination={ACCOUNT}
-                        text={'Account'}
-                        icon={<AccountIcon />}
+                        text={userStore.user.profile ? `@${userStore.user.profile.tag}` : ''}
+                        icon={
+                            <img
+                                className={classes.img}
+                                src={userStore.user.profile ? userStore.user.profile.icon : ''}
+                            />}
                     />
                     <SidebarItem
                         onClick={this.handleGoto}
                         destination={NOTIFICATIONS}
-                        text={'Notifications'}
-                        icon={<NotificationsIcon />}
+                        text={t('sidebar.Notifications')}
+                        icon={<NotificationsIcon className={classes.icon} />}
                         badge
                         badgeValue={notificationStore.amount}
                     />
@@ -129,8 +146,8 @@ class Sidebar extends React.Component {
                 <List>
                     <SidebarItem
                         onClick={userStore.signOut}
-                        text={'Sign-Out'}
-                        icon={<SignOutIcon />}
+                        text={t('sidebar.Sign-Out')}
+                        icon={<SignOutIcon className={classes.icon} />}
                     />
                 </List>
             </Drawer>

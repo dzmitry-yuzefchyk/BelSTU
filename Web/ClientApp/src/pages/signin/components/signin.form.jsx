@@ -64,7 +64,7 @@ const SignInForm = (props) => {
     return (
         <React.Fragment>
             <Box className={classes.form}>
-                <Paper className={classes.paper}>
+                <Paper elevation={2} className={classes.paper}>
                     <Box display='flex' justifyContent='center'>
                         <Button onClick={redirectToHome}>
                             {t('common.appName')}
@@ -126,7 +126,7 @@ const SignInForm = (props) => {
 export default R.compose(
     inject('rootStore'),
     withRouter,
-    observer,
     withTranslation(),
-    withStyles(styles)
+    withStyles(styles),
+    observer,
 )(SignInForm);

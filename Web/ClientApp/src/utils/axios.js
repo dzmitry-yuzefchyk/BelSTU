@@ -12,8 +12,8 @@ export async function PUT(url, data = '', content = 'application/json') {
     return await axiosRequest('PUT', url, data, content);
 }
 
-export async function DELETE(url, content = 'application/json') {
-    return await axiosRequest('DELETE', url, null, content);
+export async function DELETE(url, data = '', content = 'application/json') {
+    return await axiosRequest('DELETE', url, data, content);
 }
 
 async function axiosRequest(method, url, data, contentType) {

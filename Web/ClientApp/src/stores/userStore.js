@@ -1,6 +1,6 @@
 import { observable, action } from 'mobx';
 import { POST, GET } from './../utils/axios';
-import { POST_SIGN_UP, POST_SIGN_IN, POST_SIGN_OUT, POST_CONFIRM_EMAIL, POST_RESEND_EMAIL, GET_IS_AUTHORIZED } from './../utils/api.routes';
+import { POST_SIGN_UP, POST_SIGN_IN, POST_SIGN_OUT, POST_CONFIRM_EMAIL, POST_RESEND_EMAIL, GET_IS_AUTHORIZED, GET_PROFILE, GET_SETTINGS } from './../utils/api.routes';
 import i18n from './../i18n';
 
 class UserStore {
@@ -44,6 +44,7 @@ class UserStore {
         try {
             const response = await POST(POST_SIGN_IN, user);
             this.user.isLoggedIn = { isLoggedIn: true };
+            await this.rootStore.fetchUserData();
             this.rootStore.snackbarStore.show(response.data, 'success');
         } catch (e) {
             if (e.response) {
@@ -57,9 +58,8 @@ class UserStore {
     @action.bound
     async signOut() {
         try {
-            const response = await POST(POST_SIGN_OUT);
+            await POST(POST_SIGN_OUT);
             this.user = { isLoggedIn: false };
-            this.rootStore.snackbarStore.show(response.data, 'success');
         } catch (e) {
             if (e.response) {
                 this.rootStore.snackbarStore.show(e.response.data, 'error');
@@ -98,23 +98,60 @@ class UserStore {
     }
 
     @action.bound
-    async updateProfile() {
-
+    async updateProfile(profile) {
+        try {
+            const response = await POST(POST_CONFIRM_EMAIL, profile);
+            this.rootStore.snackbarStore.show(response.data, 'success');
+        } catch (e) {
+            if (e.response) {
+                this.rootStore.snackbarStore.show(e.response.data, 'error');
+            } else {
+                this.rootStore.snackbarStore.show(e.toString(), 'error');
+            }
+        }
     }
 
     @action.bound
-    async updateSettings() {
-
+    async updateSettings(settings) {
+        try {
+            const response = await POST(POST_CONFIRM_EMAIL, settings);
+            this.rootStore.snackbarStore.show(response.data, 'success');
+        } catch (e) {
+            if (e.response) {
+                this.rootStore.snackbarStore.show(e.response.data, 'error');
+            } else {
+                this.rootStore.snackbarStore.show(e.toString(), 'error');
+            }
+        }
     }
 
     @action.bound
     async getProfile() {
-        i18n.changeLanguage(this.user.lang);
+        //i18n.changeLanguage(this.user.lang);
+        try {
+            const response = await GET(GET_PROFILE);
+            this.user.profile = response.data;
+        } catch (e) {
+            if (e.response) {
+                this.rootStore.snackbarStore.show(e.response.data, 'error');
+            } else {
+                this.rootStore.snackbarStore.show(e.toString(), 'error');
+            }
+        }
     }
 
     @action.bound
     async getSettings() {
-
+        try {
+            const response = await GET(GET_SETTINGS);
+            this.user.settings = response.data;
+        } catch (e) {
+            if (e.response) {
+                this.rootStore.snackbarStore.show(e.response.data, 'error');
+            } else {
+                this.rootStore.snackbarStore.show(e.toString(), 'error');
+            }
+        }
     }
 
 }

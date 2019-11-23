@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withTranslation } from 'react-i18next';
 import { ListItem, ListItemIcon, ListItemText, Badge } from '@material-ui/core';
 
 const SidebarItem = (props) => {
@@ -11,7 +10,7 @@ const SidebarItem = (props) => {
         icon,
         badge,
         badgeValue,
-        t } = props;
+    } = props;
 
     const handleDestination = () => {
         onClick(destination);
@@ -26,7 +25,7 @@ const SidebarItem = (props) => {
                         : <React.Fragment>{icon}</React.Fragment>
                     }
                 </ListItemIcon>
-                <ListItemText primary={t(`sidebar.${text}`)} />
+                <ListItemText primary={text} />
             </ListItem>
         </React.Fragment>
     );
@@ -41,4 +40,4 @@ SidebarItem.propTypes = {
     badgeValue: PropTypes.number
 };
 
-export default withTranslation()(SidebarItem);
+export default SidebarItem;

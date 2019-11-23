@@ -65,7 +65,7 @@ const SignUpForm = (props) => {
     return (
         <React.Fragment>
             <Box className={classes.form}>
-                <Paper className={classes.paper}>
+                <Paper elevation={2} className={classes.paper}>
                     <Box display='flex' justifyContent='center'>
                         <Button onClick={redirectToHome}>
                             {t('common.appName')}

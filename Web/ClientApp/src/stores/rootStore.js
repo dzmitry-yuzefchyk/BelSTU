@@ -3,6 +3,7 @@ import UserStore from './userStore';
 import SnackbarStore from './snackbarStore';
 import ModalStore from './modalStore';
 import NotificationStore from './notificationStore';
+import ProjectStore from './projectStore';
 
 class RootStore {
     constructor() {
@@ -10,6 +11,7 @@ class RootStore {
         this.userStore = new UserStore(this);
         this.modalStore = new ModalStore(this);
         this.notificationStore = new NotificationStore(this);
+        this.projectStore = new ProjectStore(this);
     }
 
     @action async fetchUserData() {

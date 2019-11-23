@@ -93,7 +93,7 @@ namespace BusinessLogic.Services.Implementation
             return null;
         }
 
-        public async Task<ProjectViewModel> GetProjectAsync(Guid userId, int projectId)
+        public async Task<ProjectAccessViewModel> GetProjectAsync(Guid userId, int projectId)
         {
             try
             {
@@ -102,7 +102,7 @@ namespace BusinessLogic.Services.Implementation
                     .Include(x => x.Project)
                     .Where(x => x.UserId == userId && x.ProjectId == projectId)
                     .Select(x =>
-                        new ProjectViewModel()
+                        new ProjectAccessViewModel()
                         {
                             Id = projectId,
                             Title = x.Project.Title,

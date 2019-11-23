@@ -27,7 +27,7 @@ namespace Web.Controllers
             return IsDone ? (IActionResult)Ok(Message) : BadRequest(Message);
         }
 
-        [HttpGet("Projects")]
+        [HttpGet]
         public IActionResult GetProjects(int page, int size)
         {
             var result = _projectService.GetProjects(this.UserId(), page, size);

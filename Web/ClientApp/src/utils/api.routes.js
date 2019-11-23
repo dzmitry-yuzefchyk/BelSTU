@@ -17,6 +17,13 @@ export const GET_IS_AUTHORIZED = `${accountController}/IsAuthenticated`;
 const notificationController = `${api}/Notification`;
 export const GET_NOTIFICATIONS = `${notificationController}`;
 
+const projectController = `${api}/Project`;
+export const GET_PROJECT = `${projectController}`;
+export const GET_PROJECTS = `${projectController}`;
+export const POST_USER = `${projectController}/AddUser`;
+export const DELETE_USER = `${projectController}/RemoveUser`;
+export const POST_CRETE_PROJECT = `${projectController}`;
+
 //Hubs
 export const BOARD_HUB = '/board';
 export const NOTIFICATION_HUB = '/notification';
