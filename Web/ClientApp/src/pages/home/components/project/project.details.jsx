@@ -8,12 +8,10 @@ const styles = theme => ({
         position: 'relative', 
         marginLeft: 10,
         marginRight: 10,
-        marginTop: 10,
         marginBottom: 10,
         height: 150,
         minWidth: 175,
         maxHeight: 200,
-        overflowY: 'auto',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between'

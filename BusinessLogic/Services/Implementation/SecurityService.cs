@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.AdvancedSecurity;
 using BusinessLogic.Contstants;
+using BusinessLogic.Models.Project;
 using BusinessLogic.Services.Interfaces;
 using CommonLogic.Logger;
 using DataProvider;
@@ -23,26 +24,33 @@ namespace BusinessLogic.Services.Implementation
             _logger = loggerFactory.CreateLogger<FileLogger>();
         }
 
-        public async Task<(bool IsDone, string Message)> UpdateAsync(UpdateSecurityModel model)
+        public async Task<(bool IsDone, string Message)> UpdateAsync(Guid userId, UpdateSecurityModel model)
         {
             try
             {
-                var user = await _context.Users.FindAsync(model.Email);
-                var userAccess = await GetUserAccess(user.Id, model.ProjectId);
+                var user = await _context.Users.FindAsync(userId);
+                var userAccess = await GetUserAccessAsync(user.Id, model.ProjectId);
                 if (!userAccess[UserAction.CHANGE_SECURITY])
                 {
                     return (IsDone: false, Message: "You don't have rights");
                 }
 
                 var policies = model.Policies
-                    .Select(x => new ProjectSecurityPolicy
+                    .Select(x =>
                     {
-                        Action = x.Action,
-                        IsAllowed = x.IsAllowed,
-                        UserId = _context.Users.SingleOrDefault(x => x.Email == model.Email).Id,
-                        ProjectSettingsId = model.ProjectId
+                        var userId = _context.Users.SingleOrDefault(u => u.Email == x.UserEmail).Id;
+                        var oldPolicy = _context.ProjectSecurityPolicies.SingleOrDefault(p => p.UserId == userId);
+                        _context.ProjectSecurityPolicies.Remove(oldPolicy);
+                        return new ProjectSecurityPolicy
+                        {
+                            Action = x.Action,
+                            IsAllowed = x.IsAllowed,
+                            UserId = userId,
+                            ProjectSettingsId = model.ProjectId
+                        };
                     });
-                _context.ProjectSecurityPolicies.AddRange(policies);
+                await _context.SaveChangesAsync();
+                await _context.ProjectSecurityPolicies.AddRangeAsync(policies);
 
                 var result = await _context.SaveChangesAsync();
                 if (result > 1)
@@ -58,7 +66,7 @@ namespace BusinessLogic.Services.Implementation
             return (IsDone: false, Message: "Could not update security settings");
         }
 
-        public async Task<Dictionary<UserAction, bool>> GetUserAccess(Guid userId, int projectId)
+        public async Task<Dictionary<UserAction, bool>> GetUserAccessAsync(Guid userId, int projectId)
         {
             Dictionary<UserAction, bool> access = Enum.GetValues(typeof(UserAction))
                 .Cast<UserAction>()
@@ -115,6 +123,38 @@ namespace BusinessLogic.Services.Implementation
             }
 
             return access;
+        }
+
+        public PoliciesModel GetUserAccesses(int projectId, int page, int size)
+        {
+            try
+            {
+                var projectUsers = _context.ProjectUsers
+                    .Where(x => x.ProjectId == projectId)
+                    .Skip(page * size)
+                    .Take(size)
+                    .ToList();
+                var total = _context.ProjectUsers.Where(x => x.ProjectId == projectId).Count();
+
+                var users = projectUsers.Select(async x =>
+                {
+                    var user = await _context.Users.FindAsync(x.UserId);
+                    var userProfile = await _context.UserProfiles.FindAsync(x.UserId);
+                    return new ProjectUserModel
+                    {
+                        Email = user.Email,
+                        Tag = userProfile.Tag,
+                        Actions = await GetUserAccessAsync(x.UserId, projectId)
+                    };
+                });
+                return new PoliciesModel { Users = users, Total = total };
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("SecurityService, GetUserAccessesAsync", e);
+            }
+
+            return null;
         }
     }
 }

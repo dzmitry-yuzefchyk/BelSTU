@@ -48,5 +48,9 @@
   "project": {
     "open": "Open",
     "create project": "Create project"
+  },
+  "notification": {
+    "recent": "Recent notifications",
+    "here you can see what changed": "Here you can see what changed while you were away"
   }
 }

@@ -8,7 +8,6 @@ using DataProvider.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -101,7 +100,7 @@ namespace BusinessLogic.Services.Implementation
         {
             try
             {
-                var userAccess = await _securityService.GetUserAccess(userId, projectId);
+                var userAccess = await _securityService.GetUserAccessAsync(userId, projectId);
                 var userProject = _context.ProjectUsers
                     .Include(x => x.Project)
                     .Where(x => x.UserId == userId && x.ProjectId == projectId)
@@ -138,7 +137,7 @@ namespace BusinessLogic.Services.Implementation
         {
             try
             {
-                var userAccess = await _securityService.GetUserAccess(userId, model.ProjectId);
+                var userAccess = await _securityService.GetUserAccessAsync(userId, model.ProjectId);
                 if (!userAccess[UserAction.UPDATE_PROJECT])
                 {
                     _logger.LogWarning("ProjectService, AddUserToProjectAsync", "User action denied", userId);
@@ -188,7 +187,7 @@ namespace BusinessLogic.Services.Implementation
         {
             try
             {
-                var userAccess = await _securityService.GetUserAccess(userId, model.ProjectId);
+                var userAccess = await _securityService.GetUserAccessAsync(userId, model.ProjectId);
                 if (!userAccess[UserAction.UPDATE_PROJECT])
                 {
                     _logger.LogWarning("ProjectService, RemoveUserFromProjectAsync", "User action denied", userId);
@@ -233,6 +232,72 @@ namespace BusinessLogic.Services.Implementation
             }
 
             return (IsDone: false, Message: "Something went wrong, please try again later");
+        }
+
+        public async Task<UpdateProjectModel> GetSettingsAsync(Guid userId, int projectId)
+        {
+            try
+            {
+                var userAccess = await _securityService.GetUserAccessAsync(userId, projectId);
+                if (!userAccess[UserAction.UPDATE_PROJECT])
+                {
+                    return null;
+                }
+
+                var settings = await _context.ProjectSettings.FindAsync(projectId);
+                var project = await _context.Projects.FindAsync(projectId);
+
+                return new UpdateProjectModel
+                {
+                    Title = project.Title,
+                    Description = project.Description,
+                    AccessToChangeBoard = settings.AccessToChangeBoard,
+                    AccessToChangeProject = settings.AccessToChangeProject,
+                    AccessToChangeTask = settings.AccessToChangeTask,
+                    Preview = settings.Preview,
+                    UseAdvancedSecuritySettings = settings.UseAdvancedSecuritySettings
+                };
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("ProjectService, GetSettingsAsync", e);
+            }
+
+            return null;
+        }
+
+        public async Task<(bool IsDone, string Message)> UpdateSettingsAsync(Guid userId, UpdateProjectModel model)
+        {
+            try
+            {
+                var userAccess = await _securityService.GetUserAccessAsync(userId, model.Id);
+                if (!userAccess[UserAction.UPDATE_PROJECT])
+                {
+                    return (IsDone: false, Message: "You don't have rights");
+                }
+
+                var settings = await _context.ProjectSettings.FindAsync(model.Id);
+                settings.Preview = model.Preview;
+                settings.AccessToChangeBoard = model.AccessToChangeBoard;
+                settings.AccessToChangeProject = model.AccessToChangeProject;
+                settings.AccessToChangeTask = model.AccessToChangeTask;
+                settings.UseAdvancedSecuritySettings = model.UseAdvancedSecuritySettings;
+
+                var project = await _context.Projects.FindAsync(model.Id);
+                project.Title = model.Title;
+                project.Description = model.Description;
+
+                _context.Projects.Update(project);
+                _context.ProjectSettings.Update(settings);
+                await _context.SaveChangesAsync();
+                return (IsDone: true, Message: "Success");
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("ProjectService, UpdateSettingsAsync", e);
+            }
+
+            return (IsDone: false, Message: "Something went wrong, try again later");
         }
     }
 }

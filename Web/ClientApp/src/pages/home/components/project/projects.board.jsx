@@ -10,13 +10,17 @@ import Pagination from '@kevinwang0316/react-materialui-pagination';
 
 const styles = () => ({
     root: {
+        justifyContent: 'space-between',
+        width: '100%'
+    },
+    board: {
+        overflowY: 'auto'
     },
     card: {
         display: 'flex',
         justifyContent: 'center',
         marginLeft: 10,
         marginRight: 10,
-        marginTop: 10,
         marginBottom: 10,
         height: 150
     }
@@ -77,8 +81,8 @@ class ProjectsBoard extends React.Component {
             return <CircularProgress />;
 
         return (
-            <React.Fragment>
-                <Box display='flex' alignItems='start' direction='row' flexWrap='wrap' className={classes.root}>
+            <Box display='flex' flexDirection='column' className={classes.root}>
+                <Box display='flex' alignItems='start' flexDirection='row' flexWrap='wrap' className={classes.board}>
                     {projectStore.projects.map(project =>
                         <ProjectDetails
                             key={project.id}
@@ -105,7 +109,7 @@ class ProjectsBoard extends React.Component {
                         onClick={this.openPage}
                     />
                 </Box>
-            </React.Fragment>
+            </Box>
         );
     }
 }

@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Models.Project;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -12,5 +13,7 @@ namespace BusinessLogic.Services.Interfaces
         Task<ProjectAccessViewModel> GetProjectAsync(Guid userId, int projectId);
         Task<(bool IsDone, string Message)> AddUserToProjectAsync(Guid userId, AddUserModel model);
         Task<(bool IsDone, string Message)> RemoveUserFromProjectAsync(Guid userId, AddUserModel model);
+        Task<UpdateProjectModel> GetSettingsAsync(Guid userId, int projectId);
+        Task<(bool IsDone, string Message)> UpdateSettingsAsync(Guid userId, UpdateProjectModel model);
     }
 }

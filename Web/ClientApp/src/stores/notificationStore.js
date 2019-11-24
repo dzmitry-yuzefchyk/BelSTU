@@ -3,6 +3,9 @@ import NotificationHub from './../hubs/notificationHub';
 import { GET } from './../utils/axios';
 import { GET_NOTIFICATIONS } from './../utils/api.routes';
 
+const notificationPath = 'notification';
+const initialState = JSON.parse(window.localStorage.getItem(notificationPath));
+
 export default class NotificationStore {
     constructor(rootStore) {
         this.rootStore = rootStore;
@@ -10,9 +13,20 @@ export default class NotificationStore {
     }
 
     @observable notifications = [];
+    @observable show = initialState;
 
     @computed get amount() {
         return this.notifications.length;
+    }
+
+    @computed
+    get isNotificationsOpen() {
+        return this.show;
+    }
+
+    set isNotificationsOpen(boolean) {
+        this.show = boolean;
+        window.localStorage.setItem(notificationPath, boolean);
     }
 
     @action.bound

@@ -6,8 +6,10 @@ import { withStyles } from '@material-ui/styles';
 import PrivateRoute from '../../components/route/route.private.strict';
 import { PROJECTS, PROJECT } from '../../utils/routes';
 import ProjectsBoard from './components/project/projects.board';
+import ProjectView from './components/project/project.view';
 import { useLocation } from 'react-router-dom';
 import * as R from 'ramda';
+import RecentNotifications from './components/notifications/recent.notifications';
 
 const styles = theme => ({
     root: {
@@ -19,6 +21,8 @@ const styles = theme => ({
     content: {
         flexGrow: 1,
         padding: theme.spacing(3),
+        display: 'flex',
+        flexDirection: 'row'
     }
 });
 
@@ -35,11 +39,12 @@ const HomePage = (props) => {
         <div className={classes.root}>
             <Sidebar />
             <div className={classes.content}>
+                <RecentNotifications />
                 <PrivateRoute path={PROJECTS}>
                     <ProjectsBoard page={page} />
                 </PrivateRoute>
                 <PrivateRoute path={PROJECT}>
-                    {/*<ProjectView />*/}
+                    <ProjectView />
                 </PrivateRoute>
             </div>
         </div>

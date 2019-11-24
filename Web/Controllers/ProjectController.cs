@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Models.Project;
+﻿using BusinessLogic.AdvancedSecurity;
+using BusinessLogic.Models.Project;
 using BusinessLogic.Services.Interfaces;
 using CommonLogic.Configuration;
 using Microsoft.AspNetCore.Authorization;
@@ -14,10 +15,12 @@ namespace Web.Controllers
     public class ProjectController : ControllerBase
     {
         private readonly IProjectService _projectService;
+        private readonly ISecurityService _securityService;
 
-        public ProjectController(IProjectService projectService)
+        public ProjectController(IProjectService projectService, ISecurityService securityService)
         {
             _projectService = projectService;
+            _securityService = securityService;
         }
 
         [HttpPost]
@@ -52,6 +55,34 @@ namespace Web.Controllers
         public async Task<IActionResult> RemoveUserFromProject([FromBody]AddUserModel model)
         {
             var (IsDone, Message) = await _projectService.RemoveUserFromProjectAsync(this.UserId(), model);
+            return IsDone ? (IActionResult)Ok(Message) : BadRequest(Message);
+        }
+
+        [HttpPost("Settings")]
+        public async Task<IActionResult> UpdateSettings([FromBody]UpdateProjectModel model)
+        {
+            var (IsDone, Message) = await _projectService.UpdateSettingsAsync(this.UserId(), model);
+            return IsDone ? (IActionResult)Ok(Message) : BadRequest(Message);
+        }
+
+        [HttpGet("GeneralSettings")]
+        public async Task<IActionResult> GetSettings(int projectId)
+        {
+            var result = await _projectService.GetSettingsAsync(this.UserId(), projectId);
+            return result != null ? (IActionResult)Ok(result) : BadRequest(result);
+        }
+
+        [HttpGet("AccessSettings")]
+        public IActionResult GetAccessSettings(int projectId, int page)
+        {
+            var result = _securityService.GetUserAccesses(projectId, page, 20);
+            return result != null ? (IActionResult)Ok(result) : BadRequest(result);
+        }
+
+        [HttpPost("AccessSettings")]
+        public async Task<IActionResult> UpdateAccessSettings(UpdateSecurityModel model)
+        {
+            var (IsDone, Message) = await _securityService.UpdateAsync(this.UserId(), model);
             return IsDone ? (IActionResult)Ok(Message) : BadRequest(Message);
         }
     }

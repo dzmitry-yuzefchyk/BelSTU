@@ -22,7 +22,7 @@ const anonymousUser = {
     lang: 'en',
     settings: {
         theme: themes.light,
-        navbar: Boolean(window.localStorage.getItem(navbarPath))
+        navbar: JSON.parse(window.localStorage.getItem(navbarPath))
     }
 };
 
@@ -40,7 +40,7 @@ class UserStore {
 
     @computed
     get isNavOpen() {
-        return this.user.settings.navbar;
+        return this.user.settings.navbar || JSON.parse(window.localStorage.getItem(navbarPath));
     }
 
     set isNavOpen(boolean) {

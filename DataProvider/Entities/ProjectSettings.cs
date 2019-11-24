@@ -6,7 +6,7 @@ namespace DataProvider.Entities
     {
         public int Id { get; set; }
         public Project Project { get; set; }
-        public string PathToBackground { get; set; }
+        public string Preview { get; set; }
         public bool UseAdvancedSecuritySettings { get; set; }
         public int AccessToChangeProject { get; set; }
         public int AccessToChangeBoard { get; set; }

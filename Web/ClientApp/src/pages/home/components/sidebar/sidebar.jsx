@@ -12,7 +12,7 @@ import clsx from 'clsx';
 import { withRouter } from 'react-router-dom';
 import SidebarItem from './sidebar.item';
 import { withTranslation } from 'react-i18next';
-import { PROJECTS, ACCOUNT, NOTIFICATIONS } from '../../../../utils/routes';
+import { PROJECTS, ACCOUNT } from '../../../../utils/routes';
 
 const drawerWidth = 200;
 
@@ -70,12 +70,19 @@ class Sidebar extends React.Component {
 
         this.toggleSidebar = this.toggleSidebar.bind(this);
         this.handleGoto = this.handleGoto.bind(this);
+        this.toggleNotifications = this.toggleNotifications.bind(this);
     }
 
     toggleSidebar() {
         const { userStore } = this.props.rootStore;
         const isNavOpen = userStore.isNavOpen;
         userStore.isNavOpen = !isNavOpen;
+    }
+
+    toggleNotifications() {
+        const { notificationStore } = this.props.rootStore;
+        const isNotificationOpen = notificationStore.isNotificationsOpen;
+        notificationStore.isNotificationsOpen = !isNotificationOpen;
     }
 
     handleGoto(destination) {
@@ -131,8 +138,7 @@ class Sidebar extends React.Component {
                             />}
                     />
                     <SidebarItem
-                        onClick={this.handleGoto}
-                        destination={NOTIFICATIONS}
+                        onClick={this.toggleNotifications}
                         text={t('sidebar.Notifications')}
                         icon={<NotificationsIcon className={classes.icon} />}
                         badge

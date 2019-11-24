@@ -4,7 +4,6 @@ namespace BusinessLogic.AdvancedSecurity
 {
     public class UpdateSecurityModel
     {
-        public string Email { get; set; }
         public int ProjectId { get; set; }
         public List<ProjectPolicy> Policies { get; set; }
     }
