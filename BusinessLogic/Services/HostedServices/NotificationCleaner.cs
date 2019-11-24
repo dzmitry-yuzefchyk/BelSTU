@@ -22,10 +22,22 @@ namespace BusinessLogic.Services.HostedServices
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            do
+            //Yep
+            Task.Factory.StartNew(() => ExecuteAsync(cancellationToken));
+        }
+
+        public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+
+        private async Task ExecuteAsync(CancellationToken cancellationToken)
+        {
+            _logger.LogInformation("NotificationCleaner started");
+
+            while (!cancellationToken.IsCancellationRequested)
             {
                 try
                 {
+                    await Task.Yield();
+                    _logger.LogInformation("NotificationCleaner cleanup");
                     using var scope = _serviceProvider.CreateScope();
                     var notificationService = scope.ServiceProvider.GetService<INotificationService>();
                     await notificationService.RemoveDeliveredNotificationsAsync();
@@ -37,9 +49,8 @@ namespace BusinessLogic.Services.HostedServices
 
                 await Task.Delay(1000 * 60 * 5, cancellationToken);
             }
-            while (!cancellationToken.IsCancellationRequested);
-        }
 
-        public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+            _logger.LogInformation("NotificationCleaner stopped");
+        }
     }
 }

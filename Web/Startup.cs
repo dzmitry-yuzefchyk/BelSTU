@@ -30,6 +30,7 @@ namespace Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHostedService<NotificationCleaner>();
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.AddDbContext(Configuration, "Default");
             services.AddTransient<IAccountService, AccountService>();
@@ -46,8 +47,6 @@ namespace Web
                     Configuration.GetValue<bool>("EmailSender:IsSSLEnabled")
                 )
             );
-
-            services.AddHostedService<NotificationCleaner>();
 
             services.AddIdentity();
             services.AddAuthorization();
