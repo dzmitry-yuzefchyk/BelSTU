@@ -1,25 +1,22 @@
 ﻿using BusinessLogic.Services.Interfaces;
 using CommonLogic.Logger;
-using DataProvider;
-using DataProvider.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Linq;
 using System.Threading;
-using Task = System.Threading.Tasks.Task;
+using System.Threading.Tasks;
 
 namespace BusinessLogic.Services.HostedServices
 {
     public class NotificationCleaner : IHostedService
     {
-        private readonly INotificationService _notificationService;
+        private readonly IServiceProvider _serviceProvider;
         private readonly ILogger _logger;
 
-        public NotificationCleaner(INotificationService notificationService, ILoggerFactory loggerFactory)
+        public NotificationCleaner(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
         {
-            _notificationService = notificationService;
+            _serviceProvider = serviceProvider;
             _logger = loggerFactory.CreateLogger<FileLogger>();
         }
 
@@ -29,7 +26,9 @@ namespace BusinessLogic.Services.HostedServices
             {
                 try
                 {
-                    await _notificationService.RemoveDeliveredNotificationsAsync();
+                    using var scope = _serviceProvider.CreateScope();
+                    var notificationService = scope.ServiceProvider.GetService<INotificationService>();
+                    await notificationService.RemoveDeliveredNotificationsAsync();
                 }
                 catch (Exception e)
                 {

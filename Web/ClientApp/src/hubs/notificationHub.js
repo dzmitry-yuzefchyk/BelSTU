@@ -10,8 +10,7 @@ class NotificationHub extends BaseHub {
     }
 
     notify(message) {
-        alert(message);
-        this.notificationStore.notifications.push(message);
+        this.notificationStore.notify(message);
     }
 
     markAsRead(messageId) {

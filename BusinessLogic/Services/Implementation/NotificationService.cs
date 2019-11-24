@@ -129,6 +129,23 @@ namespace BusinessLogic.Services.Implementation
             return await _context.SaveChangesAsync();
         }
 
+        public async Task<bool> ClearAllAsync(Guid userId)
+        {
+            try
+            {
+                var notifications = _context.Notifications.Where(x => x.RecipientId == userId);
+                _context.Notifications.RemoveRange(notifications);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("NotificationService, ClearAllAsync", e);
+            }
+
+            return false;
+        }
+
         private async Task<bool> Notify(Guid userId, NotificationViewModel model)
         {
             var connectionId = NotificationHub.Users.Find(x => x.IdentityUserId == userId)?.ConnectionId;

@@ -25,5 +25,12 @@ namespace Web.Controllers
             return result != null ? (IActionResult)Ok(result) : BadRequest("Something went wrong, please try again lager");
         }
 
+        [HttpDelete]
+        public async Task<IActionResult> DeleteNotifications()
+        {
+            var result = await _notificationService.ClearAllAsync(this.UserId());
+            return result ? (IActionResult)Ok(result) : BadRequest(result);
+        }
+
     }
 }

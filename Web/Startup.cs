@@ -36,6 +36,7 @@ namespace Web
             services.AddTransient<INotificationService, NotificationService>();
             services.AddTransient<ISecurityService, SecurityService>();
             services.AddTransient<IProjectService, ProjectService>();
+            services.AddTransient<IBoardService, BoardService>();
             services.AddTransient<IEmailSender, EmailSender>(x =>
                 new EmailSender(
                     Configuration.GetValue<string>("EmailSender:HostName"),
@@ -46,8 +47,7 @@ namespace Web
                 )
             );
 
-            //TODO: fix scoped DI
-            //services.AddHostedService<NotificationCleaner>();
+            services.AddHostedService<NotificationCleaner>();
 
             services.AddIdentity();
             services.AddAuthorization();

@@ -16,6 +16,7 @@ export const GET_IS_AUTHORIZED = `${accountController}/IsAuthenticated`;
 
 const notificationController = `${api}/Notification`;
 export const GET_NOTIFICATIONS = `${notificationController}`;
+export const DELETE_NOTIFICATIONS = `${notificationController}`;
 
 const projectController = `${api}/Project`;
 export const GET_PROJECT = `${projectController}`;
