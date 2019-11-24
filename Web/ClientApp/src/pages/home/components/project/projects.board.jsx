@@ -102,12 +102,12 @@ class ProjectsBoard extends React.Component {
                 </Box>
 
                 <Box display='flex' justifyContent='center'>
-                    <Pagination
-                        offset={Number(page)}
-                        limit={1}
-                        total={projectStore.total || 0}
-                        onClick={this.openPage}
-                    />
+                <Pagination
+                            offset={Number(page)}
+                            limit={1}
+                            total={projectStore.total / 10 || 0}
+                            onClick={this.openPage}
+                        />
                 </Box>
             </Box>
         );

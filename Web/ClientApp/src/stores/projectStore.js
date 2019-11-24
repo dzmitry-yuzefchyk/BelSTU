@@ -62,7 +62,7 @@ export default class ProjectStore {
             const url = `${GET_PROJECTS}?page=${page}&size=${size}`;
             const response = await GET(url);
             this.projects = response.data.projects;
-            this.total = response.data.totla;
+            this.total = response.data.total;
         } catch(e) {
             if (e.response) {
                 this.rootStore.snackbarStore.show(e.response.data, 'error');
