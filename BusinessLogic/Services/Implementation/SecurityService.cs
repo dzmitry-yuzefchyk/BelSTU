@@ -88,12 +88,19 @@ namespace BusinessLogic.Services.Implementation
                     access.ToList().ForEach
                         (pair =>
                             {
-                                var projectPolicy = _context.ProjectSecurityPolicies
+                                if (projectUser.Role == (int)UserRole.ADMIN)
+                                {
+                                    access[pair.Key] = true;
+                                }
+                                else
+                                {
+                                    var projectPolicy = _context.ProjectSecurityPolicies
                                     .SingleOrDefault(x =>
                                         x.ProjectSettingsId == projectId &&
                                         x.UserId == userId &&
                                         x.Action == (int)pair.Key);
-                                access[pair.Key] = projectPolicy.IsAllowed;
+                                    access[pair.Key] = projectPolicy.IsAllowed;
+                                }
                             }
                         );
                 }
@@ -131,7 +138,7 @@ namespace BusinessLogic.Services.Implementation
             return access;
         }
 
-        public PoliciesModel GetUserAccesses(int projectId, int page, int size)
+        public async Task<PoliciesModel> GetUserAccessesAsync(int projectId, int page, int size)
         {
             try
             {
@@ -141,18 +148,24 @@ namespace BusinessLogic.Services.Implementation
                     .Take(size)
                     .ToList();
                 var total = _context.ProjectUsers.Where(x => x.ProjectId == projectId).Count();
-
-                var users = projectUsers.Select(async x =>
+                var users = new List<ProjectUserModel>();
+                foreach(var projectUser in projectUsers)
                 {
-                    var user = await _context.Users.FindAsync(x.UserId);
-                    var userProfile = await _context.UserProfiles.FindAsync(x.UserId);
-                    return new ProjectUserModel
+                    var user = await _context.Users.FindAsync(projectUser.UserId);
+                    var userProfile = await _context.UserProfiles.FindAsync(projectUser.UserId);
+                    var actions = await GetUserAccessAsync(projectUser.UserId, projectId);
+                    users.Add(new ProjectUserModel
                     {
                         Email = user.Email,
                         Tag = userProfile.Tag,
-                        Actions = await GetUserAccessAsync(x.UserId, projectId)
-                    };
-                });
+                        ChangingBlocked = projectUser.Role == (int)UserRole.ADMIN,
+                        Actions = actions.Select(x => new Actions
+                        {
+                            Action = x.Key,
+                            Allowed = x.Value
+                        }).ToList()
+                    });
+                }
                 return new PoliciesModel { Users = users, Total = total };
             }
             catch (Exception e)

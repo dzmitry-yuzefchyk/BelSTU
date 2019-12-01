@@ -68,3 +68,13 @@ export function createBoardFormValidator(values) {
 
     return result;
 }
+
+export function updateProjectSettingsValidator(values) {
+    let result = {};
+
+    if (!values.title) {
+        result.title = 'Title is required';
+    }
+
+    return result;
+}

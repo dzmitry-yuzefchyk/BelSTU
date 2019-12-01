@@ -36,7 +36,7 @@ namespace Web.Controllers
             return result != null ? (IActionResult)Ok(result) : BadRequest("Something went wrong, please try again later");
         }
 
-        [HttpDelete]
+        [HttpDelete("{projectId}")]
         public async Task<IActionResult> DeleteProject(int projectId)
         {
             var result = await _projectService.DeleteProjectAsync(this.UserId(), projectId);
@@ -71,22 +71,22 @@ namespace Web.Controllers
             return IsDone ? (IActionResult)Ok(Message) : BadRequest(Message);
         }
 
-        [HttpGet("GeneralSettings")]
+        [HttpGet("GeneralSettings/{projectId}")]
         public async Task<IActionResult> GetSettings(int projectId)
         {
             var result = await _projectService.GetSettingsAsync(this.UserId(), projectId);
             return result != null ? (IActionResult)Ok(result) : BadRequest(result);
         }
 
-        [HttpGet("AccessSettings")]
-        public IActionResult GetAccessSettings(int projectId, int page)
+        [HttpGet("AccessSettings/{projectId}")]
+        public async Task<IActionResult> GetAccessSettings(int projectId, int page)
         {
-            var result = _securityService.GetUserAccesses(projectId, page, 20);
+            var result = await _securityService.GetUserAccessesAsync(projectId, page, 20);
             return result != null ? (IActionResult)Ok(result) : BadRequest(result);
         }
 
         [HttpPut("AccessSettings")]
-        public async Task<IActionResult> UpdateAccessSettings(UpdateSecurityModel model)
+        public async Task<IActionResult> UpdateAccessSettings([FromBody]UpdateSecurityModel model)
         {
             var (IsDone, Message) = await _securityService.UpdateAsync(this.UserId(), model);
             return IsDone ? (IActionResult)Ok(Message) : BadRequest(Message);

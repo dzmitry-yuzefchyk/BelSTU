@@ -6,10 +6,9 @@ import * as R from 'ramda';
 const styles = theme => ({
     card: {
         position: 'relative', 
-        marginLeft: 10,
         marginBottom: 10,
-        height: 200,
-        width: 250,
+        height: 150,
+        width: '100%',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between'

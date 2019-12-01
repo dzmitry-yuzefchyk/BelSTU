@@ -10,11 +10,13 @@ import CreateColumnModal from './create.column.modal';
 const styles = () => ({
     root: {
         justifyContent: 'space-between',
-        width: '100%'
+        width: '100%',
+        overflowX: 'auto'
     },
     board: {
         height: '100%',
-        padding: '10px 0 10px 10px'
+        padding: '10px 0 10px 10px',
+        flexWrap: 'nowrap'
     },
     card: {
         display: 'flex',
@@ -30,6 +32,7 @@ const styles = () => ({
         alignItems: 'stretch',
         marginLeft: 10,
         height: '100%',
+        flexShrink: 0,
         width: 250
     },
     columnAddButton: {

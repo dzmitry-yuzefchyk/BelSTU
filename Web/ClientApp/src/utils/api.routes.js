@@ -24,6 +24,11 @@ export const GET_PROJECTS = `${projectController}`;
 export const POST_USER = `${projectController}/AddUser`;
 export const DELETE_USER = `${projectController}/RemoveUser`;
 export const POST_CRETE_PROJECT = `${projectController}`;
+export const DELETE_PROJECT = `${projectController}`;
+export const GET_PROJECT_SETTINGS = `${projectController}/GeneralSettings`;
+export const GET_PROJECT_ACCESS = `${projectController}/AccessSettings`;
+export const PUT_PROJECT_SETTINGS = `${projectController}/Settings`;
+export const PUT_PROJECT_ACCESS = `${projectController}/AccessSettings`;
 
 const boardController = `${api}/Board`;
 export const GET_BOARD = `${boardController}`;

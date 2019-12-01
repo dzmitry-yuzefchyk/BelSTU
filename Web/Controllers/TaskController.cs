@@ -18,7 +18,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateTask(CreateTaskModel model)
+        public async Task<IActionResult> CreateTask([FromBody]CreateTaskModel model)
         {
             var (IsDone, Message) = await _taskService.CreateTaskAsync(this.UserId(), model);
             return IsDone ? (IActionResult)Ok(Message) : BadRequest(Message);
@@ -39,7 +39,7 @@ namespace Web.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateTask(UpdateTaskModel model)
+        public async Task<IActionResult> UpdateTask([FromBody]UpdateTaskModel model)
         {
             var result = await _taskService.UpdateTaskAsync(this.UserId(), model);
             return result ? (IActionResult)Ok(result) : BadRequest("Something went wrong, please try again later");
@@ -53,7 +53,7 @@ namespace Web.Controllers
         }
 
         [HttpPost("Comment")]
-        public async Task<IActionResult> LeaveComment(CreateCommentModel model)
+        public async Task<IActionResult> LeaveComment([FromBody]CreateCommentModel model)
         {
             var result = await _taskService.LeaveCommentAsync(this.UserId(), model);
             return result ? (IActionResult)Ok(result) : BadRequest("Something went wrong, please try again later");

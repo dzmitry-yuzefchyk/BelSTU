@@ -8,5 +8,8 @@ export default class TaskStore {
         this.rootStore = rootStore;
     }
 
-
+    @action.bound
+    async createTask(task) {
+        
+    }
 }

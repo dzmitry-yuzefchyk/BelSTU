@@ -7,16 +7,29 @@
     "settings": "Settings",
     "board": "Board"
   },
+  "access": {
+    "PROJECT_CREATOR": "Administrator",
+    "PROJECT_MEMBER": "Member"
+  },
   "forms": {
     "email": "Email",
     "password": "Password",
     "passwordConfirmation": "Password confirmation",
     "signUp": "Sign-Up",
     "signIn": "Sign-In",
+    "submit": "Submit",
     "rememberMe": "Remember me",
     "Resend email": "Resend email",
     "title": "Title",
+    "accessToChangeProject": "Access to change project",
+    "accessToChangeBoard": "Access to change board",
+    "accessToChangeTask": "Access to change task",
     "description": "Description",
+    "delete project": "Delete project",
+    "really delete project": "Yes!",
+    "changed my mind": "No!",
+    "task prefix": "Task prefix",
+    "use advanced settings": "Use advanced access settings",
     "validation": {
       "valid": "",
       "Email address is required": "Email address is required",
@@ -31,13 +44,15 @@
     "Email or password is wrong": "Email or password is wrong",
     "Can't create such user, please try again later": "Can't create such user, please try again later",
     "Confirmation was sent to your email": "Confirmation was sent to your email",
-    "Email is not confirmed": "Email is not confirmed"
+    "Email is not confirmed": "Email is not confirmed",
+    "true": "Done!"
   },
   "modal": {
     "resend email": "Resend email",
     "confirm": "Confirm",
     "close": "Close",
-    "create project": "Create project"
+    "create project": "Create project",
+    "create board": "Create board"
   },
   "sidebar": {
     "Projects": "Projects",
@@ -47,7 +62,14 @@
   },
   "project": {
     "open": "Open",
-    "create project": "Create project"
+    "create project": "Create project",
+    "boards": "Boards",
+    "settings": "Settings",
+    "access": "Access",
+    "create board": "Create board"
+  },
+  "board": {
+    "open": "Open"
   },
   "notification": {
     "recent": "Recent notifications",

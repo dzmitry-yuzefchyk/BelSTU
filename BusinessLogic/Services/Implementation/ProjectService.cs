@@ -314,12 +314,12 @@ namespace BusinessLogic.Services.Implementation
             try
             {
                 var access = await _securityService.GetUserAccessAsync(userId, projectId);
-                if (access[UserAction.DELETE_PROJECT])
+                if (!access[UserAction.DELETE_PROJECT])
                 {
                     return false;
                 }
 
-                var project = _context.Projects.FindAsync(projectId);
+                var project = await _context.Projects.FindAsync(projectId);
                 if (project == null)
                 {
                     return false;

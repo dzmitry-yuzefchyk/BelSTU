@@ -37,7 +37,6 @@ const SignInForm = (props) => {
             email: values.email,
             password: values.password,
             rememberMe: true
-
         };
         await userStore.signIn(user);
     };
@@ -92,13 +91,6 @@ const SignInForm = (props) => {
                             onChange={handleChange}
                             error={!!validationResult.password}
                             helperText={t(`forms.validation.${validationResult.password || 'valid'}`)}
-                        />
-                    </Box>
-
-                    <Box className={classes.formInputBox} display='flex' justifyContent='center'>
-                        <Checkbox
-                            name='rememberMe'
-                            onChange={handleChange}
                         />
                     </Box>
 

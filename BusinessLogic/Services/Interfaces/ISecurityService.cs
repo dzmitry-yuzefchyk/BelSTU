@@ -11,6 +11,6 @@ namespace BusinessLogic.Services.Interfaces
     {
         Task<Dictionary<UserAction, bool>> GetUserAccessAsync(Guid userId, int projectId);
         Task<(bool IsDone, string Message)> UpdateAsync(Guid userId, UpdateSecurityModel model);
-        PoliciesModel GetUserAccesses(int projectId, int page, int size);
+        Task<PoliciesModel> GetUserAccessesAsync(int projectId, int page, int size);
     }
 }
