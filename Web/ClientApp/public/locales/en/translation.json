@@ -51,6 +51,7 @@
   },
   "notification": {
     "recent": "Recent notifications",
-    "here you can see what changed": "Here you can see what changed while you were away"
+    "here you can see what changed": "Here you can see what has changed while you were away",
+    "clear": "Clear"
   }
 }

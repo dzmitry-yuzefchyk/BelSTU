@@ -103,6 +103,7 @@ namespace BusinessLogic.Services.Implementation
                 var userAccess = await _securityService.GetUserAccessAsync(userId, projectId);
                 var userProject = _context.ProjectUsers
                     .Include(x => x.Project)
+                    .ThenInclude(x => x.Boards)
                     .Where(x => x.UserId == userId && x.ProjectId == projectId)
                     .Select(x =>
                         new ProjectAccessViewModel()
@@ -119,7 +120,13 @@ namespace BusinessLogic.Services.Implementation
                             CanCreateTask = userAccess[UserAction.CREATE_TASK],
                             CanUpdateTask = userAccess[UserAction.UPDATE_TASK],
                             CanDeleteTask = userAccess[UserAction.DELETE_TASK],
-                            CanComment = userAccess[UserAction.CREATE_COMMENT]
+                            CanComment = userAccess[UserAction.CREATE_COMMENT],
+                            CanAddBoard = x.Project.Boards.Count < 6,
+                            Boards = x.Project.Boards.Select(x => new BoardView
+                            {
+                                Id = x.Id,
+                                Title = x.Title
+                            })
                         }).
                     SingleOrDefault();
 

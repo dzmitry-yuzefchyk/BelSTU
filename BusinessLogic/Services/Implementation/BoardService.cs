@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace BusinessLogic.Services.Implementation
@@ -35,12 +36,21 @@ namespace BusinessLogic.Services.Implementation
                     return (IsDone: false, Message: "Access denied");
                 }
 
+                var boardsCount = _context.Projects
+                    .Where(x => x.Id == model.ProjectId)
+                    .Include(x => x.Boards)
+                    .SingleOrDefault().Boards.Count();
+                if (boardsCount > 5)
+                {
+                    return (IsDone: false, Message: "Maximum 6 boards per project");
+                }
+
                 var board = new Board
                 {
                     CreatorId = userId,
                     ProjectId = model.ProjectId,
                     Title = model.Title,
-                    TaskPrefix = model.Prefix.ToUpper() ?? model.Title.ToUpper().Substring(0, 4),
+                    TaskPrefix = model.Prefix?.ToUpper() ?? model.Title.ToUpper().Substring(0, model.Title.Length / 2),
                     TaskIndex = 0
                 };
 
@@ -60,7 +70,13 @@ namespace BusinessLogic.Services.Implementation
         {
             try
             {
-                var access = await _securityService.GetUserAccessAsync(userId, model.ProjectId);
+                var board = await _context.Boards.FindAsync(model.BoardId);
+                if (board == null)
+                {
+                    return (IsDone: false, Message: "There is no such board");
+                }
+
+                var access = await _securityService.GetUserAccessAsync(userId, board.ProjectId);
                 if (!access[UserAction.UPDATE_BOARD])
                 {
                     return (IsDone: false, Message: "Access denied");
@@ -96,22 +112,21 @@ namespace BusinessLogic.Services.Implementation
                 {
                     return null;
                 }
-
-                Func<TaskView, object> orderByFilter = x => orderBy switch
+                Expression<Func<TaskView, object>> orderByFilter = x => x.Title;
+                if (orderBy == (int)Filter.PRIORITY)
                 {
-                    (int)Filter.PRIORITY => x.Priority,
-                    (int)Filter.SEVERITY => x.Severity,
-                    (int)Filter.TYPE => x.Type,
-                    _ => x.Title
-                };
-                Func<DataProvider.Entities.Task, bool> assigneeFilter = x => assignedToMe
-                    ? x.AssigneeId == userId
-                    : true;
-                Func<DataProvider.Entities.Task, bool> searchFilter = x => searchBy != ""
-                    ? x.Title.Contains(searchBy)
-                    : true;
-                
+                    orderByFilter = x => x.Priority;
+                }
+                else if (orderBy == (int)Filter.SEVERITY)
+                {
+                    orderByFilter = x => x.Severity;
+                }
+                else if (orderBy == (int)Filter.TYPE)
+                {
+                    orderByFilter = x => x.Type;
+                }
 
+                var access = await _securityService.GetUserAccessAsync(userId, projectId);
                 var board = await _context.Boards
                     .Where(x => x.Id == boardId)
                     .Include(x => x.Columns)
@@ -125,16 +140,20 @@ namespace BusinessLogic.Services.Implementation
                     .Select(x => new BoardViewModel
                     {
                         Id = x.Id,
+                        Title = x.Title,
                         TaskIndex = x.TaskIndex,
                         TaskPrefix = x.TaskPrefix,
+                        CanCreateTask = access[UserAction.CREATE_TASK],
+                        CanAddColumn = access[UserAction.UPDATE_BOARD],
                         Columns = x.Columns.Select(x => new ColumnView
                         {
                             Id = x.Id,
                             Position = x.Position,
                             Title = x.Title,
                             Tasks = x.Tasks
-                            .Where(assigneeFilter)
-                            .Where(searchFilter)
+                            .AsQueryable()
+                            .Where(x => assignedToMe ? x.AssigneeId == userId : true)
+                            .Where(x => searchBy != "" ? x.Title.Contains(searchBy) : true)
                             .Select(x => new TaskView
                             {
                                 Id = x.Id,
@@ -149,6 +168,7 @@ namespace BusinessLogic.Services.Implementation
                                 CreatorIcon = x.Assignee.Profile.Icon
                             })
                             .OrderBy(orderByFilter)
+
                         })
                         .OrderBy(x => x.Position)
                     })

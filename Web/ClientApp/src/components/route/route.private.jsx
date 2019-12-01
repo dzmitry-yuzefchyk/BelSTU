@@ -7,11 +7,11 @@ import Preview from '../../pages/home/components/preview';
 @observer
 class PrivateRoute extends React.Component {
     render() {
-        const { rootStore, path, children } = this.props;
+        const { rootStore, path, children, ...other } = this.props;
         const { userStore } = rootStore;
 
         return (
-            <Route path={path}>
+            <Route path={path} {...other}>
                 {userStore.user.isLoggedIn
                     ? children
                     : <Preview />

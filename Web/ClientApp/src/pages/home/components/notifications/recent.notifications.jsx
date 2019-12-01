@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardHeader, CardContent, withStyles, CardActions, Button } from '@material-ui/core';
+import { Card, CardHeader, CardContent, withStyles, CardActions, Button, Divider } from '@material-ui/core';
 import { inject, observer } from 'mobx-react';
 import { withTranslation } from 'react-i18next';
 import { withRouter } from 'react-router-dom';
@@ -8,19 +8,24 @@ import Notification from './notification';
 
 const styles = theme => ({
     root: {
-        maxWidth: 375,
-        width: 375,
-        transition: theme.transitions.create('width', {
+        borderRadius: 0,
+        maxWidth: 300,
+        width: 300,
+        flexShrink: 0,
+        transition: theme.transitions.create('margin', {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen,
         }),
     },
     rootHidden: {
-        width: 0,
-        transition: theme.transitions.create('width', {
+        marginLeft: -300,
+        transition: theme.transitions.create('margin', {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
+    },
+    notificationBox: {
+        overflowY: 'auto'
     }
 });
 
@@ -39,12 +44,12 @@ class RecentNotifications extends React.Component {
     }
 
     markAsRead(id) {
-        const { notificationStore } = this.rootStore;
+        const { notificationStore } = this.props.rootStore;
         notificationStore.markAsRead(id);
     }
 
     clearAll() {
-        const { notificationStore } = this.rootStore;
+        const { notificationStore } = this.props.rootStore;
         notificationStore.clearAll();
     }
 
@@ -60,11 +65,12 @@ class RecentNotifications extends React.Component {
                     subheader={t('notification.here you can see what changed')}
                 />
                 <CardActions>
-                    <Button variant='primary' onClick={this.clearAll}>
+                    <Button color='primary' onClick={this.clearAll}>
                         {t('notification.clear')}
                     </Button>
                 </CardActions>
-                <CardContent>
+                <Divider />
+                <CardContent className={classes.notificationBox}>
                     {notificationStore.notifications.map(notification =>
                         <Notification
                             key={notification.id}

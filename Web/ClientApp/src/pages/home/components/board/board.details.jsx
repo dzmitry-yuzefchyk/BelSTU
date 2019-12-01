@@ -15,14 +15,14 @@ const styles = theme => ({
         justifyContent: 'space-between'
     },
     actions: {
-        bottom: 0
+        bottom: 0 
     }
 });
 
-const ProjectDetails = (props) => {
-    const { id, title, description, onClick, classes, t } = props;
+const BoardDetails = (props) => {
+    const { id, title, onClick, classes, t } = props;
 
-    const openProject = () => {
+    const openBoard = () => {
         onClick(id);
     }
 
@@ -32,13 +32,10 @@ const ProjectDetails = (props) => {
                 <Typography variant='h5' component='h2'>
                     {title}
                 </Typography>
-                <Typography>
-                    {description}
-                </Typography>
             </CardContent>
             <CardActions className={classes.actions}>
-                <Button color='primary' onClick={openProject}>
-                    {t('project.open')}
+                <Button color='primary' onClick={openBoard}>
+                    {t('board.open')}
                 </Button>
             </CardActions>
         </Card>
@@ -48,4 +45,4 @@ const ProjectDetails = (props) => {
 export default R.compose(
     withStyles(styles),
     withTranslation()
-)(ProjectDetails);
+)(BoardDetails);

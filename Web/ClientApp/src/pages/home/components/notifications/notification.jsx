@@ -24,10 +24,10 @@ const Notification = props => {
                 {description}
             </CardContent>
             <CardActions>
-                <Button variant='primary' onClick={navigate}>
+                <Button color='primary' onClick={navigate}>
                     {t('notification.goto')}
                 </Button>
-                <Button variant='primary' onClick={read}>
+                <Button color='primary' onClick={read}>
                     {t('notification.mark as read')}
                 </Button>
             </CardActions>

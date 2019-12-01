@@ -25,6 +25,11 @@ export const POST_USER = `${projectController}/AddUser`;
 export const DELETE_USER = `${projectController}/RemoveUser`;
 export const POST_CRETE_PROJECT = `${projectController}`;
 
+const boardController = `${api}/Board`;
+export const GET_BOARD = `${boardController}`;
+export const POST_CREATE_BOARD = `${boardController}`;
+export const POST_CREATE_COLUMN = `${boardController}/Column`;
+
 //Hubs
 export const BOARD_HUB = '/board';
 export const NOTIFICATION_HUB = '/notification';

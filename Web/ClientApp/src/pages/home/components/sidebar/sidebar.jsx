@@ -23,7 +23,8 @@ const styles = theme => ({
     img: {
         maxWidth: 24,
         maxHeight: 24,
-        borderRadius: '100px'
+        borderRadius: '100px',
+        backgroundColor: theme.palette.primary.contrastText
     },
     drawer: {
         width: drawerWidth,

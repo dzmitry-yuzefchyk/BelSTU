@@ -18,10 +18,10 @@ class PrivateRouteStrict extends React.Component {
     }
 
     render() {
-        const { path, children } = this.props;
+        const { path, children, ...other } = this.props;
 
         return (
-            <Route path={path}>
+            <Route path={path} {...other}>
                 {children}
             </Route>
         );

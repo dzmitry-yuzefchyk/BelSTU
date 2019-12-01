@@ -29,7 +29,7 @@ export default class ProjectStore {
     }
 
     @observable projects = [];
-    @observable project = {};
+    @observable project = { boards: [] };
     @observable fetching = true;
     @observable total = 0;
 

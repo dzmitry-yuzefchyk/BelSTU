@@ -58,7 +58,7 @@ namespace Web.Controllers
             return IsDone ? (IActionResult)Ok(Message) : BadRequest(Message);
         }
 
-        [HttpPost("Settings")]
+        [HttpPut("Settings")]
         public async Task<IActionResult> UpdateSettings([FromBody]UpdateProjectModel model)
         {
             var (IsDone, Message) = await _projectService.UpdateSettingsAsync(this.UserId(), model);
@@ -79,7 +79,7 @@ namespace Web.Controllers
             return result != null ? (IActionResult)Ok(result) : BadRequest(result);
         }
 
-        [HttpPost("AccessSettings")]
+        [HttpPut("AccessSettings")]
         public async Task<IActionResult> UpdateAccessSettings(UpdateSecurityModel model)
         {
             var (IsDone, Message) = await _securityService.UpdateAsync(this.UserId(), model);

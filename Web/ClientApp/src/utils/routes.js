@@ -16,7 +16,7 @@ export const CONFIRM_EMAIL = '/confirm_email/:email';
 
 //PROJECTS
 export const PROJECTS = '/projects';
-export const PROJECT = '/project/:id';
-export const PROJECT_SETTINGS = '/project/:id/settings';
-export const BOARD = '/project/:projectId/board/:id';
-export const TASK = '/project/:projectId/board/:boardId/task/:id';
+export const PROJECT = '/project/:projectId';
+export const PROJECT_SETTINGS = '/project/:projectId/settings';
+export const BOARD = '/project/:projectId/board/:boardId';
+export const TASK = '/project/:projectId/board/:boardId/task/:taskId';

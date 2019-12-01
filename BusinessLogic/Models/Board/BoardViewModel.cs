@@ -9,6 +9,8 @@ namespace BusinessLogic.Models.Board
         public string TaskPrefix { get; set; }
         public int TaskIndex { get; set; }
         public IEnumerable<ColumnView> Columns { get; set; }
+        public bool CanAddColumn { get; set; }
+        public bool CanCreateTask { get; set; }
     }
 
     public class ColumnView
