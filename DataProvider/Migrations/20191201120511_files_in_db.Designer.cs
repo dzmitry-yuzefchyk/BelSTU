@@ -4,14 +4,16 @@ using DataProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataProvider.Migrations
 {
     [DbContext(typeof(TaskboardContext))]
-    partial class TaskboardContextModelSnapshot : ModelSnapshot
+    [Migration("20191201120511_files_in_db")]
+    partial class files_in_db
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -129,13 +131,19 @@ namespace DataProvider.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CommentId")
+                    b.Property<string>("AttachedFilePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CommentId")
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("File")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<string>("Extension")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MimeType")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -609,9 +617,7 @@ namespace DataProvider.Migrations
                 {
                     b.HasOne("DataProvider.Entities.Comment", "Comment")
                         .WithMany("Attachments")
-                        .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CommentId");
                 });
 
             modelBuilder.Entity("DataProvider.Entities.Notification", b =>

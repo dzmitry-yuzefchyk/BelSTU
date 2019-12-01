@@ -11,7 +11,7 @@ namespace DataProvider.Entities
         public int Type { get; set; }
         public int Priority { get; set; }
         public int Severity { get; set; }
-        public Guid AssigneeId { get; set; }
+        public Guid? AssigneeId { get; set; }
         public User Assignee { get; set; }
         public Guid CreatorId { get; set; }
         public User Creator { get; set; }

@@ -3,10 +3,9 @@
     public class TaskAttachment
     {
         public int Id { get; set; }
+        public int TaskId { get; set; }
         public Task Task { get; set; }
         public string FileName { get; set; }
-        public string MimeType { get; set; }
-        public string Extension { get; set; }
-        public string AttachedFilePath { get; set; }
+        public byte[] File { get; set; }
     }
 }

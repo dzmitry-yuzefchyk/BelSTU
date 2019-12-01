@@ -19,14 +19,16 @@ namespace BusinessLogic.Services.Implementation
         private readonly ILogger _logger;
         private readonly INotificationService _notificationService;
         private readonly ISecurityService _securityService;
+        private readonly ITaskService _taskService;
 
         public ProjectService(TaskboardContext context, ILoggerFactory loggerFactory,
-            INotificationService notificationService, ISecurityService securityService)
+            INotificationService notificationService, ISecurityService securityService, ITaskService taskService)
         {
             _context = context;
             _logger = loggerFactory.CreateLogger<FileLogger>();
             _notificationService = notificationService;
             _securityService = securityService;
+            _taskService = taskService;
         }
 
         public async Task<(bool IsDone, string Message)> CreateProjectAsync(Guid userId, CreateProjectModel model)
@@ -305,6 +307,37 @@ namespace BusinessLogic.Services.Implementation
             }
 
             return (IsDone: false, Message: "Something went wrong, try again later");
+        }
+
+        public async Task<bool> DeleteProjectAsync(Guid userId, int projectId)
+        {
+            try
+            {
+                var access = await _securityService.GetUserAccessAsync(userId, projectId);
+                if (access[UserAction.DELETE_PROJECT])
+                {
+                    return false;
+                }
+
+                var project = _context.Projects.FindAsync(projectId);
+                if (project == null)
+                {
+                    return false;
+                }
+
+                var boards = _context.Boards.Where(x => x.ProjectId == projectId);
+                await boards.ForEachAsync(async x => await _taskService.DeleteBoardTasksAsync(userId, x.Id, projectId));
+                _context.RemoveRange(boards);
+                _context.Remove(project);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("ProjectService: DeleteProjectAsync", e);
+            }
+
+            return false;
         }
     }
 }

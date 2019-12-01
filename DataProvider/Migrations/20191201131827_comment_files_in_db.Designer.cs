@@ -4,14 +4,16 @@ using DataProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataProvider.Migrations
 {
     [DbContext(typeof(TaskboardContext))]
-    partial class TaskboardContextModelSnapshot : ModelSnapshot
+    [Migration("20191201131827_comment_files_in_db")]
+    partial class comment_files_in_db
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

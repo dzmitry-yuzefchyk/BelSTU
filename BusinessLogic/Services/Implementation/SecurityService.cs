@@ -75,6 +75,12 @@ namespace BusinessLogic.Services.Implementation
 
             try
             {
+                var projectUser = _context.ProjectUsers.SingleOrDefault(x => x.ProjectId == projectId && x.UserId == userId);
+                if (projectUser == null)
+                {
+                    return access;
+                }
+
                 var projectSettings = await _context.ProjectSettings.FindAsync(projectId);
 
                 if (projectSettings.UseAdvancedSecuritySettings)
@@ -93,7 +99,7 @@ namespace BusinessLogic.Services.Implementation
                 }
                 else
                 {
-                    var userAccessLevel = _context.ProjectUsers.SingleOrDefault(x => x.ProjectId == projectId && x.UserId == userId).Role;
+                    var userAccessLevel = projectUser.Role;
                     access.ToList().ForEach
                     (pair =>
                         {

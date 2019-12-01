@@ -5,6 +5,7 @@ import ModalStore from './modalStore';
 import NotificationStore from './notificationStore';
 import ProjectStore from './projectStore';
 import BoardStore from './boardStore';
+import TaskStore from './taskStore';
 
 class RootStore {
     constructor() {
@@ -14,6 +15,7 @@ class RootStore {
         this.notificationStore = new NotificationStore(this);
         this.projectStore = new ProjectStore(this);
         this.boardStore = new BoardStore(this);
+        this.taskStore = new TaskStore(this);
     }
 
     @action async fetchUserData() {

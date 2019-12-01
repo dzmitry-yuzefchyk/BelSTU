@@ -20,10 +20,10 @@ namespace BusinessLogic.Services.HostedServices
             _logger = loggerFactory.CreateLogger<FileLogger>();
         }
 
-        public async Task StartAsync(CancellationToken cancellationToken)
+        public Task StartAsync(CancellationToken cancellationToken)
         {
             //Yep
-            Task.Factory.StartNew(() => ExecuteAsync(cancellationToken));
+            return Task.Factory.StartNew(() => ExecuteAsync(cancellationToken));
         }
 
         public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;

@@ -38,6 +38,7 @@ namespace Web
             services.AddTransient<ISecurityService, SecurityService>();
             services.AddTransient<IProjectService, ProjectService>();
             services.AddTransient<IBoardService, BoardService>();
+            services.AddTransient<ITaskService, TaskService>();
             services.AddTransient<IEmailSender, EmailSender>(x =>
                 new EmailSender(
                     Configuration.GetValue<string>("EmailSender:HostName"),

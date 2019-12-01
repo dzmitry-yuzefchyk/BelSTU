@@ -158,7 +158,6 @@ namespace BusinessLogic.Services.Implementation
                             {
                                 Id = x.Id,
                                 Title = x.Title,
-                                Content = x.Content,
                                 Type = x.Type,
                                 Severity = x.Severity,
                                 Priority = x.Priority,

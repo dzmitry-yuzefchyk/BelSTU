@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace Web.Controllers
 {
-
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
@@ -35,6 +34,13 @@ namespace Web.Controllers
         {
             var result = _projectService.GetProjects(this.UserId(), page, size);
             return result != null ? (IActionResult)Ok(result) : BadRequest("Something went wrong, please try again later");
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteProject(int projectId)
+        {
+            var result = await _projectService.DeleteProjectAsync(this.UserId(), projectId);
+            return result ? (IActionResult)Ok(result) : BadRequest("Something went wrong, please try again later");
         }
 
         [HttpGet("{projectId}")]
