@@ -2,24 +2,31 @@ import * as signalR from '@aspnet/signalr';
 
 export default class BaseHub {
     constructor(hubRoute) {
-        const host = process.env.REACT_APP_URL;
+        const api = process.env.API;
+        const transport = signalR.HttpTransportType.WebSockets;
+        const options = {
+            transport,
+            logMessageContent: false,
+            logger: signalR.LogLevel.Trace
+        };
+
         this.hubRoute = hubRoute;
         this.connection = new signalR.HubConnectionBuilder()
-            .withUrl(hubRoute)
+            .withUrl(`https://localhost:44300/${hubRoute}`, options)
             .build();
+
+        this.start();
 
         this.start = this.start.bind(this);
         this.connection.onclose(this.start);
     }
 
-    async start() {
-        try
-        {
-            await this.connection.start();
-        } catch(e) {
-            if (process.env.NODE_ENV === 'development')
-            {
-                throw(`Can\'t start a hub on ${this.hubRoute}`)
+    start() {
+        try {
+            this.connection.start();
+        } catch (e) {
+            if (process.env.NODE_ENV === 'development') {
+                throw (`Can\'t start a hub on ${this.hubRoute}`)
             }
         }
     }

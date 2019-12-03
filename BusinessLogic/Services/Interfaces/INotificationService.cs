@@ -9,7 +9,6 @@ namespace BusinessLogic.Services.Interfaces
     {
         Task<IEnumerable<NotificationViewModel>> GetNotificationsAsync(Guid userId);
         Task<bool> CreateNotificationAsync(CreateNotificationModel model);
-        Task<bool> MarkAsDeliveredAsync(int notificationId);
         Task<int> RemoveDeliveredNotificationsAsync();
         Task<bool> ClearAllAsync(Guid userId);
     }

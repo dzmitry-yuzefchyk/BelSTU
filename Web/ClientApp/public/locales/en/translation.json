@@ -9,7 +9,20 @@
   },
   "access": {
     "PROJECT_CREATOR": "Administrator",
-    "PROJECT_MEMBER": "Member"
+    "PROJECT_MEMBER": "Member",
+    "CREATE_BOARD": "CB",
+    "UPDATE_BOARD": "UB",
+    "DELETE_BOARD": "DB",
+    "CREATE_TASK": "CT",
+    "UPDATE_TASK": "UT",
+    "DELETE_TASK": "DT",
+    "CREATE_COMMENT": "Comment",
+    "UPDATE_PROJECT": "UP",
+    "CHANGE_SECURITY": "CS",
+    "DELETE_PROJECT": "DP",
+    "remove": "Remove",
+    "blocked": "Change block",
+    "email": "User"
   },
   "forms": {
     "email": "Email",
@@ -36,7 +49,7 @@
       "Password is required": "Password is required",
       "Email address is invalid": "Email address is invalid",
       "Password must be at least 6 symbols long": "Password must be at least 6 symbols long",
-      "Password confirmation is not the same": "Password confirmation is not the same", 
+      "Password confirmation is not the same": "Password confirmation is not the same",
       "": ""
     }
   },

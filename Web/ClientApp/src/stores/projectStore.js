@@ -13,22 +13,6 @@ import {
     PUT_PROJECT_ACCESS
 } from '../utils/api.routes';
 
-const UserAction = {
-    CREATE_BOARD: 0,
-    UPDATE_BOARD: 1,
-    DELETE_BOARD: 2,
-
-    CREATE_TASK: 3,
-    UPDATE_TASK: 4,
-    DELETE_TASK: 5,
-
-    CREATE_COMMENT: 6,
-
-    UPDATE_PROJECT: 7,
-    CHANGE_SECURITY: 8,
-    DELETE_PROJECT: 9,
-};
-
 export default class ProjectStore {
     constructor(rootStore) {
         this.rootStore = rootStore;
@@ -36,7 +20,7 @@ export default class ProjectStore {
 
     @observable projects = [];
     @observable settings = {};
-    @observable access = {};
+    @observable access = { users: [] };
     @observable project = { boards: [] };
     @observable fetching = true;
     @observable total = 0;
@@ -99,6 +83,7 @@ export default class ProjectStore {
     async removeFromProject(projectUser) {
         try {
             const response = await DELETE(DELETE_USER, projectUser);
+            this.access.users = this.access.users.filter(x => x.email !== projectUser.email);
             this.rootStore.snackbarStore.show(response.data, 'success');
         } catch (e) {
             if (e.response) {
@@ -187,9 +172,13 @@ export default class ProjectStore {
     }
 
     @action.bound
-    async updateAccess(access) {
+    async updateAccess(projectId) {
         try {
-            const response = await PUT(PUT_PROJECT_ACCESS, access);
+            const data = {
+                projectId,
+                users: this.access.users.toJS().filter(x => !x.isAdmin || !x.changingBlocked)
+            };
+            const response = await PUT(PUT_PROJECT_ACCESS, data);
             this.rootStore.snackbarStore.show(response.data, 'success');
         } catch (e) {
             if (e.response) {

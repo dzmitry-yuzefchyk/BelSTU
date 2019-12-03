@@ -1,5 +1,4 @@
-﻿using BusinessLogic.AdvancedSecurity;
-using BusinessLogic.Models.Project;
+﻿using BusinessLogic.Models.Project;
 using BusinessLogic.Services.Interfaces;
 using CommonLogic.Configuration;
 using Microsoft.AspNetCore.Authorization;
@@ -47,7 +46,7 @@ namespace Web.Controllers
         public async Task<IActionResult> GetProject(int projectId)
         {
             var result = await _projectService.GetProjectAsync(this.UserId(), projectId);
-            return Ok(result);
+            return result != null ? (IActionResult)Ok(result) : NotFound("Not found");
         }
 
         [HttpPost("AddUser")]
@@ -86,7 +85,7 @@ namespace Web.Controllers
         }
 
         [HttpPut("AccessSettings")]
-        public async Task<IActionResult> UpdateAccessSettings([FromBody]UpdateSecurityModel model)
+        public async Task<IActionResult> UpdateAccessSettings([FromBody]UpdatePoliciesModel model)
         {
             var (IsDone, Message) = await _securityService.UpdateAsync(this.UserId(), model);
             return IsDone ? (IActionResult)Ok(Message) : BadRequest(Message);

@@ -15,6 +15,7 @@ namespace BusinessLogic.Models.Project
         public string Email { get; set; }
         public string Tag { get; set; }
         public List<Actions> Actions { get; set; }
+        public bool IsAdmin { get; set; }
         public bool ChangingBlocked { get; set; }
     }
 

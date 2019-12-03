@@ -103,25 +103,6 @@ namespace BusinessLogic.Services.Implementation
             return false;
         }
 
-        public async Task<bool> MarkAsDeliveredAsync(int notificationId)
-        {
-            try
-            {
-                var notification = await _context.Notifications.FindAsync(notificationId);
-                notification.IsDelivered = true;
-                _context.Attach(notification);
-                _context.Entry(notification).Property(x => x.IsDelivered).IsModified = true;
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception e)
-            {
-                _logger.LogWarning("NotificationService, MarkAsDeliveredAsync:", e);
-                return false;
-            }
-
-            return true;
-        }
-
         public async Task<int> RemoveDeliveredNotificationsAsync()
         {
             IQueryable<Notification> notifications = _context.Notifications.Where(x => x.IsDelivered);

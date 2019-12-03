@@ -71,9 +71,9 @@ const ProjectSettingsForm = props => {
         values.title = settings.title;
         values.description = settings.description;
         values.useAdvancedSecuritySettings = settings.useAdvancedSecuritySettings;
-        values.accessToChangeBoard = settings.accessToChangeBoard;
-        values.accessToChangeProject = settings.accessToChangeProject;
-        values.accessToChangeTask = settings.accessToChangeTask;
+        values.accessToChangeBoard = settings.accessToChangeBoard || 0;
+        values.accessToChangeProject = settings.accessToChangeProject || 0;
+        values.accessToChangeTask = settings.accessToChangeTask || 0;
     }, []);
 
     return (
@@ -105,16 +105,16 @@ const ProjectSettingsForm = props => {
                         />
                     </FormControl>
 
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                value={values.useAdvancedSecuritySettings || settings.useAdvancedSecuritySettings}
-                                name='useAdvancedSecuritySettings'
-                                onChange={handleChange}
-                            />
-                        }
-                        label={t('forms.use advanced settings')}
-                    />
+                    <FormControl>
+                        {t('forms.use advanced settings')}
+                        <Checkbox
+                            checked={values.useAdvancedSecuritySettings === undefined ? !!settings.useAdvancedSecuritySettings : !!values.useAdvancedSecuritySettings}
+                            value={values.useAdvancedSecuritySettings === undefined ? !!settings.useAdvancedSecuritySettings : !!values.useAdvancedSecuritySettings}
+                            name='useAdvancedSecuritySettings'
+                            onChange={handleChange}
+                        />
+                    </FormControl>
+
 
                     <FormControl className={classes.formInputBox}>
                         <InputLabel>{t('forms.accessToChangeProject')}</InputLabel>

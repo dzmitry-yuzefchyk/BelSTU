@@ -4,14 +4,16 @@ using DataProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataProvider.Migrations
 {
     [DbContext(typeof(TaskboardContext))]
-    partial class TaskboardContextModelSnapshot : ModelSnapshot
+    [Migration("20191203055936_pk_for_securtiy_policy")]
+    partial class pk_for_securtiy_policy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -194,11 +196,6 @@ namespace DataProvider.Migrations
 
             modelBuilder.Entity("DataProvider.Entities.ProjectSecurityPolicy", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
                     b.Property<int>("ProjectSettingsId")
                         .HasColumnType("int");
 
@@ -208,12 +205,13 @@ namespace DataProvider.Migrations
                     b.Property<int>("Action")
                         .HasColumnType("int");
 
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsAllowed")
                         .HasColumnType("bit");
 
-                    b.HasKey("Id", "ProjectSettingsId", "UserId");
-
-                    b.HasIndex("ProjectSettingsId");
+                    b.HasKey("ProjectSettingsId", "UserId");
 
                     b.HasIndex("UserId");
 

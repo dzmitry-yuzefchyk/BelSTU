@@ -24,10 +24,18 @@ const useForm = (callback, validation) => {
 
     const handleChange = (event) => {
         event.persist();
-        const newState = {
-            ...values,
-            [event.target.name]: event.target.value
-        };
+        let newState = {};
+        if (event.target.name === 'useAdvancedSecuritySettings') {
+            newState = {
+                ...values,
+                [event.target.name]: event.target.checked
+            };
+        } else {
+            newState = {
+                ...values,
+                [event.target.name]: event.target.value
+            };
+        }
         setValues(newState);
         setValidationResult(validationResult => ({
             ...validationResult,

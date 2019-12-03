@@ -1,5 +1,4 @@
 using BusinessLogic.Hubs;
-using BusinessLogic.Services.HostedServices;
 using BusinessLogic.Services.Implementation;
 using BusinessLogic.Services.Interfaces;
 using CommonLogic.Configuration;
@@ -30,7 +29,6 @@ namespace Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHostedService<NotificationCleaner>();
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.AddDbContext(Configuration, "Default");
             services.AddTransient<IAccountService, AccountService>();
@@ -95,7 +93,7 @@ namespace Web
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHub<NotificationHub>("/hub/notification");
+                endpoints.MapHub<NotificationHub>("/notification");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");

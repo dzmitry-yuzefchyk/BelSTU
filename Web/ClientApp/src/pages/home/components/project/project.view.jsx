@@ -7,6 +7,7 @@ import BoardDetails from './../board/board.details';
 import { withTranslation } from 'react-i18next';
 import CreateBoardModal from '../board/create.board.modal';
 import ProjectSettingsForm from './project.settings.form';
+import ProjectAccessForm from './project.access.form';
 
 const tabs = {
     boards: 0,
@@ -89,11 +90,10 @@ class ProjectView extends React.Component {
         await projectStore.fetchSettings(projectId);
     };
 
-    async fetchAccess() {
+    async fetchAccess(page = 0) {
         const { projectId } = this.props.match.params;
         const { projectStore } = this.props.rootStore;
-        const { accessPage } = this.state;
-        await projectStore.fetchAccess(projectId, accessPage);
+        await projectStore.fetchAccess(projectId, page);
     };
 
     openBoard(id) {
@@ -114,13 +114,9 @@ class ProjectView extends React.Component {
             currentTab: tab
         });
 
-        if (tab == tabs.boards) await this.fetchProject();
-        else if (tab == tabs.settings) await this.fetchSettings();
-        else if (tab == tabs.access) await this.fetchAccess();
-    }
-
-    renderAccess() {
-
+        if (tab === tabs.boards) await this.fetchProject();
+        else if (tab === tabs.settings) await this.fetchSettings();
+        else if (tab === tabs.access) await this.fetchAccess();
     }
 
     renderBoards() {
@@ -137,7 +133,7 @@ class ProjectView extends React.Component {
                         onClick={this.openBoard}
                     />
                 )}
-                {projectStore.project.canAddBoard
+                {projectStore.project.canAddBoard && projectStore.project.canCreateBoard
                     ? <Card elevation={2} className={classes.card}>
                         <CardActions>
                             <Button color='primary' onClick={this.openCreateBoardModal}>
@@ -174,10 +170,10 @@ class ProjectView extends React.Component {
                             {this.renderBoards()}
                         </ProjectTab>
                         <ProjectTab value={currentTab} index={tabs.settings}>
-                            <ProjectSettingsForm projectId={projectId}/>
+                            <ProjectSettingsForm projectId={projectId} />
                         </ProjectTab>
                         <ProjectTab value={currentTab} index={tabs.access}>
-                            3
+                            <ProjectAccessForm projectId={projectId} fetchAccess={this.fetchAccess} />
                         </ProjectTab>
                     </Box>
                 }

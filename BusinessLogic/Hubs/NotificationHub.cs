@@ -1,4 +1,4 @@
-﻿using BusinessLogic.Services.Interfaces;
+﻿using DataProvider;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
@@ -10,21 +10,20 @@ namespace BusinessLogic.Hubs
 {
     public class NotificationHub : Hub
     {
-        private readonly INotificationService _notificationService;
+        private readonly TaskboardContext _context;
 
-        public static List<SignalrUser> Users { get; set; }
+        public static List<SignalrUser> Users = new List<SignalrUser>();
 
-        public NotificationHub(INotificationService notificationService)
+        public NotificationHub(TaskboardContext taskboardContext)
         {
-            Users = new List<SignalrUser>();
-            _notificationService = notificationService;
+            _context = taskboardContext;
         }
 
         public override Task OnConnectedAsync()
         {
             var connectionId = Context.ConnectionId;
 
-            if (Users.Any(x => x.ConnectionId == connectionId))
+            if (Users.SingleOrDefault(x => x.ConnectionId == connectionId) == null)
             {
                 var userId = Guid.Parse(Context.User.FindFirst(ClaimTypes.NameIdentifier).Value);
                 Users.Add(new SignalrUser { ConnectionId = connectionId, IdentityUserId = userId });
@@ -43,9 +42,17 @@ namespace BusinessLogic.Hubs
             return base.OnDisconnectedAsync(exception);
         }
 
-        public async void MarkAsRead(int notificationId)
+        public void MarkAsRead(int notificationId)
         {
-            await _notificationService.MarkAsDeliveredAsync(notificationId);
+            try
+            {
+                var notification = _context.Notifications.Find(notificationId);
+                _context.Remove(notification);
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+            }
         }
     }
 

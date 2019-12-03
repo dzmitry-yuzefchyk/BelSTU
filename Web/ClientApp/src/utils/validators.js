@@ -78,3 +78,15 @@ export function updateProjectSettingsValidator(values) {
 
     return result;
 }
+
+export function addUserToProjectValidator(values) {
+    let result = {};
+
+    if (!values.email) {
+        result.email = 'Email address is required';
+    } else if (!emailRegex.test(values.email)) {
+        result.email = 'Email address is invalid';
+    }
+
+    return result;
+ }

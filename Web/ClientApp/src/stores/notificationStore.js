@@ -57,10 +57,7 @@ export default class NotificationStore {
     markAsRead(notificationId) {
         this.hub.markAsRead(notificationId);
         this.notifications = this.notifications
-            .filter(notification => {
-                if (!notification.id === notificationId)
-                    return notification;
-            });
+            .filter(notification => notification.id !== notificationId);
     }
 
     @action.bound

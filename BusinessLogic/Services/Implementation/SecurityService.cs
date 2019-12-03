@@ -1,10 +1,10 @@
-﻿using BusinessLogic.AdvancedSecurity;
-using BusinessLogic.Contstants;
+﻿using BusinessLogic.Contstants;
 using BusinessLogic.Models.Project;
 using BusinessLogic.Services.Interfaces;
 using CommonLogic.Logger;
 using DataProvider;
 using DataProvider.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -24,7 +24,7 @@ namespace BusinessLogic.Services.Implementation
             _logger = loggerFactory.CreateLogger<FileLogger>();
         }
 
-        public async Task<(bool IsDone, string Message)> UpdateAsync(Guid userId, UpdateSecurityModel model)
+        public async Task<(bool IsDone, string Message)> UpdateAsync(Guid userId, UpdatePoliciesModel model)
         {
             try
             {
@@ -35,28 +35,33 @@ namespace BusinessLogic.Services.Implementation
                     return (IsDone: false, Message: "You don't have rights");
                 }
 
-                var policies = model.Policies
-                    .Select(x =>
+                foreach (var projectUser in model.Users)
+                {
+                    var uId = _context.Users.SingleOrDefault(u => u.Email == projectUser.Email).Id;
+
+                    foreach (var action in projectUser.Actions)
                     {
-                        var userId = _context.Users.SingleOrDefault(u => u.Email == x.UserEmail).Id;
-                        var oldPolicy = _context.ProjectSecurityPolicies.SingleOrDefault(p => p.UserId == userId);
-                        _context.ProjectSecurityPolicies.Remove(oldPolicy);
-                        return new ProjectSecurityPolicy
+                        var oldPolicy = _context.ProjectSecurityPolicies
+                            .SingleOrDefault(x => x.UserId == uId && x.Action == (int)action.Action && x.ProjectSettingsId == model.ProjectId);
+                        if (oldPolicy != null)
                         {
-                            Action = x.Action,
-                            IsAllowed = x.IsAllowed,
-                            UserId = userId,
+                            _context.Remove(oldPolicy);
+                            await _context.SaveChangesAsync();
+                        }
+
+                        var policy = new ProjectSecurityPolicy
+                        {
+                            Action = (int)action.Action,
+                            IsAllowed = action.Allowed,
+                            UserId = uId,
                             ProjectSettingsId = model.ProjectId
                         };
-                    });
-                await _context.SaveChangesAsync();
-                await _context.ProjectSecurityPolicies.AddRangeAsync(policies);
-
-                var result = await _context.SaveChangesAsync();
-                if (result > 1)
-                {
-                    return (IsDone: true, Message: "Success");
+                        await _context.ProjectSecurityPolicies.AddAsync(policy);
+                    }
                 }
+
+                await _context.SaveChangesAsync();
+                return (IsDone: true, Message: "Success");
             }
             catch (Exception e)
             {
@@ -142,6 +147,7 @@ namespace BusinessLogic.Services.Implementation
         {
             try
             {
+                var projectSettings = await _context.ProjectSettings.FindAsync(projectId);
                 var projectUsers = _context.ProjectUsers
                     .Where(x => x.ProjectId == projectId)
                     .Skip(page * size)
@@ -149,7 +155,7 @@ namespace BusinessLogic.Services.Implementation
                     .ToList();
                 var total = _context.ProjectUsers.Where(x => x.ProjectId == projectId).Count();
                 var users = new List<ProjectUserModel>();
-                foreach(var projectUser in projectUsers)
+                foreach (var projectUser in projectUsers)
                 {
                     var user = await _context.Users.FindAsync(projectUser.UserId);
                     var userProfile = await _context.UserProfiles.FindAsync(projectUser.UserId);
@@ -158,7 +164,8 @@ namespace BusinessLogic.Services.Implementation
                     {
                         Email = user.Email,
                         Tag = userProfile.Tag,
-                        ChangingBlocked = projectUser.Role == (int)UserRole.ADMIN,
+                        IsAdmin = projectUser.Role == (int)UserRole.ADMIN,
+                        ChangingBlocked = !projectSettings.UseAdvancedSecuritySettings,
                         Actions = actions.Select(x => new Actions
                         {
                             Action = x.Key,

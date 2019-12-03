@@ -36,5 +36,5 @@ export const POST_CREATE_BOARD = `${boardController}`;
 export const POST_CREATE_COLUMN = `${boardController}/Column`;
 
 //Hubs
-export const BOARD_HUB = '/board';
-export const NOTIFICATION_HUB = '/notification';
+export const BOARD_HUB = 'board';
+export const NOTIFICATION_HUB = 'notification';
