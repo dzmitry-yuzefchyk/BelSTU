@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataProvider.Migrations
 {
     [DbContext(typeof(TaskboardContext))]
-    [Migration("20191118071815_action_to_int")]
-    partial class action_to_int
+    [Migration("20191205133036_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -131,19 +131,13 @@ namespace DataProvider.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AttachedFilePath")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("CommentId")
+                    b.Property<int>("CommentId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Extension")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<byte[]>("File")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("FileName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MimeType")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -202,7 +196,12 @@ namespace DataProvider.Migrations
 
             modelBuilder.Entity("DataProvider.Entities.ProjectSecurityPolicy", b =>
                 {
-                    b.Property<int>("ProjectSecuritySettingsId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ProjectSettingsId")
                         .HasColumnType("int");
 
                     b.Property<Guid>("UserId")
@@ -214,27 +213,13 @@ namespace DataProvider.Migrations
                     b.Property<bool>("IsAllowed")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("UseSecretKey")
-                        .HasColumnType("bit");
+                    b.HasKey("Id", "ProjectSettingsId", "UserId");
 
-                    b.HasKey("ProjectSecuritySettingsId", "UserId");
+                    b.HasIndex("ProjectSettingsId");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("ProjectSecurityPolicies");
-                });
-
-            modelBuilder.Entity("DataProvider.Entities.ProjectSecuritySettings", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SecretKey")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ProjectSecuritySettings");
                 });
 
             modelBuilder.Entity("DataProvider.Entities.ProjectSettings", b =>
@@ -251,7 +236,7 @@ namespace DataProvider.Migrations
                     b.Property<int>("AccessToChangeTask")
                         .HasColumnType("int");
 
-                    b.Property<string>("PathToBackground")
+                    b.Property<string>("Preview")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("UseAdvancedSecuritySettings")
@@ -270,8 +255,8 @@ namespace DataProvider.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Role")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
 
                     b.HasKey("ProjectId", "UserId");
 
@@ -315,7 +300,7 @@ namespace DataProvider.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<Guid>("AssigneeId")
+                    b.Property<Guid?>("AssigneeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ColumnId")
@@ -357,19 +342,16 @@ namespace DataProvider.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AttachedFilePath")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Extension")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<byte[]>("File")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("FileName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("MimeType")
+                    b.Property<string>("FileType")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TaskId")
+                    b.Property<int>("TaskId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -639,7 +621,9 @@ namespace DataProvider.Migrations
                 {
                     b.HasOne("DataProvider.Entities.Comment", "Comment")
                         .WithMany("Attachments")
-                        .HasForeignKey("CommentId");
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DataProvider.Entities.Notification", b =>
@@ -653,24 +637,15 @@ namespace DataProvider.Migrations
 
             modelBuilder.Entity("DataProvider.Entities.ProjectSecurityPolicy", b =>
                 {
-                    b.HasOne("DataProvider.Entities.ProjectSecuritySettings", "ProjectSecuritySettings")
+                    b.HasOne("DataProvider.Entities.ProjectSettings", "ProjectSettings")
                         .WithMany("Policies")
-                        .HasForeignKey("ProjectSecuritySettingsId")
+                        .HasForeignKey("ProjectSettingsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("DataProvider.Entities.User", "User")
                         .WithMany("Policies")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DataProvider.Entities.ProjectSecuritySettings", b =>
-                {
-                    b.HasOne("DataProvider.Entities.Project", "Project")
-                        .WithOne("ProjectSecuritySettings")
-                        .HasForeignKey("DataProvider.Entities.ProjectSecuritySettings", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -704,10 +679,9 @@ namespace DataProvider.Migrations
                     b.HasOne("DataProvider.Entities.User", "Assignee")
                         .WithMany("AssignedTasks")
                         .HasForeignKey("AssigneeId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("DataProvider.Entities.Column", null)
+                    b.HasOne("DataProvider.Entities.Column", "Column")
                         .WithMany("Tasks")
                         .HasForeignKey("ColumnId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -724,7 +698,9 @@ namespace DataProvider.Migrations
                 {
                     b.HasOne("DataProvider.Entities.Task", "Task")
                         .WithMany("Attachments")
-                        .HasForeignKey("TaskId");
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DataProvider.Entities.UserProfile", b =>

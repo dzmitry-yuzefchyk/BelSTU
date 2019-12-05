@@ -89,4 +89,26 @@ export function addUserToProjectValidator(values) {
     }
 
     return result;
- }
+}
+
+export function createTaskValidator(values) {
+    let result = {};
+
+    if (!values.title) {
+        result.title = 'Title is required';
+    }
+
+    if (!values.priority) {
+        result.priority = 'Priority is required';
+    }
+
+    if (!values.severity) {
+        result.severity = 'Severity is required';
+    }
+
+    if (!values.type) {
+        result.type = 'Type is required';
+    }
+
+    return result;
+}

@@ -90,5 +90,12 @@ namespace Web.Controllers
             var (IsDone, Message) = await _securityService.UpdateAsync(this.UserId(), model);
             return IsDone ? (IActionResult)Ok(Message) : BadRequest(Message);
         }
+
+        [HttpGet("Users/{projectId}")]
+        public async Task<IActionResult> GetUsers(int projectId)
+        {
+            var result = await _projectService.GetUsers(this.UserId(), projectId);
+            return result != null ? (IActionResult)Ok(result) : BadRequest(result);
+        }
     }
 }

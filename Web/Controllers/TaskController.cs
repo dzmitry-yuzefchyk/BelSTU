@@ -18,7 +18,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateTask([FromBody]CreateTaskModel model)
+        public async Task<IActionResult> CreateTask([FromForm]CreateTaskModel model)
         {
             var (IsDone, Message) = await _taskService.CreateTaskAsync(this.UserId(), model);
             return IsDone ? (IActionResult)Ok(Message) : BadRequest(Message);
@@ -57,6 +57,15 @@ namespace Web.Controllers
         {
             var result = await _taskService.LeaveCommentAsync(this.UserId(), model);
             return result ? (IActionResult)Ok(result) : BadRequest("Something went wrong, please try again later");
+        }
+
+        [HttpGet("Attachment/{attachmentId}")]
+        public async Task<IActionResult> DonwloadAttachmnet(int attachmentId, int projectId)
+        {
+            var attachment = await _taskService.DownloadAsync(this.UserId(), attachmentId, projectId);
+            return attachment != null
+                ? (IActionResult)File(attachment.File, attachment.FileType, attachment.FileName)
+                : NotFound();
         }
     }
 }

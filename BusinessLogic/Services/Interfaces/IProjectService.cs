@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Models.Project;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BusinessLogic.Services.Interfaces
@@ -14,5 +15,6 @@ namespace BusinessLogic.Services.Interfaces
         Task<UpdateProjectModel> GetSettingsAsync(Guid userId, int projectId);
         Task<(bool IsDone, string Message)> UpdateSettingsAsync(Guid userId, UpdateProjectModel model);
         Task<bool> DeleteProjectAsync(Guid userId, int projectId);
+        Task<List<string>> GetUsers(Guid userId, int projectId);
     }
 }

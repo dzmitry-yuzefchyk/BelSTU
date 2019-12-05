@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Models.Task;
+using DataProvider.Entities;
 using System;
 using System.Threading.Tasks;
 
@@ -13,5 +14,6 @@ namespace BusinessLogic.Services.Interfaces
         Task<bool> DeleteTaskAsync(Guid userId, int taskId, int projectId);
         Task<bool> DeleteBoardTasksAsync(Guid userId, int boardId, int projectId);
         Task<bool> LeaveCommentAsync(Guid userId, CreateCommentModel model);
+        Task<TaskAttachment> DownloadAsync(Guid userId, int attachmentId, int projectId);
     }
 }

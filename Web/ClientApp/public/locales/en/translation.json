@@ -43,6 +43,9 @@
     "changed my mind": "No!",
     "task prefix": "Task prefix",
     "use advanced settings": "Use advanced access settings",
+    "type": "Type",
+    "severity": "Severity",
+    "priority": "Priority",
     "validation": {
       "valid": "",
       "Email address is required": "Email address is required",
@@ -65,7 +68,8 @@
     "confirm": "Confirm",
     "close": "Close",
     "create project": "Create project",
-    "create board": "Create board"
+    "create board": "Create board",
+    "create column": "Create column"
   },
   "sidebar": {
     "Projects": "Projects",
@@ -87,6 +91,23 @@
   "notification": {
     "recent": "Recent notifications",
     "here you can see what changed": "Here you can see what has changed while you were away",
-    "clear": "Clear"
+    "clear": "Clear",
+    "goto": "Go to",
+    "mark as read": "Remove"
+  },
+  "task": {
+    "view": "View",
+    "type": "Type",
+    "severity": "Severity",
+    "priority": "Priority",
+    "Feature": "Feature",
+    "Bug": "Bug",
+    "Improvement": "Improvement",
+    "Minor": "Minor",
+    "Major": "Major",
+    "Critical": "Critical",
+    "Blocker": "Blocker",
+    "assignee": "Assignee",
+    "creator": "Creator"
   }
 }

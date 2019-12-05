@@ -6,6 +6,7 @@
         public int TaskId { get; set; }
         public Task Task { get; set; }
         public string FileName { get; set; }
+        public string FileType { get; set; }
         public byte[] File { get; set; }
     }
 }

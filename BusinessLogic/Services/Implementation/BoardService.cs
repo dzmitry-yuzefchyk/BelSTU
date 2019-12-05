@@ -131,11 +131,11 @@ namespace BusinessLogic.Services.Implementation
                     .Where(x => x.Id == boardId)
                     .Include(x => x.Columns)
                     .ThenInclude(x => x.Tasks)
-                    .ThenInclude(x => x.Assignee)
+                    .ThenInclude(x => x.Creator)
                     .ThenInclude(x => x.Profile)
                     .Include(x => x.Columns)
                     .ThenInclude(x => x.Tasks)
-                    .ThenInclude(x => x.Creator)
+                    .ThenInclude(x => x.Assignee)
                     .ThenInclude(x => x.Profile)
                     .Select(x => new BoardViewModel
                     {
@@ -152,8 +152,6 @@ namespace BusinessLogic.Services.Implementation
                             Title = x.Title,
                             Tasks = x.Tasks
                             .AsQueryable()
-                            .Where(x => assignedToMe ? x.AssigneeId == userId : true)
-                            .Where(x => searchBy != "" ? x.Title.Contains(searchBy) : true)
                             .Select(x => new TaskView
                             {
                                 Id = x.Id,
@@ -161,13 +159,12 @@ namespace BusinessLogic.Services.Implementation
                                 Type = x.Type,
                                 Severity = x.Severity,
                                 Priority = x.Priority,
+                                CreatorTag = x.Creator.Profile.Tag,
+                                CreatorIcon = x.Creator.Profile.Icon,
                                 AssigneeTag = x.Assignee.Profile.Tag,
-                                AssigneeIcon = x.Assignee.Profile.Icon,
-                                CreatorTag = x.Assignee.Profile.Tag,
-                                CreatorIcon = x.Assignee.Profile.Icon
+                                AssigneeIcon = x.Assignee.Profile.Icon
                             })
-                            .OrderBy(orderByFilter)
-
+                            .OrderBy(x => x.Priority)
                         })
                         .OrderBy(x => x.Position)
                     })

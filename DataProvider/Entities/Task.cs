@@ -16,6 +16,7 @@ namespace DataProvider.Entities
         public Guid CreatorId { get; set; }
         public User Creator { get; set; }
         public int ColumnId { get; set; }
+        public Column Column { get; set; }
         public ICollection<TaskAttachment> Attachments { get; set; }
         public ICollection<Comment> Comments { get; set; }
 

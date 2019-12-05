@@ -8,6 +8,7 @@ import Notification from './notification';
 
 const styles = theme => ({
     root: {
+        overflowY: 'auto',
         borderRadius: 0,
         maxWidth: 300,
         width: 300,
@@ -26,6 +27,9 @@ const styles = theme => ({
     },
     notificationBox: {
         overflowY: 'auto'
+    },
+    notification: {
+        marginTop: 2
     }
 });
 
@@ -73,6 +77,7 @@ class RecentNotifications extends React.Component {
                 <CardContent className={classes.notificationBox}>
                     {notificationStore.notifications.map(notification =>
                         <Notification
+                            className={classes.notification}
                             key={notification.id}
                             id={notification.id}
                             subject={notification.subject}

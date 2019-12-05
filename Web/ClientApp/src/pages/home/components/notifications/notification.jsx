@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import * as R from 'ramda';
 
 const Notification = props => {
-    const { t, history, id, subject, description, directLink, markAsRead } = props;
+    const { t, history, id, subject, description, directLink, markAsRead, className } = props;
 
     const navigate = () => {
         history.push(directLink);
@@ -16,7 +16,7 @@ const Notification = props => {
     }
 
     return (
-        <Card>
+        <Card className={className}>
             <CardHeader
                 title={subject}
             />

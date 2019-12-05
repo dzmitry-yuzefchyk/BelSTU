@@ -54,7 +54,6 @@ class BoardView extends React.Component {
         this.fetchBoard = this.fetchBoard.bind(this);
         this.openTask = this.openTask.bind(this);
         this.openCreateColumnModal = this.openCreateColumnModal.bind(this);
-        this.openCreateTaskModal = this.openCreateTaskModal.bind(this);
     }
 
     async componentDidMount() {
@@ -80,13 +79,6 @@ class BoardView extends React.Component {
         modalStore.show(<CreateColumnModal boardId={boardId} callback={this.fetchBoard} />);
     }
 
-    openCreateTaskModal() {
-        const { modalStore } = this.props.rootStore;
-        const { projectId } = this.props.match.params;
-
-        //modalStore.show(<CreateBoardModal projectId={projectId} callback={this.fetchProject} />);
-    }
-
     renderAddColumn() {
         const { classes, t } = this.props;
         return (
@@ -101,6 +93,7 @@ class BoardView extends React.Component {
     render() {
         const { boardStore } = this.props.rootStore;
         const { t, classes } = this.props;
+        const { projectId, boardId } = this.props.match.params;
 
         if (boardStore.fetching)
             return <CircularProgress />;
@@ -110,6 +103,9 @@ class BoardView extends React.Component {
                 <Box display='flex' alignItems='start' flexDirection='row' flexWrap='wrap' className={classes.board}>
                     {boardStore.board.columns.map(column =>
                         <ColumnView
+                            boardId={boardId}
+                            callback={this.fetchBoard}
+                            projectId={projectId}
                             className={classes.column}
                             key={column.id}
                             id={column.id}

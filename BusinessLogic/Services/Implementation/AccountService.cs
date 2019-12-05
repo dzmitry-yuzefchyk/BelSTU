@@ -67,7 +67,7 @@ namespace BusinessLogic.Services.Implementation
                 var userSettings = new UserSettings
                 {
                     Id = user.Id,
-                    EmailNotifications = false,
+                    EmailNotifications = true,
                     Theme = (int)Theme.LIGHT
                 };
                 var userProfile = new UserProfile

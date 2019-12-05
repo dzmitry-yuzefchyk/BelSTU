@@ -29,11 +29,18 @@ export const GET_PROJECT_SETTINGS = `${projectController}/GeneralSettings`;
 export const GET_PROJECT_ACCESS = `${projectController}/AccessSettings`;
 export const PUT_PROJECT_SETTINGS = `${projectController}/Settings`;
 export const PUT_PROJECT_ACCESS = `${projectController}/AccessSettings`;
+export const GET_USERS = `${projectController}/Users`;
 
 const boardController = `${api}/Board`;
 export const GET_BOARD = `${boardController}`;
 export const POST_CREATE_BOARD = `${boardController}`;
 export const POST_CREATE_COLUMN = `${boardController}/Column`;
+
+const taskController = `${api}/Task`;
+export const POST_CREATE_TASK = `${taskController}`;
+export const GET_TASK = `${taskController}`;
+export const POST_MOVE_TASK = `${taskController}/Move`;
+export const DOWNLOAD_ATTACHMENT = `${taskController}/Attachment`;
 
 //Hubs
 export const BOARD_HUB = 'board';

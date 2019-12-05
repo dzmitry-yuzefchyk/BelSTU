@@ -2,7 +2,7 @@ import { useState } from 'react';
 import useForm from './useForm';
 
 const useFileForm = (callback, validation) => {
-    const [ files, setFiles ] = useState({});
+    const [ files, setFiles ] = useState([]);
     const {
         values,
         validationResult,

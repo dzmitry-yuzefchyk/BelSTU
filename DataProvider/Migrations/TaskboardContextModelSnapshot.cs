@@ -346,6 +346,9 @@ namespace DataProvider.Migrations
                     b.Property<string>("FileName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("FileType")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("TaskId")
                         .HasColumnType("int");
 
@@ -676,7 +679,7 @@ namespace DataProvider.Migrations
                         .HasForeignKey("AssigneeId")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("DataProvider.Entities.Column", null)
+                    b.HasOne("DataProvider.Entities.Column", "Column")
                         .WithMany("Tasks")
                         .HasForeignKey("ColumnId")
                         .OnDelete(DeleteBehavior.Cascade)

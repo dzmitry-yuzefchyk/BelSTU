@@ -8,6 +8,7 @@ using DataProvider.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -338,6 +339,31 @@ namespace BusinessLogic.Services.Implementation
             }
 
             return false;
+        }
+
+        public async Task<List<string>> GetUsers(Guid userId, int projectId)
+        {
+            try
+            {
+                var projectUser = _context.ProjectUsers.SingleOrDefault(x => x.UserId == userId && x.ProjectId == projectId);
+                if (projectUser == null)
+                {
+                    return null;
+                }
+
+                var users = await _context.ProjectUsers
+                    .Include(x => x.User)
+                    .Where(x => x.ProjectId == projectId)
+                    .Select(x => x.User.Email).ToListAsync();
+
+                return users;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("ProjectService: GetUsers", e);
+            }
+
+            return null;
         }
     }
 }

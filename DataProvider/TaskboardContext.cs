@@ -11,7 +11,7 @@ namespace DataProvider
         public TaskboardContext(DbContextOptions<TaskboardContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

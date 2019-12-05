@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Contstants;
+using BusinessLogic.Models.Notification;
 using BusinessLogic.Models.Task;
 using BusinessLogic.Services.Interfaces;
 using CommonLogic.Logger;
@@ -20,12 +21,15 @@ namespace BusinessLogic.Services.Implementation
         private readonly TaskboardContext _context;
         private readonly ILogger _logger;
         private readonly ISecurityService _securityService;
+        private readonly INotificationService _notificationService;
 
-        public TaskService(TaskboardContext context, ILoggerFactory loggerFactory, ISecurityService securityService)
+        public TaskService(TaskboardContext context, ILoggerFactory loggerFactory,
+            ISecurityService securityService, INotificationService notificationService)
         {
             _context = context;
             _logger = loggerFactory.CreateLogger<FileLogger>();
             _securityService = securityService;
+            _notificationService = notificationService;
         }
 
         public async Task<(bool IsDone, string Message)> CreateTaskAsync(Guid userId, CreateTaskModel model)
@@ -38,22 +42,39 @@ namespace BusinessLogic.Services.Implementation
                     return (IsDone: false, Message: "Access denied");
                 }
 
+                var column = await _context.Columns.FindAsync(model.ColumnId);
+                var board = await _context.Boards.FindAsync(column.BoardId);
                 var assigneeId = _context.Users.SingleOrDefault(x => x.Email == model.AssigneeEmail)?.Id;
-                var attachments = await ToAttachments(model.Attachments);
-                var Task = new DataProvider.Entities.Task
+                var attachments = model.Attachments == null ? null : await ToAttachments(model.Attachments);
+                var task = new DataProvider.Entities.Task
                 {
-                    Title = model.Title,
+                    Title = $"{board.TaskPrefix}-{board.TaskIndex} {model.Title}",
                     ColumnId = model.ColumnId,
                     CreatorId = userId,
                     AssigneeId = assigneeId,
-                    Content = model.Content,
+                    Content = model.Content ?? "",
                     Priority = model.Priority,
                     Severity = model.Severity,
                     Type = model.Type,
-                    Attachments = attachments.ToList()
+                    Attachments = attachments
                 };
-                await _context.Tasks.AddAsync(Task);
+                await _context.Tasks.AddAsync(task);
+                board.TaskIndex++;
+                _context.Update(board);
                 await _context.SaveChangesAsync();
+
+                if (assigneeId != null)
+                {
+                    var notification = new CreateNotificationModel
+                    {
+                        Subject = "You were assigned to task",
+                        Description = $"You were assigned to {task.Title}",
+                        DirectLink = $"/project/{model.ProjectId}/board/{column.BoardId}",
+                        RecipientEmail = model.AssigneeEmail
+                    };
+                    await _notificationService.CreateNotificationAsync(notification);
+                }
+
                 return (IsDone: true, Message: "Success");
             }
             catch (Exception e)
@@ -74,10 +95,25 @@ namespace BusinessLogic.Services.Implementation
                     return false;
                 }
 
-                var task = await _context.Tasks.FindAsync(taskId);
+                var task = _context.Tasks
+                    .Include(x => x.Assignee)
+                    .SingleOrDefault(x => x.Id == taskId);
                 task.ColumnId = columnId;
                 _context.Update(task);
                 await _context.SaveChangesAsync();
+
+                if (task.Assignee != null)
+                {
+                    var newColumn = await _context.Columns.FindAsync(columnId);
+                    var notification = new CreateNotificationModel
+                    {
+                        Description = $"{task.Title} was changed",
+                        DirectLink = $"/project/{projectId}/board/{newColumn.BoardId}",
+                        RecipientEmail = task.Assignee.Email,
+                        Subject = "Task was changed"
+                    };
+                    await _notificationService.CreateNotificationAsync(notification);
+                }
 
                 return true;
             }
@@ -300,7 +336,28 @@ namespace BusinessLogic.Services.Implementation
             return false;
         }
 
-        private async Task<IEnumerable<CommentAttachment>> ToCommentAttachments(List<IFormFile> formFiles)
+        public async Task<TaskAttachment> DownloadAsync(Guid userId, int attachmentId, int projectId)
+        {
+            try
+            {
+                var projectUser = await _context.ProjectUsers.SingleOrDefaultAsync(x => x.ProjectId == projectId && x.UserId == userId);
+                if (projectUser == null)
+                {
+                    return null;
+                }
+
+                var attachment = await _context.TaskAttachments.FindAsync(attachmentId);
+                return attachment;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("TaskService: LeaveCommentAsync", e);
+            }
+
+            return null;
+        }
+
+        private async Task<List<CommentAttachment>> ToCommentAttachments(List<IFormFile> formFiles)
         {
             var files = new List<CommentAttachment>();
             foreach (var file in formFiles)
@@ -317,7 +374,7 @@ namespace BusinessLogic.Services.Implementation
             return files;
         }
 
-        private async Task<IEnumerable<TaskAttachment>> ToAttachments(List<IFormFile> formFiles)
+        private async Task<List<TaskAttachment>> ToAttachments(List<IFormFile> formFiles)
         {
             var files = new List<TaskAttachment>();
             foreach (var file in formFiles)
@@ -327,7 +384,8 @@ namespace BusinessLogic.Services.Implementation
                 files.Add(new TaskAttachment
                 {
                     File = memoryStream.ToArray(),
-                    FileName = file.FileName
+                    FileName = file.FileName,
+                    FileType = file.ContentType
                 });
             }
 
