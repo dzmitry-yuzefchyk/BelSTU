@@ -44,8 +44,11 @@
     "task prefix": "Task prefix",
     "use advanced settings": "Use advanced access settings",
     "type": "Type",
+    "update": "Update",
+    "add user": "Add user",
     "severity": "Severity",
     "priority": "Priority",
+    "content": "Content",
     "validation": {
       "valid": "",
       "Email address is required": "Email address is required",
@@ -61,7 +64,16 @@
     "Can't create such user, please try again later": "Can't create such user, please try again later",
     "Confirmation was sent to your email": "Confirmation was sent to your email",
     "Email is not confirmed": "Email is not confirmed",
-    "true": "Done!"
+    "true": "Done!",
+    "Success": "Done!",
+    "Done": "Done!",
+    "Email already confirmed": "Email already confirmed",
+    "You already signed-in": "You already signed-in",
+    "There is no such user": "There is no such user",
+    "You may now sign-in": "You may now sign-in",
+    "": "Not found",
+    "You have 1 new notification": "You have 1 new notification",
+    "Not found": "Not found"
   },
   "modal": {
     "resend email": "Resend email",
@@ -69,7 +81,8 @@
     "close": "Close",
     "create project": "Create project",
     "create board": "Create board",
-    "create column": "Create column"
+    "create column": "Create column",
+    "create task": "Create task"
   },
   "sidebar": {
     "Projects": "Projects",
@@ -86,7 +99,8 @@
     "create board": "Create board"
   },
   "board": {
-    "open": "Open"
+    "open": "Open",
+    "add column": "Add column"
   },
   "notification": {
     "recent": "Recent notifications",
@@ -101,6 +115,7 @@
     "severity": "Severity",
     "priority": "Priority",
     "Feature": "Feature",
+    "create": "Create",
     "Bug": "Bug",
     "Improvement": "Improvement",
     "Minor": "Minor",
@@ -109,5 +124,8 @@
     "Blocker": "Blocker",
     "assignee": "Assignee",
     "creator": "Creator"
+  },
+  "preview": {
+    "Hello nice to see you there": "Hello nice to see you there"
   }
 }
