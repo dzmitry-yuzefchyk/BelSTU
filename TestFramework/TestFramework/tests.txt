@@ -1,0 +1,12 @@
+﻿TestFramework.Test.Tests.WishlistTests.AddToWishlistTest
+TestFramework.Test.Tests.WishlistTests.RemoveWishlistTest
+TestFramework.Test.Tests.WishlistTests.CreateWishlistTest
+
+TestFramework.Test.Tests.UserTests.LoginTest
+TestFramework.Test.Tests.UserTests.ChangeNameTest
+
+TestFramework.Test.Tests.ProductTests.SearchTest
+TestFramework.Test.Tests.ProductTests.PriceFilterTest
+TestFramework.Test.Tests.ProductTests.ComparisonTest
+TestFramework.Test.Tests.ProductTests.AddToCartTest
+TestFramework.Test.Tests.ProductTests.ClearCartTest

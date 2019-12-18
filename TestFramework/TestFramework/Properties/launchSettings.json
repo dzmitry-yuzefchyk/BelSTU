@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TestFramework": {
+      "commandName": "Project",
+      "commandLineArgs": "/env=qa /browser=chrome"
+    }
+  }
+}
