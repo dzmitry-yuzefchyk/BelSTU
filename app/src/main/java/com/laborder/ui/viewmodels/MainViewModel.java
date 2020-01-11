@@ -1,4 +1,4 @@
-package com.laborder.ui.main;
+package com.laborder.ui.viewmodels;
 
 import androidx.lifecycle.ViewModel;
 

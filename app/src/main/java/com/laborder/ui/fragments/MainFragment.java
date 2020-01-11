@@ -1,4 +1,4 @@
-package com.laborder.ui.main;
+package com.laborder.ui.fragments;
 
 import androidx.lifecycle.ViewModelProviders;
 
@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.laborder.R;
+import com.laborder.ui.viewmodels.MainViewModel;
 
 public class MainFragment extends Fragment {
 
