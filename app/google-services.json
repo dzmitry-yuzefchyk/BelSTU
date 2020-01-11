@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1009386762626",
+    "firebase_url": "https://laborder-da44d.firebaseio.com",
+    "project_id": "laborder-da44d",
+    "storage_bucket": "laborder-da44d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1009386762626:android:3190b7d1299918f9eadf9b",
+        "android_client_info": {
+          "package_name": "com.laborder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1009386762626-37ba9hjv3flh5oggsiqj9ca4es095tl2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.laborder",
+            "certificate_hash": "993bb9bc49bd8e1f2547d94dd83140317ab4d887"
+          }
+        },
+        {
+          "client_id": "1009386762626-8ukkohtkvtrq2duan5n9bloqml8vem4b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpg2u-P48KVqs4bBxSFJsoFWIE-YbJ5DM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1009386762626-8ukkohtkvtrq2duan5n9bloqml8vem4b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
