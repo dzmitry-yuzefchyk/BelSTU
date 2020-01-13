@@ -1,6 +1,6 @@
 package com.laborder.ui.fragments;
 
-import androidx.lifecycle.ViewModelProviders;
+import androidx.databinding.DataBindingUtil;
 
 import android.os.Bundle;
 
@@ -12,28 +12,34 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.laborder.R;
-import com.laborder.ui.viewmodels.LoginViewModel;
+import com.laborder.bl.models.User;
+import com.laborder.databinding.LoginFragmentBinding;
 
 public class LoginFragment extends Fragment {
-
-    private LoginViewModel mViewModel;
-
-    public static LoginFragment newInstance() {
-        return new LoginFragment();
-    }
+    private FirebaseAuth mAuth;
+    private LoginFragmentBinding binding;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        mAuth = FirebaseAuth.getInstance();
+        binding = DataBindingUtil.inflate(inflater, R.layout.login_fragment, container, false);
         return inflater.inflate(R.layout.login_fragment, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
-        // TODO: Use the ViewModel
+    }
+
+    private void bindButtons() {
+
+    }
+
+    public void login(View view) {
+        User user = binding.getUser();
     }
 
 }

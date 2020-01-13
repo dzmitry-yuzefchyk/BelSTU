@@ -30,6 +30,10 @@ public class MainFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        bindButtons();
+    }
+
+    private void bindButtons() {
         getView().findViewById(R.id.login_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
