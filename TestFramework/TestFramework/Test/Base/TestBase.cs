@@ -18,6 +18,11 @@ namespace TestFramework.Test.Base
             {
                 var screenshot = DriverController.Driver().TakeScreenshot();
                 var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "artifacts\\");
+                if (!Directory.Exists(filePath))
+                {
+                    Directory.CreateDirectory(filePath);
+                }
+
                 screenshot.SaveAsFile($"{filePath}artifact_{screenshot.GetHashCode()}.png");
 
                 var logsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs\\", "log.txt");
