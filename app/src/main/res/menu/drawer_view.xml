@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/all_orders"
+            android:icon="@drawable/ic_list_24px"
+            android:title="@string/orders" />
+        <item
+            android:id="@+id/current_order"
+            android:icon="@drawable/ic_meeting_room_24px"
+            android:title="@string/current_order" />
+        <item
+            android:id="@+id/logout"
+            android:icon="@drawable/ic_exit_to_app_24px"
+            android:title="@string/logout" />
+    </group>
+</menu>

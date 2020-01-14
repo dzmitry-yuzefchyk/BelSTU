@@ -78,6 +78,7 @@ public class RegisterFragment extends Fragment {
                             UserInfo userInfo = new UserInfo(user.getEmail(), user.getName(), user.getSurname());
                             database.child(Documents.Users).child(currentUser.getUid()).setValue(userInfo);
                             activity.toast(getResources().getString(R.string.register_success));
+                            activity.handleDrawer();
                             activity.replaceFragment(RoomsFragment.class, BackStack.Default);
                         } else {
                             activity.toast(getResources().getString(R.string.register_fail));

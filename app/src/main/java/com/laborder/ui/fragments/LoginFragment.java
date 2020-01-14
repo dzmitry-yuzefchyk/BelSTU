@@ -73,6 +73,7 @@ public class LoginFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            activity.handleDrawer();
                             activity.replaceFragment(RoomsFragment.class, BackStack.Default);
                         } else {
                             activity.toast(getResources().getString(R.string.invalid_email_or_password));
