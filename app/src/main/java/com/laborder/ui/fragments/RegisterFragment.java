@@ -30,7 +30,6 @@ public class RegisterFragment extends Fragment {
     private RegisterFragmentBinding binding;
     DatabaseReference database;
 
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {

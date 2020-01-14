@@ -34,7 +34,7 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:hint="@string/email"
-                    android:text="@{user.Email}"
+                    android:text="@={user.Email}"
                     android:inputType="textEmailAddress" />
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -42,10 +42,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/password"
-                    android:text="@{user.Password}"
+                    android:text="@={user.Password}"
                     android:inputType="textPassword" />
 
                 <Button
+                    android:id="@+id/login_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/login" />

@@ -9,4 +9,5 @@
     <string name="register_success">Registered</string>
     <string name="register_fail">Failed</string>
     <string name="fill_all_fields">Fill all fields</string>
+    <string name="invalid_email_or_password">Email or password is wrong</string>
 </resources>
