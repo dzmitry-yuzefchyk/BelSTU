@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Lab Order</string>
-    <string name="login">LOGIN</string>
-    <string name="register">REGISTER</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="name">Name</string>
@@ -18,4 +18,6 @@
     <string name="current_lab">Current lab</string>
     <string name="use_priority">Use priority</string>
     <string name="create">Create</string>
+    <string name="reserve">Reserve</string>
+    <string name="next_student">Next student</string>
 </resources>

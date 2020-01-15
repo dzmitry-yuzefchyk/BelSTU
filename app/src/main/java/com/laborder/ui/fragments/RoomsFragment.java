@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,18 +12,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.laborder.MainActivity;
 import com.laborder.R;
 import com.laborder.bl.BackStack;
 import com.laborder.bl.Documents;
-import com.laborder.bl.adapters.OrderAdapter;
+import com.laborder.bl.adapters.OrderInfoAdapter;
 import com.laborder.bl.models.OrderInfo;
 import com.laborder.databinding.RoomsFragmentBinding;
 
@@ -35,7 +32,7 @@ public class RoomsFragment extends Fragment {
     private DatabaseReference database;
     private RoomsFragmentBinding binding;
     private List<OrderInfo> orders;
-    private OrderAdapter adapter;
+    private OrderInfoAdapter adapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -98,7 +95,7 @@ public class RoomsFragment extends Fragment {
         RecyclerView recyclerView = binding.allOrders;
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new OrderAdapter(orders, item -> openRoomFragment(item));
+        adapter = new OrderInfoAdapter(orders, item -> openRoomFragment(item));
         recyclerView.setAdapter(adapter);
     }
 

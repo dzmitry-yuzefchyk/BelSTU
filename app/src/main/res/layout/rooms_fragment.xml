@@ -12,7 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1.0"
-            tools:listitem="@layout/order_list_row" />
+            tools:listitem="@layout/order_info_list_row" />
 
         <Button
             android:id="@+id/create_order"

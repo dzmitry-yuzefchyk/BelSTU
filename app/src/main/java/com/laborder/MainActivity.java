@@ -2,10 +2,8 @@ package com.laborder;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.MenuItem;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -15,7 +13,6 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.laborder.bl.BackStack;
 import com.laborder.ui.fragments.MainFragment;
-import com.laborder.ui.fragments.RoomFragment;
 import com.laborder.ui.fragments.RoomsFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,25 +31,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupNavigation() {
         NavigationView nvDrawer = findViewById(R.id.nvView);
-        nvDrawer.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.all_orders:
-                        replaceFragment(RoomsFragment.class, BackStack.Default);
-                        break;
+        nvDrawer.setNavigationItemSelectedListener(menuItem -> {
+            switch (menuItem.getItemId()) {
+                case R.id.all_orders:
+                    replaceFragment(RoomsFragment.class, BackStack.Default);
+                    break;
 
-                    case R.id.current_order:
-                        replaceFragment(RoomFragment.class, BackStack.Default);
-                        break;
-
-                    case R.id.logout:
-                        auth.signOut();
-                        checkAuth();
-                        break;
-                }
-                return true;
+                case R.id.logout:
+                    auth.signOut();
+                    checkAuth();
+                    break;
             }
+            return true;
         });
     }
 

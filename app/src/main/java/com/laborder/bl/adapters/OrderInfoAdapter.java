@@ -1,18 +1,17 @@
 package com.laborder.bl.adapters;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.laborder.bl.models.OrderInfo;
-import com.laborder.databinding.OrderListRowBinding;
+import com.laborder.databinding.OrderInfoListRowBinding;
 
 import java.util.List;
 
-public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
+public class OrderInfoAdapter extends RecyclerView.Adapter<OrderInfoAdapter.OrderViewHolder> {
 
     public interface OnItemClickListener {
         void onItemClick(OrderInfo item);
@@ -21,7 +20,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     private final OnItemClickListener listener;
     private List<OrderInfo> orders;
 
-    public OrderAdapter(List<OrderInfo> ordersList, OnItemClickListener listener) {
+    public OrderInfoAdapter(List<OrderInfo> ordersList, OnItemClickListener listener) {
         this.orders = ordersList;
         this.listener = listener;
     }
@@ -30,7 +29,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     @Override
     public OrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        OrderListRowBinding itemBinding = OrderListRowBinding.inflate(layoutInflater, parent, false);
+        OrderInfoListRowBinding itemBinding = OrderInfoListRowBinding.inflate(layoutInflater, parent, false);
         return new OrderViewHolder(itemBinding);
     }
 
@@ -51,9 +50,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
 
     class OrderViewHolder extends RecyclerView.ViewHolder {
-        private OrderListRowBinding binding;
+        private OrderInfoListRowBinding binding;
 
-        public OrderViewHolder(OrderListRowBinding binding) {
+        public OrderViewHolder(OrderInfoListRowBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

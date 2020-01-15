@@ -77,4 +77,6 @@ public class Order {
         this.finished = finished;
         this.currentStudent = currentStudent;
     }
+
+    public Order() {}
 }
