@@ -13,4 +13,9 @@
     <string name="orders">Orders</string>
     <string name="current_order">Current order</string>
     <string name="logout">Logout</string>
+    <string name="create_order">New order</string>
+    <string name="title">Title</string>
+    <string name="current_lab">Current lab</string>
+    <string name="use_priority">Use priority</string>
+    <string name="create">Create</string>
 </resources>
