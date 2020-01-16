@@ -114,6 +114,7 @@ public class RoomFragment extends Fragment {
 
         finished.put(currentStudent.get().getKey(), currentStudent.get().getValue());
         order.setFinished(finished);
+        order.setCurrent(currentStudent.get().getValue());
         database.setValue(order);
     }
 

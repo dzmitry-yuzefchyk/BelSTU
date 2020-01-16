@@ -78,7 +78,8 @@ public class CreateRoomFragment extends Fragment {
                 baseOrderData.getUsePriority(),
                 baseOrderData.getCurrentLab(),
                 new HashMap<>(),
-                new HashMap<>());
+                new HashMap<>(),
+                new Student());
 
         database.child(Documents.Orders).child(key).setValue(order);
         database.child(Documents.OrdersIds).child(key).setValue(baseOrderData.getTitle());

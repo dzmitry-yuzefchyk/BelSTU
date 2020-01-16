@@ -26,6 +26,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <TextView
+            android:text="@{`текущий: ` + order.current.nameAndSurname == null ? `нет` : order.current.nameAndSurname}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
         <Button
             android:id="@+id/delete_btn"
             android:layout_width="match_parent"

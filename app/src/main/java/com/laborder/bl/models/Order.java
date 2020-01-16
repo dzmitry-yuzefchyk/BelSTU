@@ -9,6 +9,15 @@ public class Order {
     private int currentLab;
     private HashMap<String, Student> queue;
     private HashMap<String, Student> finished;
+    private Student current;
+
+    public Student getCurrent() {
+        return current;
+    }
+
+    public void setCurrent(Student current) {
+        this.current = current;
+    }
 
     public String getCreatorId() {
         return creatorId;
@@ -60,13 +69,14 @@ public class Order {
 
 
     public Order(String creatorId, String title, boolean usePriority, int currentLab,
-                 HashMap<String, Student> queue, HashMap<String, Student> finished) {
+                 HashMap<String, Student> queue, HashMap<String, Student> finished, Student current) {
         this.creatorId = creatorId;
         this.title = title;
         this.usePriority = usePriority;
         this.currentLab = currentLab;
         this.queue = queue;
         this.finished = finished;
+        this.current = current;
     }
 
     public Order() {}
