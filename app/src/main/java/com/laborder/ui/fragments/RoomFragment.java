@@ -215,7 +215,48 @@ public class RoomFragment extends Fragment {
     }
 
     private void reserveWithPriority(ArrayList<Integer> labs) {
+        String uid = mAuth.getUid();
+        FirebaseDatabase.getInstance()
+                .getReference()
+                .child(Documents.Users)
+                .child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                UserInfo userInfo = dataSnapshot.getValue(UserInfo.class);
+                Order order = binding.getOrder();
+                if (order == null) return;
 
+                if (order.getQueue() == null) order.setQueue(new HashMap<>());
+
+                if (order.getFinished() == null) {
+                    order.setFinished(new HashMap<>());
+                }
+
+                int priority = 0;
+
+                if (labs.size() > 1) {
+                    priority++;
+                }
+
+                if (!labs.contains(order.getCurrentLab())) {
+                    priority++;
+                }
+
+                if (order.getFinished().containsKey(uid)) {
+                    priority++;
+                }
+
+                Student student = new Student(priority,
+                        labs,
+                        userInfo.getName() + " " + userInfo.getSurname());
+                database.child("queue").child(uid).setValue(student);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void configureDatabase() {
