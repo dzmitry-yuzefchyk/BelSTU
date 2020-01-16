@@ -2,6 +2,10 @@
 <layout>
     <data>
         <variable
+            name="reserve"
+            type="com.laborder.bl.models.ReserveOrder" />
+        
+        <variable
             name="order"
             type="com.laborder.bl.models.Order" />
     </data>
@@ -17,12 +21,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <Button
+            android:id="@+id/delete_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:visibility="gone"
+            android:hint="@string/delete_order" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/students"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1.0"
             tools:listitem="@layout/student_info_list_row" />
+
+        <EditText
+            android:id="@+id/labs_et"
+            android:text="@={reserve.labs}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/reserve_btn"

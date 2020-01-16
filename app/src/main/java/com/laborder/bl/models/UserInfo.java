@@ -5,6 +5,8 @@ public class UserInfo {
     private String name;
     private String surname;
 
+    public UserInfo() {}
+
     public UserInfo(String email, String name, String surname) {
         this.email = email;
         this.name = name;

@@ -3,17 +3,17 @@ package com.laborder.bl.models;
 import java.util.ArrayList;
 
 public class Student {
-    private String id;
     private String nameAndSurname;
     private int priority;
     private ArrayList<Integer> labs;
+    private int labsCount;
 
-    public String getId() {
-        return id;
+    public int getLabsCount() {
+        return labsCount;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setLabsCount(int labsCount) {
+        this.labsCount = labsCount;
     }
 
     public int getPriority() {
@@ -42,10 +42,10 @@ public class Student {
 
     public Student() {}
 
-    public Student(String id, int priority, ArrayList<Integer> labs, String nameAndSurname) {
-        this.id = id;
+    public Student(int priority, ArrayList<Integer> labs, String nameAndSurname) {
         this.priority = priority;
         this.labs = labs;
         this.nameAndSurname = nameAndSurname;
+        this.labsCount = labs.size();
     }
 }

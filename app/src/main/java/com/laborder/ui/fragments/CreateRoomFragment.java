@@ -25,6 +25,7 @@ import com.laborder.databinding.CreateRoomFragmentBinding;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CreateRoomFragment extends Fragment {
     private CreateRoomFragmentBinding binding;
@@ -76,9 +77,8 @@ public class CreateRoomFragment extends Fragment {
                 baseOrderData.getTitle(),
                 baseOrderData.getUsePriority(),
                 baseOrderData.getCurrentLab(),
-                new ArrayList<Student>(),
-                new ArrayList<Student>(),
-                new Student());
+                new HashMap<>(),
+                new HashMap<>());
 
         database.child(Documents.Orders).child(key).setValue(order);
         database.child(Documents.OrdersIds).child(key).setValue(baseOrderData.getTitle());

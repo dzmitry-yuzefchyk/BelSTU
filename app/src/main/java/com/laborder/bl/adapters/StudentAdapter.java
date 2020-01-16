@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.laborder.bl.models.StudentInfo;
+import com.laborder.bl.models.Student;
 import com.laborder.databinding.StudentInfoListRowBinding;
 
 import java.util.List;
@@ -14,13 +14,13 @@ import java.util.List;
 public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentViewHolder> {
 
     public interface OnItemClickListener {
-        void onItemClick(StudentInfo item);
+        void onItemClick(Student item);
     }
 
     private final OnItemClickListener listener;
-    private List<StudentInfo> students;
+    private List<Student> students;
 
-    public StudentAdapter(List<StudentInfo> students, OnItemClickListener listener) {
+    public StudentAdapter(List<Student> students, OnItemClickListener listener) {
         this.students = students;
         this.listener = listener;
     }
@@ -35,7 +35,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
 
     @Override
     public void onBindViewHolder(@NonNull StudentViewHolder holder, int position) {
-        StudentInfo student = students.get(position);
+        Student student = students.get(position);
         holder.bind(student, listener);
     }
 
@@ -44,7 +44,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
         return students != null ? students.size() : 0;
     }
 
-    public void setStudents(List<StudentInfo> students) {
+    public void setStudents(List<Student> students) {
         this.students = students;
     }
 
@@ -57,7 +57,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
             this.binding = binding;
         }
 
-        public void bind(StudentInfo student, final OnItemClickListener listener) {
+        public void bind(Student student, final OnItemClickListener listener) {
             binding.setStudent(student);
             binding.executePendingBindings();
             itemView.setOnClickListener(v -> listener.onItemClick(student));

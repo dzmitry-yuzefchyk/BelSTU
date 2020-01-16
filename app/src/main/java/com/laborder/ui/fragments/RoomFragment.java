@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,22 +23,26 @@ import com.laborder.MainActivity;
 import com.laborder.R;
 import com.laborder.bl.BackStack;
 import com.laborder.bl.Documents;
-import com.laborder.bl.adapters.OrderInfoAdapter;
 import com.laborder.bl.adapters.StudentAdapter;
 import com.laborder.bl.models.Order;
-import com.laborder.bl.models.OrderInfo;
+import com.laborder.bl.models.ReserveOrder;
 import com.laborder.bl.models.Student;
-import com.laborder.bl.models.StudentInfo;
+import com.laborder.bl.models.UserInfo;
 import com.laborder.databinding.RoomFragmentBinding;
-import com.laborder.databinding.RoomsFragmentBinding;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class RoomFragment extends Fragment {
     private String id;
     private RoomFragmentBinding binding;
-    private List<StudentInfo> students;
+    private List<Student> students;
     private StudentAdapter adapter;
     private DatabaseReference database;
     private FirebaseAuth mAuth;
@@ -53,6 +56,7 @@ public class RoomFragment extends Fragment {
         }
         mAuth = FirebaseAuth.getInstance();
         binding = DataBindingUtil.inflate(inflater, R.layout.room_fragment, container, false);
+        binding.setReserve(new ReserveOrder());
         database = FirebaseDatabase.getInstance().getReference().child(Documents.Orders).child(id);
         students = new ArrayList<>();
         setupRecyclerView();
@@ -73,54 +77,145 @@ public class RoomFragment extends Fragment {
 
     private void bindButtons() {
         getView().findViewById(R.id.reserve_btn).setOnClickListener(v -> reserve());
+        getView().findViewById(R.id.next_btn).setOnClickListener(v -> nextStudent());
+        getView().findViewById(R.id.delete_btn).setOnClickListener(v -> deleteOrder());
+    }
+
+    private void deleteOrder() {
+        database.removeValue();
+        FirebaseDatabase.getInstance().getReference()
+                .child(Documents.OrdersIds)
+                .child(id)
+                .removeValue();
+    }
+
+    private void nextStudent() {
+        Order order = binding.getOrder();
+        if (order == null) return;
+
+        if (order.getQueue() == null) return;
+
+        if (order.getFinished() == null) {
+            order.setFinished(new HashMap<>());
+        }
+
+        HashMap<String, Student> finished = order.getFinished();
+        HashMap<String, Student> queue = order.getQueue();
+        Optional<Map.Entry<String, Student>> currentStudent = queue
+                .entrySet()
+                .stream()
+                .min((Map.Entry<String, Student> e1, Map.Entry<String, Student> e2) ->
+                        e1.getValue().getPriority() - e2.getValue().getPriority()
+                );
+
+        if (currentStudent != null) {
+            queue.remove(currentStudent.get().getKey());
+        }
+
+        finished.put(currentStudent.get().getKey(), currentStudent.get().getValue());
+        order.setFinished(finished);
+        database.setValue(order);
     }
 
     private void configureButtons() {
         if (binding.getOrder().getCreatorId().equals(mAuth.getUid())) {
             getView().findViewById(R.id.next_btn).setVisibility(View.VISIBLE);
+            getView().findViewById(R.id.delete_btn).setVisibility(View.VISIBLE);
         } else {
             getView().findViewById(R.id.reserve_btn).setVisibility(View.VISIBLE);
+            getView().findViewById(R.id.labs_et).setVisibility(View.VISIBLE);
         }
     }
 
     private void reserve() {
+        String uid = mAuth.getUid();
         MainActivity activity = (MainActivity) getActivity();
-        if (userAlreadyInOrder()) {
-            activity.toast("to reserve bla bla");
+        Order order = binding.getOrder();
+        if (order == null) return;
+
+        if (order.getQueue() == null) order.setQueue(new HashMap<>());
+
+        HashMap<String, Student> queue = order.getQueue();
+        if (queue.containsKey(uid)) {
+            activity.toast(getResources().getString(R.string.to_reserve));
+            return;
+        }
+
+        ArrayList<Integer> labs = parseLabs();
+        if (labs == null) {
+            return;
+        }
+
+        if (labs.size() == 0) {
             return;
         }
 
         if (binding.getOrder().isUsePriority()) {
-
+            reserveWithPriority(parseLabs());
         } else {
-            reserveWithoutPriority();
+            reserveWithoutPriority(parseLabs());
         }
     }
 
-    private void reserveWithoutPriority() {
+    private ArrayList<Integer> parseLabs() {
+        MainActivity activity = (MainActivity) getActivity();
+        ArrayList<Integer> labs;
+        try {
+            String labsString = binding.getReserve().getLabs();
+            labsString = labsString.trim();
+            labsString = labsString.replace(" ", "");
+            labs = (ArrayList<Integer>) Stream.of(labsString.split(","))
+                    .mapToInt(string -> Integer.parseInt(string))
+                    .boxed()
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            activity.toast("parse error");
+            return null;
+        }
 
+        return (ArrayList<Integer>) labs.stream().distinct().collect(Collectors.toList());
     }
 
-    private boolean userAlreadyInOrder() {
-        final boolean[] isInOrder = new boolean[1];
+    private void reserveWithoutPriority(ArrayList<Integer> labs) {
         String uid = mAuth.getUid();
-        database.child("queue").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() != null) {
-                    isInOrder[0] = true;
-                } else {
-                    isInOrder[0] = false;
-                }
-            }
+        FirebaseDatabase.getInstance()
+                .getReference()
+                .child(Documents.Users)
+                .child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        UserInfo userInfo = dataSnapshot.getValue(UserInfo.class);
+                        Order order = binding.getOrder();
+                        int maxPriority = 0;
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                        if (order.getQueue() != null) {
 
-            }
-        });
+                            Optional<Map.Entry<String, Student>> queue = order.getQueue()
+                                    .entrySet()
+                                    .stream()
+                                    .max((Map.Entry<String, Student> e1, Map.Entry<String, Student> e2) ->
+                                            e1.getValue().getPriority() - e2.getValue().getPriority()
+                                    );
 
-        return isInOrder[0];
+                            if (queue.isPresent()) {
+                                maxPriority = queue.get().getValue().getPriority();
+                            }
+                        }
+                        Student student = new Student(++maxPriority,
+                                labs,
+                                userInfo.getName() + " " + userInfo.getSurname());
+                        database.child("queue").child(uid).setValue(student);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    private void reserveWithPriority(ArrayList<Integer> labs) {
+
     }
 
     private void configureDatabase() {
@@ -146,19 +241,16 @@ public class RoomFragment extends Fragment {
         database.child("queue").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()) {
-                    return;
-                }
 
                 students = new ArrayList<>();
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    String uid = ds.getKey();
                     String nameAndSurname = ds.child("nameAndSurname").getValue(String.class);
                     GenericTypeIndicator<ArrayList<Integer>> indicator = new GenericTypeIndicator<ArrayList<Integer>>() {};
                     ArrayList<Integer> labs = ds.child("labs").getValue(indicator);
-                    int labsCount = labs.size();
-                    students.add(new StudentInfo(uid, nameAndSurname, labsCount));
+                    int priority = ds.child("priority").getValue(int.class);
+                    students.add(new Student(priority, labs, nameAndSurname));
                 }
+                Collections.sort(students, (Student s1, Student s2) -> s1.getPriority() - s2.getPriority());
                 adapter.setStudents(students);
                 adapter.notifyDataSetChanged();
             }
