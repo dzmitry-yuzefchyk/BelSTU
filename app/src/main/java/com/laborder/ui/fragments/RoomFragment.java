@@ -133,6 +133,10 @@ public class RoomFragment extends Fragment {
     }
 
     private void configureButtons() {
+        if (getView() == null) {
+            return;
+        }
+
         if (binding.getOrder().getCreatorId().equals(mAuth.getUid())) {
             getView().findViewById(R.id.next_btn).setVisibility(View.VISIBLE);
             getView().findViewById(R.id.delete_btn).setVisibility(View.VISIBLE);
