@@ -22,4 +22,9 @@
     <string name="next_student">Next student</string>
     <string name="delete_order">Delete order</string>
     <string name="to_reserve">To reserve again, you need to finish current reservation</string>
+    <string name="confirm_delete">Do you really want to delete this order?</string>
+    <string name="dialog_yes">Yes</string>
+    <string name="dialog_no">No</string>
+    <string name="enter_labs">Enter labs in such format 1,2,3</string>
+
 </resources>

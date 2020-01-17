@@ -1,9 +1,12 @@
 package com.laborder.ui.fragments;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -82,11 +85,22 @@ public class RoomFragment extends Fragment {
     }
 
     private void deleteOrder() {
-        database.removeValue();
-        FirebaseDatabase.getInstance().getReference()
-                .child(Documents.OrdersIds)
-                .child(id)
-                .removeValue();
+        Dialog mDialog;
+        mDialog=new Dialog(getContext());
+        mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        mDialog.setContentView(R.layout.delete_dialog);
+        Button ok= mDialog.findViewById(R.id.dialog_yes_btn);
+        Button cancel = mDialog.findViewById(R.id.dialog_no_btn);
+        ok.setOnClickListener(v -> {
+            database.removeValue();
+            FirebaseDatabase.getInstance().getReference()
+                    .child(Documents.OrdersIds)
+                    .child(id)
+                    .removeValue();
+            mDialog.cancel();
+        });
+        cancel.setOnClickListener(v -> mDialog.cancel());
+        mDialog.show();
     }
 
     private void nextStudent() {

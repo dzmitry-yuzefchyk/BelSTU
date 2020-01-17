@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.logout:
                     auth.signOut();
                     checkAuth();
+                    this.recreate();
                     break;
             }
             return true;
