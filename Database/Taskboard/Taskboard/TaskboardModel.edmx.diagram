@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="70def8ae775f4e79b3950fdfb48eb750" Name="Diagram1" ZoomLevel="109">
+        <EntityTypeShape EntityType="TaskboardModel.ACTIVITY" Width="1.5" PointX="3.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TaskboardModel.BOARD" Width="1.5" PointX="6" PointY="15.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TaskboardModel.BOARD_SETTINGS" Width="1.5" PointX="8.25" PointY="13.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TaskboardModel.COLUMN" Width="1.5" PointX="8.25" PointY="17.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TaskboardModel.PROJECT" Width="1.5" PointX="3.75" PointY="17" IsExpanded="true" />
+        <EntityTypeShape EntityType="TaskboardModel.PROJECT_SETTINGS" Width="1.5" PointX="6" PointY="20.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TaskboardModel.ROLES" Width="1.5" PointX="3.75" PointY="11.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TaskboardModel.TASKS" Width="1.5" PointX="10.5" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TaskboardModel.TEAM" Width="1.5" PointX="0.75" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TaskboardModel.TEAM_USER" Width="1.5" PointX="3" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TaskboardModel.USER" Width="1.5" PointX="0.75" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TaskboardModel.USER_PROFILE" Width="1.5" PointX="3" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TaskboardModel.USER_PROJECT" Width="1.5" PointX="6" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TaskboardModel.USER_TOKEN" Width="1.5" PointX="3" PointY="14" IsExpanded="true" />
+        <AssociationConnector Association="TaskboardModel.FK__USER_PROJ__activ__231F2AE2" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskboardModel.FK__BOARD__projectId__7928F116" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskboardModel.FK__BOARD_SET__board__100C566E" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskboardModel.FK__COLUMN__boardId__7CF981FA" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskboardModel.FK__TASKS__columnId__7FD5EEA5" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskboardModel.FK__PROJECT__teamId__737017C0" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskboardModel.FK__PROJECT_S__proje__1995C0A8" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskboardModel.FK__USER_PROJ__proje__222B06A9" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskboardModel.FK__USER_PROJ__roleI__24134F1B" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskboardModel.FK__TEAM_USER__teamI__1D66518C" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskboardModel.FK__TEAM_USER__userI__1C722D53" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskboardModel.FK__USER_PROF__userI__69E6AD86" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskboardModel.FK__USER_PROJ__userI__2136E270" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskboardModel.FK__USER_TOKE__userI__66161CA2" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

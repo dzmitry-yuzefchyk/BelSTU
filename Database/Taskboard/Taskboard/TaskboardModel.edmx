@@ -1,0 +1,1251 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TaskboardModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ACTIVITY">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="activity" Type="nvarchar" MaxLength="256" />
+          <Property Name="date" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BOARD">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="projectId" Type="int" />
+        </EntityType>
+        <EntityType Name="BOARD_SETTINGS">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="background" Type="image" />
+          <Property Name="primaryColor" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="secondaryColor" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="accessToDeleteTask" Type="nvarchar" MaxLength="7" Nullable="false" />
+          <Property Name="accessToChangeTask" Type="nvarchar" MaxLength="7" Nullable="false" />
+          <Property Name="accessToCreateTask" Type="nvarchar" MaxLength="7" Nullable="false" />
+          <Property Name="boardId" Type="int" />
+        </EntityType>
+        <EntityType Name="COLUMN">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="boardId" Type="int" />
+        </EntityType>
+        <EntityType Name="PROJECT">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="about" Type="nvarchar" MaxLength="256" />
+          <Property Name="teamId" Type="int" />
+        </EntityType>
+        <EntityType Name="PROJECT_SETTINGS">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="background" Type="image" />
+          <Property Name="accessToDeleteBoard" Type="nvarchar" MaxLength="7" Nullable="false" />
+          <Property Name="accessToChangeBoard" Type="nvarchar" MaxLength="7" Nullable="false" />
+          <Property Name="accessToCreateBoard" Type="nvarchar" MaxLength="7" Nullable="false" />
+          <Property Name="projectId" Type="int" />
+        </EntityType>
+        <EntityType Name="ROLES">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="roleType" Type="nvarchar" MaxLength="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TASKS">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="columnId" Type="int" />
+          <Property Name="title" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="content" Type="nvarchar" MaxLength="1024" />
+          <Property Name="attachments" Type="varbinary" MaxLength="3096" />
+          <Property Name="type" Type="nvarchar" MaxLength="11" Nullable="false" />
+          <Property Name="priority" Type="nvarchar" MaxLength="6" Nullable="false" />
+          <Property Name="severity" Type="nvarchar" MaxLength="8" />
+          <Property Name="asignee" Type="nvarchar" MaxLength="64" />
+          <Property Name="timeToComplete" Type="time" Precision="7" />
+          <Property Name="startTime" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TEAM">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TEAM_USER">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userId" Type="int" />
+          <Property Name="teamId" Type="int" />
+          <Property Name="role" Type="varchar" MaxLength="8" Nullable="false" />
+        </EntityType>
+        <EntityType Name="USER">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="email" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="password" Type="binary" MaxLength="64" Nullable="false" />
+          <Property Name="salt" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="USER_PROFILE">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="about" Type="nvarchar" MaxLength="256" />
+          <Property Name="icon" Type="image" />
+          <Property Name="userId" Type="int" />
+        </EntityType>
+        <EntityType Name="USER_PROJECT">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userId" Type="int" />
+          <Property Name="projectId" Type="int" />
+          <Property Name="activityId" Type="int" />
+          <Property Name="roleId" Type="int" />
+        </EntityType>
+        <EntityType Name="USER_TOKEN">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="token" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="created" Type="datetime" Nullable="false" />
+          <Property Name="lifeTime" Type="int" Nullable="false" />
+          <Property Name="userId" Type="int" />
+        </EntityType>
+        <Association Name="FK__BOARD__projectId__7928F116">
+          <End Role="PROJECT" Type="Self.PROJECT" Multiplicity="0..1" />
+          <End Role="BOARD" Type="Self.BOARD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PROJECT">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="BOARD">
+              <PropertyRef Name="projectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BOARD_SET__board__100C566E">
+          <End Role="BOARD" Type="Self.BOARD" Multiplicity="0..1" />
+          <End Role="BOARD_SETTINGS" Type="Self.BOARD_SETTINGS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BOARD">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="BOARD_SETTINGS">
+              <PropertyRef Name="boardId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__COLUMN__boardId__7CF981FA">
+          <End Role="BOARD" Type="Self.BOARD" Multiplicity="0..1" />
+          <End Role="COLUMN" Type="Self.COLUMN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BOARD">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="COLUMN">
+              <PropertyRef Name="boardId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PROJECT__teamId__737017C0">
+          <End Role="TEAM" Type="Self.TEAM" Multiplicity="0..1" />
+          <End Role="PROJECT" Type="Self.PROJECT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TEAM">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PROJECT">
+              <PropertyRef Name="teamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PROJECT_S__proje__1995C0A8">
+          <End Role="PROJECT" Type="Self.PROJECT" Multiplicity="0..1" />
+          <End Role="PROJECT_SETTINGS" Type="Self.PROJECT_SETTINGS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PROJECT">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PROJECT_SETTINGS">
+              <PropertyRef Name="projectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TASKS__columnId__7FD5EEA5">
+          <End Role="COLUMN" Type="Self.COLUMN" Multiplicity="0..1" />
+          <End Role="TASKS" Type="Self.TASKS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COLUMN">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="TASKS">
+              <PropertyRef Name="columnId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TEAM_USER__teamI__1D66518C">
+          <End Role="TEAM" Type="Self.TEAM" Multiplicity="0..1" />
+          <End Role="TEAM_USER" Type="Self.TEAM_USER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TEAM">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="TEAM_USER">
+              <PropertyRef Name="teamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TEAM_USER__userI__1C722D53">
+          <End Role="USER" Type="Self.USER" Multiplicity="0..1" />
+          <End Role="TEAM_USER" Type="Self.TEAM_USER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USER">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="TEAM_USER">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USER_PROF__userI__69E6AD86">
+          <End Role="USER" Type="Self.USER" Multiplicity="0..1" />
+          <End Role="USER_PROFILE" Type="Self.USER_PROFILE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USER">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="USER_PROFILE">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USER_PROJ__activ__231F2AE2">
+          <End Role="ACTIVITY" Type="Self.ACTIVITY" Multiplicity="0..1" />
+          <End Role="USER_PROJECT" Type="Self.USER_PROJECT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ACTIVITY">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="USER_PROJECT">
+              <PropertyRef Name="activityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USER_PROJ__proje__222B06A9">
+          <End Role="PROJECT" Type="Self.PROJECT" Multiplicity="0..1" />
+          <End Role="USER_PROJECT" Type="Self.USER_PROJECT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PROJECT">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="USER_PROJECT">
+              <PropertyRef Name="projectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USER_PROJ__roleI__24134F1B">
+          <End Role="ROLES" Type="Self.ROLES" Multiplicity="0..1" />
+          <End Role="USER_PROJECT" Type="Self.USER_PROJECT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROLES">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="USER_PROJECT">
+              <PropertyRef Name="roleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USER_PROJ__userI__2136E270">
+          <End Role="USER" Type="Self.USER" Multiplicity="0..1" />
+          <End Role="USER_PROJECT" Type="Self.USER_PROJECT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USER">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="USER_PROJECT">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USER_TOKE__userI__66161CA2">
+          <End Role="USER" Type="Self.USER" Multiplicity="0..1" />
+          <End Role="USER_TOKEN" Type="Self.USER_TOKEN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USER">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="USER_TOKEN">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Team_AddUserToTeam" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" StoreFunctionName="Team.AddUserToTeam">
+          <Parameter Name="creatorEmail" Type="nvarchar" Mode="In" />
+          <Parameter Name="teamId" Type="int" Mode="In" />
+          <Parameter Name="addUserEmail" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="Team_CreateTeam" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" StoreFunctionName="Team.CreateTeam">
+          <Parameter Name="userEmail" Type="nvarchar" Mode="In" />
+          <Parameter Name="teamName" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="Team_DeleteTeam" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" StoreFunctionName="Team.DeleteTeam">
+          <Parameter Name="creatorEmail" Type="nvarchar" Mode="In" />
+          <Parameter Name="teamId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Team_GetUserTeams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" StoreFunctionName="Team.GetUserTeams">
+          <Parameter Name="userEmail" Type="nvarchar" Mode="In" />
+          <Parameter Name="skip" Type="int" Mode="In" />
+          <Parameter Name="amount" Type="int" Mode="In" />
+        </Function>
+        <Function Name="User_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" StoreFunctionName="User.Delete">
+          <Parameter Name="userId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="User_Job_DeleteExpiredTokens" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" StoreFunctionName="User.Job.DeleteExpiredTokens" />
+        <Function Name="User_Job_StartCreateDeleteExpiredToken" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" StoreFunctionName="User.Job.StartCreateDeleteExpiredToken" />
+        <Function Name="User_Jobs_StartCreateDeleteExpiredToken" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" StoreFunctionName="User.Jobs.StartCreateDeleteExpiredToken" />
+        <Function Name="User_Login" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" StoreFunctionName="User.Login">
+          <Parameter Name="email" Type="nvarchar" Mode="In" />
+          <Parameter Name="password" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="User_Logout" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" StoreFunctionName="User.Logout">
+          <Parameter Name="userId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="User_Register" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" StoreFunctionName="User.Register">
+          <Parameter Name="email" Type="nvarchar" Mode="In" />
+          <Parameter Name="password" Type="nvarchar" Mode="In" />
+          <Parameter Name="name" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="User_RenewToken" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" StoreFunctionName="User.RenewToken">
+          <Parameter Name="userId" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="TaskboardModelStoreContainer">
+          <EntitySet Name="ACTIVITY" EntityType="Self.ACTIVITY" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BOARD" EntityType="Self.BOARD" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BOARD_SETTINGS" EntityType="Self.BOARD_SETTINGS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="COLUMN" EntityType="Self.COLUMN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PROJECT" EntityType="Self.PROJECT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PROJECT_SETTINGS" EntityType="Self.PROJECT_SETTINGS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ROLES" EntityType="Self.ROLES" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TASKS" EntityType="Self.TASKS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TEAM" EntityType="Self.TEAM" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TEAM_USER" EntityType="Self.TEAM_USER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USER" EntityType="Self.USER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USER_PROFILE" EntityType="Self.USER_PROFILE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USER_PROJECT" EntityType="Self.USER_PROJECT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USER_TOKEN" EntityType="Self.USER_TOKEN" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__BOARD__projectId__7928F116" Association="Self.FK__BOARD__projectId__7928F116">
+            <End Role="PROJECT" EntitySet="PROJECT" />
+            <End Role="BOARD" EntitySet="BOARD" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BOARD_SET__board__100C566E" Association="Self.FK__BOARD_SET__board__100C566E">
+            <End Role="BOARD" EntitySet="BOARD" />
+            <End Role="BOARD_SETTINGS" EntitySet="BOARD_SETTINGS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__COLUMN__boardId__7CF981FA" Association="Self.FK__COLUMN__boardId__7CF981FA">
+            <End Role="BOARD" EntitySet="BOARD" />
+            <End Role="COLUMN" EntitySet="COLUMN" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PROJECT__teamId__737017C0" Association="Self.FK__PROJECT__teamId__737017C0">
+            <End Role="TEAM" EntitySet="TEAM" />
+            <End Role="PROJECT" EntitySet="PROJECT" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PROJECT_S__proje__1995C0A8" Association="Self.FK__PROJECT_S__proje__1995C0A8">
+            <End Role="PROJECT" EntitySet="PROJECT" />
+            <End Role="PROJECT_SETTINGS" EntitySet="PROJECT_SETTINGS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TASKS__columnId__7FD5EEA5" Association="Self.FK__TASKS__columnId__7FD5EEA5">
+            <End Role="COLUMN" EntitySet="COLUMN" />
+            <End Role="TASKS" EntitySet="TASKS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TEAM_USER__teamI__1D66518C" Association="Self.FK__TEAM_USER__teamI__1D66518C">
+            <End Role="TEAM" EntitySet="TEAM" />
+            <End Role="TEAM_USER" EntitySet="TEAM_USER" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TEAM_USER__userI__1C722D53" Association="Self.FK__TEAM_USER__userI__1C722D53">
+            <End Role="USER" EntitySet="USER" />
+            <End Role="TEAM_USER" EntitySet="TEAM_USER" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USER_PROF__userI__69E6AD86" Association="Self.FK__USER_PROF__userI__69E6AD86">
+            <End Role="USER" EntitySet="USER" />
+            <End Role="USER_PROFILE" EntitySet="USER_PROFILE" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USER_PROJ__activ__231F2AE2" Association="Self.FK__USER_PROJ__activ__231F2AE2">
+            <End Role="ACTIVITY" EntitySet="ACTIVITY" />
+            <End Role="USER_PROJECT" EntitySet="USER_PROJECT" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USER_PROJ__proje__222B06A9" Association="Self.FK__USER_PROJ__proje__222B06A9">
+            <End Role="PROJECT" EntitySet="PROJECT" />
+            <End Role="USER_PROJECT" EntitySet="USER_PROJECT" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USER_PROJ__roleI__24134F1B" Association="Self.FK__USER_PROJ__roleI__24134F1B">
+            <End Role="ROLES" EntitySet="ROLES" />
+            <End Role="USER_PROJECT" EntitySet="USER_PROJECT" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USER_PROJ__userI__2136E270" Association="Self.FK__USER_PROJ__userI__2136E270">
+            <End Role="USER" EntitySet="USER" />
+            <End Role="USER_PROJECT" EntitySet="USER_PROJECT" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USER_TOKE__userI__66161CA2" Association="Self.FK__USER_TOKE__userI__66161CA2">
+            <End Role="USER" EntitySet="USER" />
+            <End Role="USER_TOKEN" EntitySet="USER_TOKEN" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TaskboardModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ACTIVITY">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="activity1" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="date" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="USER_PROJECT" Relationship="Self.FK__USER_PROJ__activ__231F2AE2" FromRole="ACTIVITY" ToRole="USER_PROJECT" />
+        </EntityType>
+        <EntityType Name="BOARD">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="projectId" Type="Int32" />
+          <NavigationProperty Name="PROJECT" Relationship="Self.FK__BOARD__projectId__7928F116" FromRole="BOARD" ToRole="PROJECT" />
+          <NavigationProperty Name="BOARD_SETTINGS" Relationship="Self.FK__BOARD_SET__board__100C566E" FromRole="BOARD" ToRole="BOARD_SETTINGS" />
+          <NavigationProperty Name="COLUMN" Relationship="Self.FK__COLUMN__boardId__7CF981FA" FromRole="BOARD" ToRole="COLUMN" />
+        </EntityType>
+        <EntityType Name="BOARD_SETTINGS">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="background" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="primaryColor" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="secondaryColor" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="accessToDeleteTask" Type="String" MaxLength="7" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="accessToChangeTask" Type="String" MaxLength="7" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="accessToCreateTask" Type="String" MaxLength="7" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="boardId" Type="Int32" />
+          <NavigationProperty Name="BOARD" Relationship="Self.FK__BOARD_SET__board__100C566E" FromRole="BOARD_SETTINGS" ToRole="BOARD" />
+        </EntityType>
+        <EntityType Name="COLUMN">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="boardId" Type="Int32" />
+          <NavigationProperty Name="BOARD" Relationship="Self.FK__COLUMN__boardId__7CF981FA" FromRole="COLUMN" ToRole="BOARD" />
+          <NavigationProperty Name="TASKS" Relationship="Self.FK__TASKS__columnId__7FD5EEA5" FromRole="COLUMN" ToRole="TASKS" />
+        </EntityType>
+        <EntityType Name="PROJECT">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="about" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="teamId" Type="Int32" />
+          <NavigationProperty Name="BOARD" Relationship="Self.FK__BOARD__projectId__7928F116" FromRole="PROJECT" ToRole="BOARD" />
+          <NavigationProperty Name="TEAM" Relationship="Self.FK__PROJECT__teamId__737017C0" FromRole="PROJECT" ToRole="TEAM" />
+          <NavigationProperty Name="PROJECT_SETTINGS" Relationship="Self.FK__PROJECT_S__proje__1995C0A8" FromRole="PROJECT" ToRole="PROJECT_SETTINGS" />
+          <NavigationProperty Name="USER_PROJECT" Relationship="Self.FK__USER_PROJ__proje__222B06A9" FromRole="PROJECT" ToRole="USER_PROJECT" />
+        </EntityType>
+        <EntityType Name="PROJECT_SETTINGS">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="background" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="accessToDeleteBoard" Type="String" MaxLength="7" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="accessToChangeBoard" Type="String" MaxLength="7" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="accessToCreateBoard" Type="String" MaxLength="7" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="projectId" Type="Int32" />
+          <NavigationProperty Name="PROJECT" Relationship="Self.FK__PROJECT_S__proje__1995C0A8" FromRole="PROJECT_SETTINGS" ToRole="PROJECT" />
+        </EntityType>
+        <EntityType Name="ROLES">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="roleType" Type="String" MaxLength="7" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="USER_PROJECT" Relationship="Self.FK__USER_PROJ__roleI__24134F1B" FromRole="ROLES" ToRole="USER_PROJECT" />
+        </EntityType>
+        <EntityType Name="TASKS">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="columnId" Type="Int32" />
+          <Property Name="title" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="content" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Name="attachments" Type="Binary" MaxLength="3096" FixedLength="false" />
+          <Property Name="type" Type="String" MaxLength="11" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="priority" Type="String" MaxLength="6" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="severity" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Name="asignee" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="timeToComplete" Type="Time" Precision="7" />
+          <Property Name="startTime" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="COLUMN" Relationship="Self.FK__TASKS__columnId__7FD5EEA5" FromRole="TASKS" ToRole="COLUMN" />
+        </EntityType>
+        <EntityType Name="TEAM">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="PROJECT" Relationship="Self.FK__PROJECT__teamId__737017C0" FromRole="TEAM" ToRole="PROJECT" />
+          <NavigationProperty Name="TEAM_USER" Relationship="Self.FK__TEAM_USER__teamI__1D66518C" FromRole="TEAM" ToRole="TEAM_USER" />
+        </EntityType>
+        <EntityType Name="TEAM_USER">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userId" Type="Int32" />
+          <Property Name="teamId" Type="Int32" />
+          <Property Name="role" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="TEAM" Relationship="Self.FK__TEAM_USER__teamI__1D66518C" FromRole="TEAM_USER" ToRole="TEAM" />
+          <NavigationProperty Name="USER" Relationship="Self.FK__TEAM_USER__userI__1C722D53" FromRole="TEAM_USER" ToRole="USER" />
+        </EntityType>
+        <EntityType Name="USER">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="password" Type="Binary" MaxLength="64" FixedLength="true" Nullable="false" />
+          <Property Name="salt" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="TEAM_USER" Relationship="Self.FK__TEAM_USER__userI__1C722D53" FromRole="USER" ToRole="TEAM_USER" />
+          <NavigationProperty Name="USER_PROFILE" Relationship="Self.FK__USER_PROF__userI__69E6AD86" FromRole="USER" ToRole="USER_PROFILE" />
+          <NavigationProperty Name="USER_PROJECT" Relationship="Self.FK__USER_PROJ__userI__2136E270" FromRole="USER" ToRole="USER_PROJECT" />
+          <NavigationProperty Name="USER_TOKEN" Relationship="Self.FK__USER_TOKE__userI__66161CA2" FromRole="USER" ToRole="USER_TOKEN" />
+        </EntityType>
+        <EntityType Name="USER_PROFILE">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="about" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="icon" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="userId" Type="Int32" />
+          <NavigationProperty Name="USER" Relationship="Self.FK__USER_PROF__userI__69E6AD86" FromRole="USER_PROFILE" ToRole="USER" />
+        </EntityType>
+        <EntityType Name="USER_PROJECT">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userId" Type="Int32" />
+          <Property Name="projectId" Type="Int32" />
+          <Property Name="activityId" Type="Int32" />
+          <Property Name="roleId" Type="Int32" />
+          <NavigationProperty Name="ACTIVITY" Relationship="Self.FK__USER_PROJ__activ__231F2AE2" FromRole="USER_PROJECT" ToRole="ACTIVITY" />
+          <NavigationProperty Name="PROJECT" Relationship="Self.FK__USER_PROJ__proje__222B06A9" FromRole="USER_PROJECT" ToRole="PROJECT" />
+          <NavigationProperty Name="ROLES" Relationship="Self.FK__USER_PROJ__roleI__24134F1B" FromRole="USER_PROJECT" ToRole="ROLES" />
+          <NavigationProperty Name="USER" Relationship="Self.FK__USER_PROJ__userI__2136E270" FromRole="USER_PROJECT" ToRole="USER" />
+        </EntityType>
+        <EntityType Name="USER_TOKEN">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="token" Type="Guid" Nullable="false" />
+          <Property Name="created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="lifeTime" Type="Int32" Nullable="false" />
+          <Property Name="userId" Type="Int32" />
+          <NavigationProperty Name="USER" Relationship="Self.FK__USER_TOKE__userI__66161CA2" FromRole="USER_TOKEN" ToRole="USER" />
+        </EntityType>
+        <Association Name="FK__USER_PROJ__activ__231F2AE2">
+          <End Role="ACTIVITY" Type="Self.ACTIVITY" Multiplicity="0..1" />
+          <End Role="USER_PROJECT" Type="Self.USER_PROJECT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ACTIVITY">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="USER_PROJECT">
+              <PropertyRef Name="activityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BOARD__projectId__7928F116">
+          <End Role="PROJECT" Type="Self.PROJECT" Multiplicity="0..1" />
+          <End Role="BOARD" Type="Self.BOARD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PROJECT">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="BOARD">
+              <PropertyRef Name="projectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BOARD_SET__board__100C566E">
+          <End Role="BOARD" Type="Self.BOARD" Multiplicity="0..1" />
+          <End Role="BOARD_SETTINGS" Type="Self.BOARD_SETTINGS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BOARD">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="BOARD_SETTINGS">
+              <PropertyRef Name="boardId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__COLUMN__boardId__7CF981FA">
+          <End Role="BOARD" Type="Self.BOARD" Multiplicity="0..1" />
+          <End Role="COLUMN" Type="Self.COLUMN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BOARD">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="COLUMN">
+              <PropertyRef Name="boardId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TASKS__columnId__7FD5EEA5">
+          <End Role="COLUMN" Type="Self.COLUMN" Multiplicity="0..1" />
+          <End Role="TASKS" Type="Self.TASKS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COLUMN">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="TASKS">
+              <PropertyRef Name="columnId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PROJECT__teamId__737017C0">
+          <End Role="TEAM" Type="Self.TEAM" Multiplicity="0..1" />
+          <End Role="PROJECT" Type="Self.PROJECT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TEAM">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PROJECT">
+              <PropertyRef Name="teamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PROJECT_S__proje__1995C0A8">
+          <End Role="PROJECT" Type="Self.PROJECT" Multiplicity="0..1" />
+          <End Role="PROJECT_SETTINGS" Type="Self.PROJECT_SETTINGS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PROJECT">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PROJECT_SETTINGS">
+              <PropertyRef Name="projectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USER_PROJ__proje__222B06A9">
+          <End Role="PROJECT" Type="Self.PROJECT" Multiplicity="0..1" />
+          <End Role="USER_PROJECT" Type="Self.USER_PROJECT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PROJECT">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="USER_PROJECT">
+              <PropertyRef Name="projectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USER_PROJ__roleI__24134F1B">
+          <End Role="ROLES" Type="Self.ROLES" Multiplicity="0..1" />
+          <End Role="USER_PROJECT" Type="Self.USER_PROJECT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROLES">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="USER_PROJECT">
+              <PropertyRef Name="roleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TEAM_USER__teamI__1D66518C">
+          <End Role="TEAM" Type="Self.TEAM" Multiplicity="0..1" />
+          <End Role="TEAM_USER" Type="Self.TEAM_USER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TEAM">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="TEAM_USER">
+              <PropertyRef Name="teamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TEAM_USER__userI__1C722D53">
+          <End Role="USER" Type="Self.USER" Multiplicity="0..1" />
+          <End Role="TEAM_USER" Type="Self.TEAM_USER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USER">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="TEAM_USER">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USER_PROF__userI__69E6AD86">
+          <End Role="USER" Type="Self.USER" Multiplicity="0..1" />
+          <End Role="USER_PROFILE" Type="Self.USER_PROFILE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USER">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="USER_PROFILE">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USER_PROJ__userI__2136E270">
+          <End Role="USER" Type="Self.USER" Multiplicity="0..1" />
+          <End Role="USER_PROJECT" Type="Self.USER_PROJECT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USER">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="USER_PROJECT">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USER_TOKE__userI__66161CA2">
+          <End Role="USER" Type="Self.USER" Multiplicity="0..1" />
+          <End Role="USER_TOKEN" Type="Self.USER_TOKEN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USER">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="USER_TOKEN">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TaskboardEntities" annotation:LazyLoadingEnabled="false">
+          <EntitySet Name="ACTIVITY" EntityType="Self.ACTIVITY" />
+          <EntitySet Name="BOARD" EntityType="Self.BOARD" />
+          <EntitySet Name="BOARD_SETTINGS" EntityType="Self.BOARD_SETTINGS" />
+          <EntitySet Name="COLUMN" EntityType="Self.COLUMN" />
+          <EntitySet Name="PROJECT" EntityType="Self.PROJECT" />
+          <EntitySet Name="PROJECT_SETTINGS" EntityType="Self.PROJECT_SETTINGS" />
+          <EntitySet Name="ROLES" EntityType="Self.ROLES" />
+          <EntitySet Name="TASKS" EntityType="Self.TASKS" />
+          <EntitySet Name="TEAM" EntityType="Self.TEAM" />
+          <EntitySet Name="TEAM_USER" EntityType="Self.TEAM_USER" />
+          <EntitySet Name="USER" EntityType="Self.USER" />
+          <EntitySet Name="USER_PROFILE" EntityType="Self.USER_PROFILE" />
+          <EntitySet Name="USER_PROJECT" EntityType="Self.USER_PROJECT" />
+          <EntitySet Name="USER_TOKEN" EntityType="Self.USER_TOKEN" />
+          <AssociationSet Name="FK__USER_PROJ__activ__231F2AE2" Association="Self.FK__USER_PROJ__activ__231F2AE2">
+            <End Role="ACTIVITY" EntitySet="ACTIVITY" />
+            <End Role="USER_PROJECT" EntitySet="USER_PROJECT" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BOARD__projectId__7928F116" Association="Self.FK__BOARD__projectId__7928F116">
+            <End Role="PROJECT" EntitySet="PROJECT" />
+            <End Role="BOARD" EntitySet="BOARD" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BOARD_SET__board__100C566E" Association="Self.FK__BOARD_SET__board__100C566E">
+            <End Role="BOARD" EntitySet="BOARD" />
+            <End Role="BOARD_SETTINGS" EntitySet="BOARD_SETTINGS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__COLUMN__boardId__7CF981FA" Association="Self.FK__COLUMN__boardId__7CF981FA">
+            <End Role="BOARD" EntitySet="BOARD" />
+            <End Role="COLUMN" EntitySet="COLUMN" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TASKS__columnId__7FD5EEA5" Association="Self.FK__TASKS__columnId__7FD5EEA5">
+            <End Role="COLUMN" EntitySet="COLUMN" />
+            <End Role="TASKS" EntitySet="TASKS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PROJECT__teamId__737017C0" Association="Self.FK__PROJECT__teamId__737017C0">
+            <End Role="TEAM" EntitySet="TEAM" />
+            <End Role="PROJECT" EntitySet="PROJECT" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PROJECT_S__proje__1995C0A8" Association="Self.FK__PROJECT_S__proje__1995C0A8">
+            <End Role="PROJECT" EntitySet="PROJECT" />
+            <End Role="PROJECT_SETTINGS" EntitySet="PROJECT_SETTINGS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USER_PROJ__proje__222B06A9" Association="Self.FK__USER_PROJ__proje__222B06A9">
+            <End Role="PROJECT" EntitySet="PROJECT" />
+            <End Role="USER_PROJECT" EntitySet="USER_PROJECT" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USER_PROJ__roleI__24134F1B" Association="Self.FK__USER_PROJ__roleI__24134F1B">
+            <End Role="ROLES" EntitySet="ROLES" />
+            <End Role="USER_PROJECT" EntitySet="USER_PROJECT" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TEAM_USER__teamI__1D66518C" Association="Self.FK__TEAM_USER__teamI__1D66518C">
+            <End Role="TEAM" EntitySet="TEAM" />
+            <End Role="TEAM_USER" EntitySet="TEAM_USER" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TEAM_USER__userI__1C722D53" Association="Self.FK__TEAM_USER__userI__1C722D53">
+            <End Role="USER" EntitySet="USER" />
+            <End Role="TEAM_USER" EntitySet="TEAM_USER" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USER_PROF__userI__69E6AD86" Association="Self.FK__USER_PROF__userI__69E6AD86">
+            <End Role="USER" EntitySet="USER" />
+            <End Role="USER_PROFILE" EntitySet="USER_PROFILE" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USER_PROJ__userI__2136E270" Association="Self.FK__USER_PROJ__userI__2136E270">
+            <End Role="USER" EntitySet="USER" />
+            <End Role="USER_PROJECT" EntitySet="USER_PROJECT" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USER_TOKE__userI__66161CA2" Association="Self.FK__USER_TOKE__userI__66161CA2">
+            <End Role="USER" EntitySet="USER" />
+            <End Role="USER_TOKEN" EntitySet="USER_TOKEN" />
+          </AssociationSet>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(TaskboardModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(TaskboardModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+          <FunctionImport Name="Team_AddUserToTeam" ReturnType="Collection(TaskboardModel.Team_AddUserToTeam_Result)">
+            <Parameter Name="creatorEmail" Mode="In" Type="String" />
+            <Parameter Name="teamId" Mode="In" Type="Int32" />
+            <Parameter Name="addUserEmail" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Team_CreateTeam" ReturnType="Collection(TaskboardModel.Team_CreateTeam_Result)">
+            <Parameter Name="userEmail" Mode="In" Type="String" />
+            <Parameter Name="teamName" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Team_DeleteTeam" ReturnType="Collection(TaskboardModel.Team_DeleteTeam_Result)">
+            <Parameter Name="creatorEmail" Mode="In" Type="String" />
+            <Parameter Name="teamId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Team_GetUserTeams" ReturnType="Collection(String)">
+            <Parameter Name="userEmail" Mode="In" Type="String" />
+            <Parameter Name="skip" Mode="In" Type="Int32" />
+            <Parameter Name="amount" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="User_Delete" ReturnType="Collection(TaskboardModel.User_Delete_Result)">
+            <Parameter Name="userId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="User_Job_DeleteExpiredTokens" />
+          <FunctionImport Name="User_Job_StartCreateDeleteExpiredToken" />
+          <FunctionImport Name="User_Jobs_StartCreateDeleteExpiredToken" />
+          <FunctionImport Name="User_Login" ReturnType="Collection(TaskboardModel.User_Login_Result)">
+            <Parameter Name="email" Mode="In" Type="String" />
+            <Parameter Name="password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="User_Logout" ReturnType="Collection(TaskboardModel.User_Logout_Result)">
+            <Parameter Name="userId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="User_Register" ReturnType="Collection(TaskboardModel.User_Register_Result)">
+            <Parameter Name="email" Mode="In" Type="String" />
+            <Parameter Name="password" Mode="In" Type="String" />
+            <Parameter Name="name" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="User_RenewToken" ReturnType="Collection(TaskboardModel.User_RenewToken_Result)">
+            <Parameter Name="userId" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="Team_AddUserToTeam_Result">
+          <Property Type="Int32" Name="ErrorLine" Nullable="true" />
+          <Property Type="String" Name="ErrorMessage" Nullable="true" MaxLength="4000" />
+        </ComplexType>
+        <ComplexType Name="Team_CreateTeam_Result">
+          <Property Type="Int32" Name="ErrorLine" Nullable="true" />
+          <Property Type="String" Name="ErrorMessage" Nullable="true" MaxLength="4000" />
+        </ComplexType>
+        <ComplexType Name="Team_DeleteTeam_Result">
+          <Property Type="Int32" Name="ErrorLine" Nullable="true" />
+          <Property Type="String" Name="ErrorMessage" Nullable="true" MaxLength="4000" />
+        </ComplexType>
+        <ComplexType Name="User_Delete_Result">
+          <Property Type="Int32" Name="ErrorLine" Nullable="true" />
+          <Property Type="String" Name="ErrorMessage" Nullable="true" MaxLength="4000" />
+        </ComplexType>
+        <ComplexType Name="User_Login_Result">
+          <Property Type="Int32" Name="ErrorLine" Nullable="true" />
+          <Property Type="String" Name="ErrorMessage" Nullable="true" MaxLength="4000" />
+        </ComplexType>
+        <ComplexType Name="User_Logout_Result">
+          <Property Type="Int32" Name="ErrorLine" Nullable="true" />
+          <Property Type="String" Name="ErrorMessage" Nullable="true" MaxLength="4000" />
+        </ComplexType>
+        <ComplexType Name="User_Register_Result">
+          <Property Type="Int32" Name="ErrorNumber" Nullable="true" />
+          <Property Type="Int32" Name="ErrorState" Nullable="true" />
+          <Property Type="Int32" Name="ErrorSeverity" Nullable="true" />
+          <Property Type="String" Name="ErrorProcedure" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="ErrorLine" Nullable="true" />
+          <Property Type="String" Name="ErrorMessage" Nullable="true" MaxLength="4000" />
+        </ComplexType>
+        <ComplexType Name="User_RenewToken_Result">
+          <Property Type="Int32" Name="ErrorLine" Nullable="true" />
+          <Property Type="String" Name="ErrorMessage" Nullable="true" MaxLength="4000" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TaskboardModelStoreContainer" CdmEntityContainer="TaskboardEntities">
+          <EntitySetMapping Name="ACTIVITY">
+            <EntityTypeMapping TypeName="TaskboardModel.ACTIVITY">
+              <MappingFragment StoreEntitySet="ACTIVITY">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="activity1" ColumnName="activity" />
+                <ScalarProperty Name="date" ColumnName="date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BOARD">
+            <EntityTypeMapping TypeName="TaskboardModel.BOARD">
+              <MappingFragment StoreEntitySet="BOARD">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="projectId" ColumnName="projectId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BOARD_SETTINGS">
+            <EntityTypeMapping TypeName="TaskboardModel.BOARD_SETTINGS">
+              <MappingFragment StoreEntitySet="BOARD_SETTINGS">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="background" ColumnName="background" />
+                <ScalarProperty Name="primaryColor" ColumnName="primaryColor" />
+                <ScalarProperty Name="secondaryColor" ColumnName="secondaryColor" />
+                <ScalarProperty Name="accessToDeleteTask" ColumnName="accessToDeleteTask" />
+                <ScalarProperty Name="accessToChangeTask" ColumnName="accessToChangeTask" />
+                <ScalarProperty Name="accessToCreateTask" ColumnName="accessToCreateTask" />
+                <ScalarProperty Name="boardId" ColumnName="boardId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="COLUMN">
+            <EntityTypeMapping TypeName="TaskboardModel.COLUMN">
+              <MappingFragment StoreEntitySet="COLUMN">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="boardId" ColumnName="boardId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PROJECT">
+            <EntityTypeMapping TypeName="TaskboardModel.PROJECT">
+              <MappingFragment StoreEntitySet="PROJECT">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="about" ColumnName="about" />
+                <ScalarProperty Name="teamId" ColumnName="teamId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PROJECT_SETTINGS">
+            <EntityTypeMapping TypeName="TaskboardModel.PROJECT_SETTINGS">
+              <MappingFragment StoreEntitySet="PROJECT_SETTINGS">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="background" ColumnName="background" />
+                <ScalarProperty Name="accessToDeleteBoard" ColumnName="accessToDeleteBoard" />
+                <ScalarProperty Name="accessToChangeBoard" ColumnName="accessToChangeBoard" />
+                <ScalarProperty Name="accessToCreateBoard" ColumnName="accessToCreateBoard" />
+                <ScalarProperty Name="projectId" ColumnName="projectId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ROLES">
+            <EntityTypeMapping TypeName="TaskboardModel.ROLES">
+              <MappingFragment StoreEntitySet="ROLES">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="roleType" ColumnName="roleType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TASKS">
+            <EntityTypeMapping TypeName="TaskboardModel.TASKS">
+              <MappingFragment StoreEntitySet="TASKS">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="columnId" ColumnName="columnId" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="content" ColumnName="content" />
+                <ScalarProperty Name="attachments" ColumnName="attachments" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="priority" ColumnName="priority" />
+                <ScalarProperty Name="severity" ColumnName="severity" />
+                <ScalarProperty Name="asignee" ColumnName="asignee" />
+                <ScalarProperty Name="timeToComplete" ColumnName="timeToComplete" />
+                <ScalarProperty Name="startTime" ColumnName="startTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TEAM">
+            <EntityTypeMapping TypeName="TaskboardModel.TEAM">
+              <MappingFragment StoreEntitySet="TEAM">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="title" ColumnName="title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TEAM_USER">
+            <EntityTypeMapping TypeName="TaskboardModel.TEAM_USER">
+              <MappingFragment StoreEntitySet="TEAM_USER">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="teamId" ColumnName="teamId" />
+                <ScalarProperty Name="role" ColumnName="role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USER">
+            <EntityTypeMapping TypeName="TaskboardModel.USER">
+              <MappingFragment StoreEntitySet="USER">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="salt" ColumnName="salt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USER_PROFILE">
+            <EntityTypeMapping TypeName="TaskboardModel.USER_PROFILE">
+              <MappingFragment StoreEntitySet="USER_PROFILE">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="about" ColumnName="about" />
+                <ScalarProperty Name="icon" ColumnName="icon" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USER_PROJECT">
+            <EntityTypeMapping TypeName="TaskboardModel.USER_PROJECT">
+              <MappingFragment StoreEntitySet="USER_PROJECT">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="projectId" ColumnName="projectId" />
+                <ScalarProperty Name="activityId" ColumnName="activityId" />
+                <ScalarProperty Name="roleId" ColumnName="roleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USER_TOKEN">
+            <EntityTypeMapping TypeName="TaskboardModel.USER_TOKEN">
+              <MappingFragment StoreEntitySet="USER_TOKEN">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="token" ColumnName="token" />
+                <ScalarProperty Name="created" ColumnName="created" />
+                <ScalarProperty Name="lifeTime" ColumnName="lifeTime" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="TaskboardModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="TaskboardModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="TaskboardModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="TaskboardModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TaskboardModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="TaskboardModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TaskboardModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="TaskboardModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="TaskboardModel.Store.sp_upgraddiagrams" />
+          <FunctionImportMapping FunctionImportName="Team_AddUserToTeam" FunctionName="TaskboardModel.Store.Team_AddUserToTeam">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TaskboardModel.Team_AddUserToTeam_Result">
+                <ScalarProperty Name="ErrorLine" ColumnName="ErrorLine" />
+                <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Team_CreateTeam" FunctionName="TaskboardModel.Store.Team_CreateTeam">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TaskboardModel.Team_CreateTeam_Result">
+                <ScalarProperty Name="ErrorLine" ColumnName="ErrorLine" />
+                <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Team_DeleteTeam" FunctionName="TaskboardModel.Store.Team_DeleteTeam">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TaskboardModel.Team_DeleteTeam_Result">
+                <ScalarProperty Name="ErrorLine" ColumnName="ErrorLine" />
+                <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Team_GetUserTeams" FunctionName="TaskboardModel.Store.Team_GetUserTeams" />
+          <FunctionImportMapping FunctionImportName="User_Delete" FunctionName="TaskboardModel.Store.User_Delete">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TaskboardModel.User_Delete_Result">
+                <ScalarProperty Name="ErrorLine" ColumnName="ErrorLine" />
+                <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="User_Job_DeleteExpiredTokens" FunctionName="TaskboardModel.Store.User_Job_DeleteExpiredTokens" />
+          <FunctionImportMapping FunctionImportName="User_Job_StartCreateDeleteExpiredToken" FunctionName="TaskboardModel.Store.User_Job_StartCreateDeleteExpiredToken" />
+          <FunctionImportMapping FunctionImportName="User_Jobs_StartCreateDeleteExpiredToken" FunctionName="TaskboardModel.Store.User_Jobs_StartCreateDeleteExpiredToken" />
+          <FunctionImportMapping FunctionImportName="User_Login" FunctionName="TaskboardModel.Store.User_Login">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TaskboardModel.User_Login_Result">
+                <ScalarProperty Name="ErrorLine" ColumnName="ErrorLine" />
+                <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="User_Logout" FunctionName="TaskboardModel.Store.User_Logout">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TaskboardModel.User_Logout_Result">
+                <ScalarProperty Name="ErrorLine" ColumnName="ErrorLine" />
+                <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="User_Register" FunctionName="TaskboardModel.Store.User_Register">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TaskboardModel.User_Register_Result">
+                <ScalarProperty Name="ErrorNumber" ColumnName="ErrorNumber" />
+                <ScalarProperty Name="ErrorState" ColumnName="ErrorState" />
+                <ScalarProperty Name="ErrorSeverity" ColumnName="ErrorSeverity" />
+                <ScalarProperty Name="ErrorProcedure" ColumnName="ErrorProcedure" />
+                <ScalarProperty Name="ErrorLine" ColumnName="ErrorLine" />
+                <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="User_RenewToken" FunctionName="TaskboardModel.Store.User_RenewToken">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TaskboardModel.User_RenewToken_Result">
+                <ScalarProperty Name="ErrorLine" ColumnName="ErrorLine" />
+                <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
