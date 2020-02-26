@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Лабораторные</string>
+    <string name="login">Вход</string>
+    <string name="register">Регистрация</string>
+    <string name="email">Email</string>
+    <string name="password">Пароль</string>
+    <string name="name">Имя</string>
+    <string name="surname">Фамилия</string>
+    <string name="register_success">Зарегистрирован</string>
+    <string name="register_fail">Ошибка регистрации</string>
+    <string name="fill_all_fields">Заполните все поля</string>
+    <string name="invalid_email_or_password">Email или пароль неверны</string>
+    <string name="orders">Очереди</string>
+    <string name="current_order">Текущая очередь</string>
+    <string name="logout">Выйти</string>
+    <string name="create_order">Новая очередь</string>
+    <string name="title">Название</string>
+    <string name="current_lab">Текущая лабораторная</string>
+    <string name="use_priority">Использовать приоритеты</string>
+    <string name="create">Создать</string>
+    <string name="reserve">Встать в очередь</string>
+    <string name="next_student">Следующий студент</string>
+    <string name="delete_order">Удалить очередь</string>
+    <string name="to_reserve">Для повторной резервации нужно пройти очередь</string>
+    <string name="confirm_delete">Вы действительно хотите удалить очередь?</string>
+    <string name="dialog_yes">Да</string>
+    <string name="dialog_no">Нет</string>
+    <string name="enter_labs">Введите список лабораторных в формате 1,2,3</string>
+
+</resources>
