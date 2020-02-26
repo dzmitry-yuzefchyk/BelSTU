@@ -1,0 +1,131 @@
+{
+  "common": {
+    "appName": "TaskBoard"
+  },
+  "sections": {
+    "profile": "Profiles",
+    "settings": "Settings",
+    "board": "Board"
+  },
+  "access": {
+    "PROJECT_CREATOR": "Administrator",
+    "PROJECT_MEMBER": "Member",
+    "CREATE_BOARD": "CB",
+    "UPDATE_BOARD": "UB",
+    "DELETE_BOARD": "DB",
+    "CREATE_TASK": "CT",
+    "UPDATE_TASK": "UT",
+    "DELETE_TASK": "DT",
+    "CREATE_COMMENT": "Comment",
+    "UPDATE_PROJECT": "UP",
+    "CHANGE_SECURITY": "CS",
+    "DELETE_PROJECT": "DP",
+    "remove": "Remove",
+    "blocked": "Change block",
+    "email": "User"
+  },
+  "forms": {
+    "email": "Email",
+    "password": "Password",
+    "passwordConfirmation": "Password confirmation",
+    "signUp": "Sign-Up",
+    "signIn": "Sign-In",
+    "submit": "Submit",
+    "rememberMe": "Remember me",
+    "Resend email": "Resend email",
+    "title": "Title",
+    "accessToChangeProject": "Access to change project",
+    "accessToChangeBoard": "Access to change board",
+    "accessToChangeTask": "Access to change task",
+    "description": "Description",
+    "delete project": "Delete project",
+    "really delete project": "Yes!",
+    "changed my mind": "No!",
+    "task prefix": "Task prefix",
+    "use advanced settings": "Use advanced access settings",
+    "type": "Type",
+    "update": "Update",
+    "add user": "Add user",
+    "severity": "Severity",
+    "priority": "Priority",
+    "content": "Content",
+    "validation": {
+      "valid": "",
+      "Email address is required": "Email address is required",
+      "Password is required": "Password is required",
+      "Email address is invalid": "Email address is invalid",
+      "Password must be at least 6 symbols long": "Password must be at least 6 symbols long",
+      "Password confirmation is not the same": "Password confirmation is not the same",
+      "": ""
+    }
+  },
+  "snackbar": {
+    "Email or password is wrong": "Email or password is wrong",
+    "Can't create such user, please try again later": "Can't create such user, please try again later",
+    "Confirmation was sent to your email": "Confirmation was sent to your email",
+    "Email is not confirmed": "Email is not confirmed",
+    "true": "Done!",
+    "Success": "Done!",
+    "Done": "Done!",
+    "Email already confirmed": "Email already confirmed",
+    "You already signed-in": "You already signed-in",
+    "There is no such user": "There is no such user",
+    "You may now sign-in": "You may now sign-in",
+    "": "Not found",
+    "You have 1 new notification": "You have 1 new notification",
+    "Not found": "Not found"
+  },
+  "modal": {
+    "resend email": "Resend email",
+    "confirm": "Confirm",
+    "close": "Close",
+    "create project": "Create project",
+    "create board": "Create board",
+    "create column": "Create column",
+    "create task": "Create task"
+  },
+  "sidebar": {
+    "Projects": "Projects",
+    "Account": "Account",
+    "Notifications": "Notifications",
+    "Sign-Out": "Sign-Out"
+  },
+  "project": {
+    "open": "Open",
+    "create project": "Create project",
+    "boards": "Boards",
+    "settings": "Settings",
+    "access": "Access",
+    "create board": "Create board"
+  },
+  "board": {
+    "open": "Open",
+    "add column": "Add column"
+  },
+  "notification": {
+    "recent": "Recent notifications",
+    "here you can see what changed": "Here you can see what has changed while you were away",
+    "clear": "Clear",
+    "goto": "Go to",
+    "mark as read": "Remove"
+  },
+  "task": {
+    "view": "View",
+    "type": "Type",
+    "severity": "Severity",
+    "priority": "Priority",
+    "Feature": "Feature",
+    "create": "Create",
+    "Bug": "Bug",
+    "Improvement": "Improvement",
+    "Minor": "Minor",
+    "Major": "Major",
+    "Critical": "Critical",
+    "Blocker": "Blocker",
+    "assignee": "Assignee",
+    "creator": "Creator"
+  },
+  "preview": {
+    "Hello nice to see you there": "Hello nice to see you there"
+  }
+}
