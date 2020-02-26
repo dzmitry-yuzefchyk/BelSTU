@@ -1,0 +1,26 @@
+﻿<Controls:MetroWindow x:Class="FileManager.LogWindow"
+                      x:Name="Log"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:local="clr-namespace:FileManager"
+                      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                      xmlns:custom="clr-namespace:FileManager.ViewModel"
+                      xmlns:mi="http://schemas.microsoft.com/expression/2010/interactions"
+                      MaxHeight="500"
+                      Height="500"
+                      Width="550"
+                      Title="Log"
+                      ShowTitleBar="True"
+                      ShowIconOnTitleBar="True"
+                      >
+    <Controls:MetroWindow.Resources>
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+    </Controls:MetroWindow.Resources>
+    <StackPanel Orientation="Vertical">
+        <DataGrid MaxHeight="450" ItemsSource="{Binding Records}"/>
+        <Button Content="Очистить лог" Width="100" Margin="0 10 0 10" Command="{Binding ClearLogCommand}" CommandParameter="{Binding ElementName=Log}"/>
+    </StackPanel>
+</Controls:MetroWindow>
